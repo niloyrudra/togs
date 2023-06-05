@@ -1,0 +1,16 @@
+export default {
+    bold:'PJS-Bold',
+    boldItalic:'PJS-BoldItalic',
+    xBold:'PJS-ExtraBold',
+    xBoldItalic:'PJS-ExtraBoldItalic',
+    xLight:'PJS-ExtraLight',
+    xLightItalic:'PJS-ExtraLightItalic',
+    italic:'PJS-Italic',
+    light:'PJS-Light',
+    lightItalic:'PJS-LightItalic',
+    medium:'PJS-Medium',
+    mediumItalic:'PJS-MediumItalic',
+    regular: 'PJS-Regular',
+    semiBold:'PJS-SemiBold',
+    semiBoldItalic:'PJS-SemiBoldItalic',
+}
