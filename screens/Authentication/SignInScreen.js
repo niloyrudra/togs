@@ -1,45 +1,54 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// Firebase
-import { auth } from '../../config/firebase.config'
+// Constants
+import fonts from '../../constants/fonts'
+import colors from '../../constants/colors'
+import sizes from '../../constants/sizes';
 
 // Components
 import ButtonComponent from '../../components/ButtonComponent'
-import fonts from '../../constants/fonts'
-import colors from '../../constants/colors'
 import TitleComponent from '../../components/TitleComponent'
 import TextInputComponent from '../../components/TextInputComponent'
 import TextInputLabelComponent from '../../components/TextInputLabelComponent'
-import { Image } from 'react-native'
-import { TouchableOpacity } from 'react-native'
-import { ScrollView } from 'react-native';
-import sizes from '../../constants/sizes';
 import BottomScreenIndicatorComponent from '../../components/BottomScreenIndicatorComponent';
 
+// Context
+import { useTogsContext } from '../../providers/AppProvider';
+
 const SignInScreen = ( { navigation } ) => {
+
+    const { onSignIn } = useTogsContext();
+
     const [email, setEmail] = React.useState('');
     const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState('');
 
+    const onResetHandler = React.useCallback(() => {
+        setEmail('')
+        setPassword('')
+        setEmailErrorMessage('')
+        setPasswordErrorMessage('')
+        setErrorMessage('')
+    },[]);
+
     const signIn = async () => {
         if (email === '') {
             setEmailErrorMessage('Email is mandatory.')
-          return;
+            return;
         }
         if ( password === '') {
             setPasswordErrorMessage('password is mandatory.')
-          return;
+            return;
         }
     
         try {
-            console.log( "processing" )
-            await auth.signInWithEmailAndPassword( email, password);
-            console.log( "processing end" )
+            await onSignIn( email, password );
+            onResetHandler()
         } catch (error) {
             setErrorMessage(error.message)
         }

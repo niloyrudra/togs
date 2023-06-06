@@ -1,26 +1,23 @@
 import { StyleSheet, Text, View, Button, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
-import React, { useContext } from 'react'
-// import { useIsFocused } from '@react-navigation/native';
+import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Components
 import ButtonComponent from '../../components/ButtonComponent'
 import TitleComponent from '../../components/TitleComponent'
-// import TextInputComponent from '../../components/TextInputComponent'
-// import TextInputLabelComponent from '../../components/TextInputLabelComponent'
+import BottomScreenIndicatorComponent from '../../components/BottomScreenIndicatorComponent';
+import FavSportIconButtonComponent from '../../components/FavSportIconButtonComponent';
 
 // Constants
 import fonts from '../../constants/fonts'
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes';
-import BottomScreenIndicatorComponent from '../../components/BottomScreenIndicatorComponent';
-import FavSportIconButtonComponent from '../../components/FavSportIconButtonComponent';
 
 // Firebase
-import { auth } from '../../config/firebase.config';
+// import { auth } from '../../config/firebase.config';
 
 // Context
-import { AppContext } from '../../providers/AppProvider';
+import { useTogsContext } from '../../providers/AppProvider';
 
 const favoriteSports = [
     {
@@ -71,10 +68,7 @@ const favoriteSports = [
 ];
 
 const FavoriteSportsScreen = ( { navigation, route } ) => {
-    // const isFocused = useIsFocused()
-    // console.log(route?.params?.userData)
-
-    const { setNewUser } = React.useContext( AppContext )
+    const { onSignUp } = useTogsContext();
 
     const [isSubmitted, setIsSubmitted] = React.useState(false)
     const [userData, setUserData] = React.useState( route?.params?.userData )
@@ -84,17 +78,9 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
     const submitHandler = async () => {
         if( userData ) {            
             try{
-                let newUser = await auth
-                .createUserWithEmailAndPassword( userData.email, userData.password )
-                console.log("Sign Up done!", newUser)
-
-                newUser = newUser?.user ? newUser.user : {}
-                newUser.chosenSports = sports
-                newUser.interest = userData.interest
-
-                console.log("New User ID >> ", newUser.uid)
+                userData.chosenSports = sports
                 // return
-                await setNewUser(newUser)
+                await onSignUp( userData )
                 setSports([])
                 setIsSubmitted(true)
             }
@@ -103,14 +89,13 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
             }
         }
 
-        // navigation.navigate( 'Welcome' )
     }
 
 
     React.useEffect(() => {
         if( isSubmitted ) setSports([])
         return () => {
-            setNewUser(null)
+            // setNewUser(null)
             setIsSubmitted(false)
         }
     }, [isSubmitted])

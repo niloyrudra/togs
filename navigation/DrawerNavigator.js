@@ -8,10 +8,8 @@ import { AntDesign, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
 // Contants
 import colors from '../constants/colors';
-// import fonts from '../constants/fonts';
 
 // Screens
-// import ProfileTabScreen from '../screens/Tabs/ProfileTabScreen';
 import CountryListScreen from '../screens/Drawer/CountryListScreen';
 import HelpScreen from '../screens/Drawer/HelpScreen';
 import NotificationsScreen from '../screens/Drawer/NotificationsScreen';
@@ -22,11 +20,12 @@ import WelcomeScreen from '../screens/Welcome/WelcomeScreen';
 import TabNavigator from './TabNavigator';
 import PostFormScreen from '../screens/Forms/PostFormScreen';
 import EventFormScreen from '../screens/Forms/EventFormScreen';
-// import TabNavigator from './TabNavigator';
-// import MainStackNavigator from './MainStackNavigator';
 
 // Components
 import SectionLabel from '../components/SectionLabel';
+
+// Context
+import { useTogsContext } from '../providers/AppProvider';
 
 const Drawer = createDrawerNavigator();
 
@@ -373,9 +372,7 @@ const DrawerNavigator = () => {
 export default DrawerNavigator;
 
 const DrawerContent = ( {navigation} ) => {
-    // const [ isEnabled, setIsEnabled ] = React.useState(false)
-    // const [ isSearchTerm, setIsSearchTerm ] = React.useState('')
-  
+  const { onSignOut } = useTogsContext();
     return (
         <View style={{
             flex: 1,
@@ -385,17 +382,13 @@ const DrawerContent = ( {navigation} ) => {
             {/* Branding */}
             <View
                 style={{
-                    // flexDirection: "row",
-                    // justifyContent:"space-between",
                     justifyContent:"center",
                     alignItems:"center",
                     paddingTop: 60,
                     paddingBottom: 10,
-                    // paddingHorizontal: 20,
                     backgroundColor: colors.dark,
                 }}
             >
-                {/* <View style={{}}/> */}
                 <View>
                     <Image
                         source={require( '../assets/logo/logo-xl.png' )}
@@ -407,7 +400,6 @@ const DrawerContent = ( {navigation} ) => {
                 </View>
 
                 <TouchableOpacity
-                    // style={{justifyContent:"flex-end"}}
                     style={{
                         position:"absolute",
                         right: 20,
@@ -528,7 +520,10 @@ const DrawerContent = ( {navigation} ) => {
                         marginVertical: 35,
                         marginHorizontal: 20
                     }}
-                    onPress={() => console.log("Sign Out")}
+                    onPress={ async () => {
+                        console.log("Sign Out")
+                        await onSignOut();
+                    }}
                 >
                     <AntDesign name="logout" size={24} color="red" />
                     <Text
@@ -604,15 +599,12 @@ const styles = StyleSheet.create({
       marginBottom: 4,
     },
     input: {
-      // width: 150,
       width: 200,
-      // flex:1,
       height: 44,
       marginTop: 20,
       marginBottom: 60,
       marginHorizontal:36,
       backgroundColor:colors.colorWhite,
-      // borderWidth: 1,
       padding: 10,
       paddingRight:44,
       borderRadius:5

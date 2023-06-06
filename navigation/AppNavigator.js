@@ -8,16 +8,16 @@ import { NavigationContainer } from '@react-navigation/native'
 import { auth } from '../config/firebase.config'
 
 // Context API
-import { AppContext } from '../providers/AppProvider'
+import { useTogsContext } from '../providers/AppProvider'
 
 // Stack Navigators
-// import MainStackNavigator from './MainStackNavigator'
 import AuthStackNavigator from './AuthStackNavigator'
 import DrawerNavigator from './DrawerNavigator'
 
 const AppNavigator = () => {
   
-  const { user } = React.useContext(AppContext);
+  const { user } = useTogsContext();
+
   const [ isLoggedInUser, setIsLoggedInUser ] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -27,9 +27,6 @@ const AppNavigator = () => {
       try {
         setIsLoading(false);
         await authenticatedUser ? setIsLoggedInUser(true) : setIsLoggedInUser(false);
-
-        
-
       } catch (error) {
         console.log("error>>> ", error);
       }
