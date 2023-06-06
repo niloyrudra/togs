@@ -19,9 +19,6 @@ const HomeTabScreen = ({ navigation }) => {
     setSearchTerm( prevVal => prevVal = value)
   }
 
-  console.log(navigation.getParent())
-  console.log(navigation.getState())
-
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 

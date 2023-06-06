@@ -168,8 +168,6 @@ const TabNavigator = () => {
             })} />
 
             <Tab.Screen name="Profile" component={ProfileTabScreen} options={( {navigation, route} ) => {
-                // console.log(navigation)
-                console.log(route)
                 return ({
                 tabBarLabel: "Profile",
                 tabBarLabelStyle: {

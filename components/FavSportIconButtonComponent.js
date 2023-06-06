@@ -15,7 +15,6 @@ const FavSportIconButtonComponent = ( {item, onSelect} ) => {
                 borderColor: selected ? '#4F8EFD' : ''
             }}
             onPress={() => {
-                // console.log(item.title, item.id)
                 setSelected( prevVal => prevVal = !prevVal )
                 onSelect( prevValue => (prevValue.includes( item.id ))? prevValue = prevValue.filter( itemId => itemId != item.id ) : prevValue = [ ...prevValue, item.id ] )
             }}

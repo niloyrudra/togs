@@ -8,9 +8,6 @@ import sizes from '../../constants/sizes'
 import { DrawerActions, StackActions } from '@react-navigation/native'
 
 const WelcomeScreen = ( { navigation } ) => {
-
-  // console.log(navigation)
-
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 

@@ -22,15 +22,15 @@ export const AppProvider = ({ children = null }) => {
   // Handlers
   const onSignUp = async ( userData ) => {
     try{
+      const { name, chosenSports, interest } = userData
+      
       const newUser = await auth.createUserWithEmailAndPassword( userData.email, userData.password )
       const user = newUser?.user ? newUser.user : {}
-      const chosenSports = userData.chosenSports
-      const interest = userData.interest
 
       const  newUserModel = {
-        displayName: user?.name ? user.name : '',
-        firstName: ( user?.name && user?.name.split(' ') ) ? user.name.split(' ').at(0) : '',
-        lastName: ( user?.name && user?.name.split(' ') ) ? user.name.split(' ').at(1) : '',
+        displayName: name ? name : '',
+        firstName: ( name && name.split(' ') ) ? name.split(' ').at(0) : '',
+        lastName: ( name && name.split(' ') ) ? name.split(' ').at(1) : '',
         age: '',
         bio: '',
         phoneNumber: user?.phoneNumber ? user.phoneNumber : '',

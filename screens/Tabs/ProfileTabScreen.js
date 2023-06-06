@@ -1,50 +1,56 @@
-import { StatusBar, StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native'
+import { StatusBar, StyleSheet, ScrollView, Text, View, SafeAreaView, Image, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native'
 import React from 'react'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
-import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
-
+import { useNavigation } from '@react-navigation/native';
+// import { ScrollView } from 'react-native-gesture-handler';
 import { FloatingAction } from 'react-native-floating-action';
 
+// Icons
+import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+
 // Context API
-import { AppContext } from '../../providers/AppProvider'
+import { useTogsContext } from '../../providers/AppProvider'
 
 // Components
 import ButtonComponent from '../../components/ButtonComponent'
+import ButtonIconComponent from '../../components/ButtonIconComponent';
+
+// Modal
+import ProfileEditModal from '../Profile/ProfileEditModal';
 
 // Constants
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 import fonts from '../../constants/fonts'
-import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
-import ButtonIconComponent from '../../components/ButtonIconComponent';
-import ProfileEditModal from '../Profile/ProfileEditModal';
 
+// Dummy Data
 const POSTS=[
-  {id:1, img: require('../../assets/temp/posts/post-1.png'), navName: ''},
-  {id:2, img: require('../../assets/temp/posts/post-2.png'), navName: ''},
-  {id:3, img: require('../../assets/temp/posts/post-3.png'), navName: ''},
-  {id:4, img: require('../../assets/temp/posts/post-4.png'), navName: ''},
-  {id:5, img: require('../../assets/temp/posts/post-5.png'), navName: ''},
-  {id:6, img: require('../../assets/temp/posts/post-6.png'), navName: ''},
-  {id:7, img: require('../../assets/temp/posts/post-7.png'), navName: ''},
-  {id:8, img: require('../../assets/temp/posts/post-8.png'), navName: ''},
-  {id:9, img: require('../../assets/temp/posts/post-1.png'), navName: ''},
-  {id:10, img: require('../../assets/temp/posts/post-2.png'), navName: ''},
-  {id:11, img: require('../../assets/temp/posts/post-3.png'), navName: ''},
-  {id:12, img: require('../../assets/temp/posts/post-4.png'), navName: ''},
-  {id:13, img: require('../../assets/temp/posts/post-5.png'), navName: ''},
-  {id:14, img: require('../../assets/temp/posts/post-6.png'), navName: ''},
-  {id:15, img: require('../../assets/temp/posts/post-7.png'), navName: ''},
-  {id:16, img: require('../../assets/temp/posts/post-8.png'), navName: ''},
+  {id:1, img: require('../../assets/temp/posts/post-1.png'), title: 'Post 1', metaData: 'Created at 12/06/2023.', description: 'Post 1 description goes here...' },
+  {id:2, img: require('../../assets/temp/posts/post-2.png'), title: 'Post 2', metaData: 'Created at 12/06/2023.', description: 'Post 2 description goes here...' },
+  {id:3, img: require('../../assets/temp/posts/post-3.png'), title: 'Post 3', metaData: 'Created at 12/06/2023.', description: 'Post 3 description goes here...' },
+  {id:4, img: require('../../assets/temp/posts/post-4.png'), title: 'Post 4', metaData: 'Created at 12/06/2023.', description: 'Post 4 description goes here...' },
+  {id:5, img: require('../../assets/temp/posts/post-5.png'), title: 'Post 5', metaData: 'Created at 12/06/2023.', description: 'Post 5 description goes here...' },
+  {id:6, img: require('../../assets/temp/posts/post-6.png'), title: 'Post 6', metaData: 'Created at 12/06/2023.', description: 'Post 6 description goes here...' },
+  {id:7, img: require('../../assets/temp/posts/post-7.png'), title: 'Post 7', metaData: 'Created at 12/06/2023.', description: 'Post 7 description goes here...' },
+  {id:8, img: require('../../assets/temp/posts/post-8.png'), title: 'Post 7', metaData: 'Created at 12/06/2023.', description: 'Post 8 description goes here...' },
+  {id:9, img: require('../../assets/temp/posts/post-1.png'), title: 'Post 8', metaData: 'Created at 12/06/2023.', description: 'Post 9 description goes here...' },
+  {id:10, img: require('../../assets/temp/posts/post-2.png'), title: 'Post 9', metaData: 'Created at 12/06/2023.', description: 'Post 10 description goes here...' },
+  {id:11, img: require('../../assets/temp/posts/post-3.png'), title: 'Post 10', metaData: 'Created at 12/06/2023.', description: 'Post 11 description goes here...' },
+  {id:12, img: require('../../assets/temp/posts/post-4.png'), title: 'Post 11', metaData: 'Created at 12/06/2023.', description: 'Post 12 description goes here...' },
+  {id:13, img: require('../../assets/temp/posts/post-5.png'), title: 'Post 12', metaData: 'Created at 12/06/2023.', description: 'Post 13 description goes here...' },
+  {id:14, img: require('../../assets/temp/posts/post-6.png'), title: 'Post 13', metaData: 'Created at 12/06/2023.', description: 'Post 14 description goes here...' },
+  {id:15, img: require('../../assets/temp/posts/post-7.png'), title: 'Post 14', metaData: 'Created at 12/06/2023.', description: 'Post 15 description goes here...' },
+  {id:16, img: require('../../assets/temp/posts/post-8.png'), title: 'Post 15', metaData: 'Created at 12/06/2023.', description: 'Post 16 description goes here...' },
 ];
+
 const EVENTS=[
-  {id:1, img: require('../../assets/temp/events/event-1.png'), navName: ''},
-  {id:2, img: require('../../assets/temp/events/event-2.png'), navName: ''},
-  {id:3, img: require('../../assets/temp/events/event-3.png'), navName: ''},
-  {id:4, img: require('../../assets/temp/events/event-4.png'), navName: ''},
-  {id:5, img: require('../../assets/temp/events/event-5.png'), navName: ''},
+  {id:1, img: require('../../assets/temp/events/event-1.png'), title: 'Event 1', metaData: 'Created at 23/06/2023', description: 'Event 1 description is here...', navName: ''},
+  {id:2, img: require('../../assets/temp/events/event-2.png'), title: 'Event 2', metaData: 'Created at 15/07/2023', description: 'Event 2 description is here...', navName: ''},
+  {id:3, img: require('../../assets/temp/events/event-3.png'), title: 'Event 3', metaData: 'Created at 03/08/2023', description: 'Event 3 description is here...', navName: ''},
+  {id:4, img: require('../../assets/temp/events/event-4.png'), title: 'Event 4', metaData: 'Created at 13/08/2023', description: 'Event 4 description is here...', navName: ''},
+  {id:5, img: require('../../assets/temp/events/event-5.png'), title: 'Event 5', metaData: 'Created at 20/08/2023', description: 'Event 5 description is here...', navName: ''},
 ];
+
 const PEOPLE=[
   {id:1, img: require('../../assets/temp/people/people-1.png'), navName: ''},
   {id:2, img: require('../../assets/temp/people/people-2.png'), navName: ''},
@@ -77,7 +83,7 @@ const PostRoute = ( {numCols=3} ) => {
             margin: 4,
             flex: 1,
           }}
-          onPress={() => console.log("Click on Post")}
+          onPress={() => navigation.navigate( 'PostScreen', {post: item} ) }
         >
           <Image
             source={item.img}
@@ -247,10 +253,7 @@ const renderScene = SceneMap({
 
 
 const ProfileTabScreen = ( {navigation} ) => {
-
-  const { user, setUser } = React.useContext( AppContext );
-
-  console.log(user)
+  const { user } = useTogsContext();
 
   const editRef = React.useRef();
   const layout = useWindowDimensions();
@@ -273,7 +276,6 @@ const ProfileTabScreen = ( {navigation} ) => {
           style={styles.container}
         >
         
-
           {/* Profile Info */}
           <View
             style={{
@@ -314,12 +316,12 @@ const ProfileTabScreen = ( {navigation} ) => {
             >
 
               <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>1000+</Text>
+                <Text style={styles.userStatNum}>{user?.connections?.length}</Text>
                 <Text style={styles.userStatLabel}>Connection</Text>
               </View>
 
               <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>32</Text>
+                <Text style={styles.userStatNum}>{user?.events?.length}</Text>
                 <Text style={styles.userStatLabel}>No. of Events</Text>
               </View>
 
@@ -332,7 +334,7 @@ const ProfileTabScreen = ( {navigation} ) => {
                     justifyContent:"center"
                   }}
                 >
-                  <Text style={styles.userStatNum}>5</Text>
+                  <Text style={styles.userStatNum}>{user?.ratings ?? 0}</Text>
                   <Image
                     source={ require('../../assets/icons/star.png') }
                     style={styles.star}
@@ -357,10 +359,6 @@ const ProfileTabScreen = ( {navigation} ) => {
             initialLayout={{ width: layout.width }}
 
             lazy={({ route }) => console.log( route.name )}
-
-            style={{
-              // marginVertical: 20,
-            }}
           />
 
           {

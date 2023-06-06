@@ -32,9 +32,7 @@ const AuthStackNavigator = () => {
                 fontWeight: "800"
             },
             headerStyle: {
-                backgroundColor: '#f5f5f5', // colors.white
-                // borderBottomWidth: 0,
-                // headerShadowVisibility: false,
+                backgroundColor: '#f5f5f5',
                 shadowOpacity: 0,
                 shadowOffset: {
                     height: 0,
@@ -51,7 +49,7 @@ const AuthStackNavigator = () => {
                             // width:24,
                             // height:24
                         }}
-                        coPress={() => console.log('SKIP')}
+                        onPress={() => console.log('SKIP')}
                     >
                         <Text style={{fontSize:sizes.fontText, color: colors.primaryColor }}>SKIP</Text>
                     </TouchableOpacity>

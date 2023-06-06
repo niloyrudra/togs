@@ -26,6 +26,7 @@ import SectionLabel from '../components/SectionLabel';
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
+import SinglePostScreen from '../screens/Post/SinglePostScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -105,6 +106,29 @@ const DrawerNavigator = () => {
                 </TouchableOpacity>
             )
         })} />
+
+        <Drawer.Screen name="PostScreen" component={SinglePostScreen} options={({navigation, route}) => {
+            const title = route?.params?.post?.title ?? "Post"
+            return ({
+                headerTitle: { title },
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
+                headerTitleStyle: {
+                    fontWeight: '800'
+                },
+                headerLeft: () => (
+                    <TouchableOpacity
+                        style={{
+                            marginLeft: 10
+                        }}
+                        onPress={() => navigation.navigate("Profile")}
+                    >
+                        <Ionicons name="chevron-back" size={26} color="black" />
+                    </TouchableOpacity>
+                )
+            }
+        )}} />
+
         <Drawer.Screen name="PostEdit" component={PostFormScreen} options={({navigation, route}) => ({
             headerTitle: "Add Post",
             headerTitleAlign: "center",

@@ -22,8 +22,11 @@ const AppNavigator = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    // onAuthStateChanged returns an unsubscriber
-    const unsubscribeAuth = auth.onAuthStateChanged(async (authenticatedUser) => {
+
+    // console.log( "APA NAVIGATION SCREEN - user >> ", user)
+
+    // onAuthStateChanged returns an subscriber
+    const unsubscribeAuth = auth.onAuthStateChanged( async (authenticatedUser) => {
       try {
         setIsLoading(false);
         await authenticatedUser ? setIsLoggedInUser(true) : setIsLoggedInUser(false);

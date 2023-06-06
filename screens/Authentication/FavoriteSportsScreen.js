@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,12 +13,10 @@ import fonts from '../../constants/fonts'
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes';
 
-// Firebase
-// import { auth } from '../../config/firebase.config';
-
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
 
+// Dummy Data
 const favoriteSports = [
     {
         id: 4,
@@ -74,12 +72,11 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
     const [userData, setUserData] = React.useState( route?.params?.userData )
     const [sports, setSports] = React.useState([])
     
-    // Hanlders
+    // Handlers
     const submitHandler = async () => {
         if( userData ) {            
             try{
                 userData.chosenSports = sports
-                // return
                 await onSignUp( userData )
                 setSports([])
                 setIsSubmitted(true)
@@ -95,7 +92,6 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
     React.useEffect(() => {
         if( isSubmitted ) setSports([])
         return () => {
-            // setNewUser(null)
             setIsSubmitted(false)
         }
     }, [isSubmitted])

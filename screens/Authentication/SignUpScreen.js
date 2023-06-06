@@ -88,14 +88,9 @@ const SignUpScreen = ( { navigation } ) => {
     const submitHandler = async () => {
         const isValid = validatorHandler()
         if ( isValid ) {
-            console.log( name, interest, email, password )
+            // console.log( name, interest, email, password )
             try {
                 setIsSubmitted(true)
-                // if (email !== '' && password !== '') {
-                // console.log('User registration processing!')
-                // await auth.createUserWithEmailAndPassword(email, password);
-                // console.log('User registered successfully!')
-
                 const user = {
                     email,
                     password,
@@ -111,8 +106,6 @@ const SignUpScreen = ( { navigation } ) => {
                 navigation.navigate( 'FavoriteSports', { userData: user } )
 
             } catch (error) {
-                // setErrorMessage(error.message);
-                // setIsLoading( false )
                 setName('')
                 setInterest('')
                 setEmail('')
@@ -124,7 +117,6 @@ const SignUpScreen = ( { navigation } ) => {
     }
 
     React.useEffect(() => {
-    //    if( !isFocused || !isSubmitted ) validatorHandler();
        if( !isSubmitted ) validatorHandler();
        return setIsSubmitted(false)
     },[name, email, password]);
