@@ -1,8 +1,8 @@
-import { StatusBar, StyleSheet, ScrollView, Text, View, SafeAreaView, Image, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native'
+import { StyleSheet, ScrollView, Text, View, SafeAreaView, Image, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native'
 import React from 'react'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { useNavigation } from '@react-navigation/native';
-// import { ScrollView } from 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
 import { FloatingAction } from 'react-native-floating-action';
 
 // Icons
@@ -13,7 +13,7 @@ import { useTogsContext } from '../../providers/AppProvider'
 
 // Components
 import ButtonComponent from '../../components/ButtonComponent'
-import ButtonIconComponent from '../../components/ButtonIconComponent';
+// import ButtonIconComponent from '../../components/ButtonIconComponent';
 
 // Modal
 import ProfileEditModal from '../Profile/ProfileEditModal';
@@ -91,14 +91,15 @@ const PostRoute = ( {numCols=3} ) => {
         </TouchableOpacity>
       )}
       ListFooterComponent={(
-        <>
-          {/* Add/Edit Event Button */}
-          <ButtonIconComponent
-            icon={<Ionicons name="add-circle-outline" size={50} color={colors.primaryColor} />}
-            onPress={() => navigation.navigate('PostEdit')}
-            bgColor={colors.bgColorDefault }
+        <View style={{
+          marginTop: 100,
+        }}>      
+          <FloatingAction
+            floatingIcon={<Ionicons name="add-outline" style={{marginTop:0}} size={50} color={colors.white} />}
+            onPressMain={() => navigation.navigate('PostEdit')}
+            position='right'
           />
-        </>
+        </View>
       )}
     />
   </View>
@@ -108,12 +109,12 @@ const EventRoute = () => {
   const navigation = useNavigation();
   return (
     <ScrollView>
-
       <View
         style={{
           flex: 1,
           paddingTop: 20,
-          gap: 20
+          gap: 20,
+          position: 'relative'
         }}
       >
 
@@ -223,6 +224,26 @@ const EventRoute = () => {
           </TouchableOpacity>
         </View>
 
+        {/* Add Event Button */}
+        <View style={{
+          marginTop: 50,
+          // position:'relative'
+        }}>      
+          <FloatingAction
+            floatingIcon={<Ionicons name="add-outline" style={{marginTop:0}} size={50} color={colors.white} />}
+            onPressMain={() => navigation.navigate('EventEdit')}
+            position='right'
+            
+            
+            // actions={actions}
+            // actionsPaddingTopBottom={10}
+            // onPressItem={
+            //   (name) => {
+            //     console.log(`selected button: ${name}`);
+            //   }
+            // }
+          />
+        </View>
 
       </View>
 
@@ -254,7 +275,6 @@ const renderScene = SceneMap({
 
 const ProfileTabScreen = ( {navigation} ) => {
   const { user } = useTogsContext();
-
   const editRef = React.useRef();
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
@@ -374,20 +394,6 @@ const ProfileTabScreen = ( {navigation} ) => {
           }
 
         </View>
-
-      {/* Add Event Button */}
-      <FloatingAction
-        // actions={actions}
-        floatingIcon={<Ionicons name="add-outline" size={50} color={colors.white} />}
-        onPressMain={() => navigation.navigate('EventEdit')}
-        position='right'
-        // onPressItem={
-        //   (name) => {
-        //     console.log(`selected button: ${name}`);
-        //   }
-        // }
-      />
-
     </SafeAreaView>
   )
 }

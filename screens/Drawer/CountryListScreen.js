@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-// import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from 'expo-status-bar';
 
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -34,6 +34,11 @@ const CountryListScreen = () => {
 
   return (
       <View style={styles.container}>
+
+        <StatusBar
+          style="light"
+        />
+
         <Text style={styles.label}>Choose your country</Text>
         <View style={styles.dropdownCountries}>
             <DropDownPicker

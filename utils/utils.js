@@ -7,3 +7,5 @@ export const getFormattedDate = ( date ) => {
 export const getFormattedTime = ( time ) => {
     return moment(time).format('h:mm a');
 }
+
+export const getCurrentDate = () => moment().format('MMMM Do YYYY, h:mm:ss a');

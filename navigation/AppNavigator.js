@@ -22,9 +22,6 @@ const AppNavigator = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-
-    // console.log( "APA NAVIGATION SCREEN - user >> ", user)
-
     // onAuthStateChanged returns an subscriber
     const unsubscribeAuth = auth.onAuthStateChanged( async (authenticatedUser) => {
       try {

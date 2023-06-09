@@ -44,7 +44,8 @@ const DATA = [
   }
 ];
 
-const QuicksTabScreen = ( {navigation} ) => {
+const QuicksTabScreen = ( {navigation, route} ) => {
+  console.log(route.params)
   const [searchTerm, setSearchTerm] = React.useState('')
 
   // Handlers

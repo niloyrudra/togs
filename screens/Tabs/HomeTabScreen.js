@@ -34,12 +34,12 @@ const HomeTabScreen = ({ navigation }) => {
       <ScrollView style={styles.container}>
 
         {/* Popular Events */}
-        <EventListComponent label="Popular Events">
+        <EventListComponent label="Popular Events" dataType={{type:'popular-event'}}>
           <ElementListComponent/>
         </EventListComponent>
 
         {/* Nearby Events */}
-        <EventListComponent label="Nearby Events">
+        <EventListComponent label="Nearby Events" dataType={{type:'nearby-event'}}>
           <ElementListComponent style={{transform: [{scale: 0.9}], marginHorizontal: -4, marginTop: -4 }} />
         </EventListComponent>
 

@@ -15,6 +15,7 @@ import sizes from '../../constants/sizes';
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
+import { StatusBar } from 'expo-status-bar';
 
 // Dummy Data
 const favoriteSports = [
@@ -99,78 +100,69 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
   return (
     <SafeAreaView style={styles.container} mode="margin" edges={['right', 'bottom', 'left']} >
 
-        {/* <ScrollView
-            contentContainerStyle={{
-                paddingBottom: 20
-            }}
-            keyboardDismissMode='on-drag'
-            showsVerticalScrollIndicator={false}
-        > */}
+        <StatusBar
+            style='dark'
+        />
 
+        <View
+            style={{
+                flex:1,
+                height: Dimensions.get('screen').height - 100
+            }}
+        >
+            
+            <View
+                style={styles.header}
+            >
+
+                <TitleComponent label="Choose Sports" />
+
+                <Text
+                    style={{
+                        fontFamily: fonts.medium,
+                        color: colors.textColor
+                    }}
+                >
+                    Select your favorite sports to continue the app or skip this page.
+                </Text>
+            </View>
 
             <View
                 style={{
-                    flex:1,
-                    height: Dimensions.get('screen').height - 100
+                    // flex: 1
                 }}
             >
-                
-                <View
-                    style={styles.header}
-                >
-
-                    <TitleComponent label="Choose Sports" />
-
-                    <Text
-                        style={{
-                            fontFamily: fonts.medium,
-                            color: colors.textColor
-                        }}
-                    >
-                        Select your favorite sports to continue the app or skip this page.
-                    </Text>
-                </View>
 
                 <View
                     style={{
-                        // flex: 1
+                        justifyContent:'space-evenly',
+                        flexDirection: 'row',
+                        gap: 15,
+                        flexWrap: 'wrap',
+                        paddingVertical: 30,
+                        overflow:'hidden'
                     }}
                 >
 
-                    <View
-                        style={{
-                            justifyContent:'space-evenly',
-                            flexDirection: 'row',
-                            gap: 15,
-                            flexWrap: 'wrap',
-                            paddingVertical: 30,
-                            overflow:'hidden'
-                        }}
-                    >
-
-                        {
-                            favoriteSports.map( (item, idx) => (
-                                <FavSportIconButtonComponent key={idx} item={item} onSelect={setSports} />
-                            ) )
-                        }
-                    </View>
-
+                    {
+                        favoriteSports.map( (item, idx) => (
+                            <FavSportIconButtonComponent key={idx} item={item} onSelect={setSports} />
+                        ) )
+                    }
                 </View>
-
-                {/* Submit Button */}
-                <ButtonComponent
-                    label="Continue"
-                    enableShadow
-                    onPress={submitHandler}
-                />
-
-                <BottomScreenIndicatorComponent />
 
             </View>
 
+            {/* Submit Button */}
+            <ButtonComponent
+                label="Continue"
+                enableShadow
+                onPress={submitHandler}
+            />
 
-        {/* </ScrollView> */}
+            <BottomScreenIndicatorComponent />
 
+        </View>
 
     </SafeAreaView>
   )

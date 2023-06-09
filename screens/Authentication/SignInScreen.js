@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 // Constants
 import fonts from '../../constants/fonts'
@@ -56,145 +57,137 @@ const SignInScreen = ( { navigation } ) => {
 
   return (
     <SafeAreaView style={styles.container} mode="margin" edges={['right', 'bottom', 'left']} >
-
-        <ScrollView
+        <KeyboardAwareScrollView
+            enableAutomaticScroll={true}
+            enableOnAndroid={true}
+            nestedScrollEnabled={true}
             contentContainerStyle={{
-                // flex:1
-                paddingBottom: 20
+                flexGrow:1
             }}
-            keyboardDismissMode='on-drag'
-            showsVerticalScrollIndicator={false}
         >
+            <StatusBar
+                style="dark"
+            />
+            
+            <View
+                style={styles.header}
+            >
 
-            {/* <KeyboardAwareScrollView
-                keyboardDismissMode='on-drag'
-                contentContainerStyle={{
-                    flex:1
+                <TitleComponent label="Welcome!" />
+
+                <Text
+                    style={{
+                        fontFamily: fonts.medium,
+                        color: colors.textColor
+                    }}
+                >
+                    Enter your valid information to log in our app. Then click continue to get started in our app.
+                </Text>
+            </View>
+
+            {/* Form Field Group */}
+            <View>
+
+                {/* Email */}
+                <View style={{ marginBottom: 20 }}>
+                    <TextInputLabelComponent label="Your email address" />
+                    <TextInputComponent
+                        placeholder="abcd@gmail.com"
+                        mode="email"
+                        value={email}
+                        onChange={setEmail}
+                    />
+                </View>
+
+                {/* Password */}
+                <View style={{ marginBottom: 20 }}>
+                    <TextInputLabelComponent label="Your password" />
+                    <TextInputComponent
+                        placeholder="min. 8 characters"
+                        secureTextEntry={true}
+                        value={password}
+                        onChange={setPassword}
+                        style={{
+                            paddingRight: 40
+                        }}
+                    />
+                </View>
+
+                <ButtonComponent
+                    onPress={signIn}
+                    label="Continue"
+                    enableShadow
+                />
+
+            </View>
+
+            {/* Divider */}
+            <View
+                style={{
+                    marginVertical: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}
-            > */}
+            >
+                <Image
+                    source={require( '../../assets/divider/or-divider.png' )}
+                />
+            </View>
 
-                <View
-                    style={styles.header}
-                >
+            <View>
 
-                    <TitleComponent label="Welcome!" />
+                <ButtonComponent
+                    label="Continue with Apple"
+                    bgColor={ colors.dark }
+                />
+                <ButtonComponent
+                    label="Continue with Facebook"
+                    bgColor={ colors.fbColor }
+                />
+                <ButtonComponent
+                    label="Continue with Google"
+                    bgColor={ colors.white }
+                    color={colors.textDark}
+                />
 
-                    <Text
-                        style={{
-                            fontFamily: fonts.medium,
-                            color: colors.textColor
-                        }}
-                    >
-                        Enter your valid information to log in our app. Then click continue to get started in our app.
-                    </Text>
-                </View>
+            </View>
 
-                {/* Form Field Group */}
-                <View>
-
-                    {/* Email */}
-                    <View style={{ marginBottom: 20 }}>
-                        <TextInputLabelComponent label="Your email address" />
-                        <TextInputComponent
-                            placeholder="abcd@gmail.com"
-                            mode="email"
-                            value={email}
-                            onChange={setEmail}
-                        />
-                    </View>
-
-                    {/* Password */}
-                    <View style={{ marginBottom: 20 }}>
-                        <TextInputLabelComponent label="Your password" />
-                        <TextInputComponent
-                            placeholder="min. 8 characters"
-                            secureTextEntry={true}
-                            value={password}
-                            onChange={setPassword}
-                            style={{
-                                paddingRight: 40
-                            }}
-                        />
-                    </View>
-
-                    <ButtonComponent
-                        onPress={signIn}
-                        label="Continue"
-                        enableShadow
-                    />
-
-                </View>
-
-                {/* Divider */}
-                <View
+            <View
+                style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    justifyContent: 'center',
+                    marginVertical: 20
+                }}
+            >
+                <Text
                     style={{
-                        marginVertical: 20,
-                        justifyContent: 'center',
-                        alignItems: 'center'
+                        color: colors.infoColor,
+                        fontSize: sizes.fontText
                     }}
                 >
-                    <Image
-                        source={require( '../../assets/divider/or-divider.png' )}
-                    />
-                </View>
+                    Don't have an account?
+                </Text>
 
-                <View>
-
-                    <ButtonComponent
-                        label="Continue with Apple"
-                        bgColor={ colors.dark }
-                    />
-                    <ButtonComponent
-                        label="Continue with Facebook"
-                        bgColor={ colors.fbColor }
-                    />
-                    <ButtonComponent
-                        label="Continue with Google"
-                        bgColor={ colors.white }
-                        color={colors.textDark}
-                    />
-
-                </View>
-
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        gap: 10,
-                        justifyContent: 'center',
-                        marginVertical: 20
-                    }}
+                <TouchableOpacity
+                    onPress={() => navigation.navigate( 'SignUp' ) }
                 >
                     <Text
                         style={{
-                            color: colors.infoColor,
-                            fontSize: sizes.fontText
+                            color: colors.primaryColor,
+                            fontSize: sizes.fontText,
+                            textDecorationStyle: 'solid',
+                            textDecorationLine: 'underline',
+                            fontWeight: '800'
                         }}
-                    >
-                        Don't have an account?
-                    </Text>
+                    >Sign Up</Text>
+                </TouchableOpacity>
 
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate( 'SignUp' ) }
-                    >
-                        <Text
-                            style={{
-                                color: colors.primaryColor,
-                                fontSize: sizes.fontText,
-                                textDecorationStyle: 'solid',
-                                textDecorationLine: 'underline',
-                                fontWeight: '800'
-                            }}
-                        >Sign Up</Text>
-                    </TouchableOpacity>
+            </View>
 
-                </View>
+            <BottomScreenIndicatorComponent />
 
-                <BottomScreenIndicatorComponent />
-
-            {/* </KeyboardAwareScrollView> */}
-
-        </ScrollView>
-
+        </KeyboardAwareScrollView>
 
     </SafeAreaView>
   )

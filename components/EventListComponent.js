@@ -5,15 +5,15 @@ import React from 'react'
 import SectionTitleComponent from './SectionTitleComponent'
 import ViewAllComponent from './ViewAllComponent'
 
-const EventListComponent = (props) => {
+const EventListComponent = ({label, dataType, children}) => {
   return (
     <View style={styles.container}>
 
       <View style={styles.header}>
-        <SectionTitleComponent label={props.label} />
-        <ViewAllComponent />
+        <SectionTitleComponent label={label} />
+        <ViewAllComponent dataType={dataType} />
       </View>
-      {props.children}
+      {children}
     </View>
   )
 }

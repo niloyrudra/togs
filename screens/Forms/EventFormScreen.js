@@ -3,33 +3,30 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Text
+  Text,
+  ActivityIndicator
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import moment from "moment/moment";
-// import { RCTDateTimePickerNative, DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-
-// import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-
-// DateTimePickerAndroid.open(params: AndroidNativeProps)
-// DateTimePickerAndroid.dismiss(mode: AndroidNativeProps['mode'])
-
-// import DateTimePicker from '@react-native-community/datetimepicker';
-
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-// import Header from "./components/Header";
-import {useForm, Controller} from 'react-hook-form';
-import ButtonComponent from "../../components/ButtonComponent";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {useForm, Controller} from 'react-hook-form';
+import { StatusBar } from "expo-status-bar";
 
-// Utils
-import { getFormattedDate, getFormattedTime } from "../../utils/utils";
+// Components
+import ButtonComponent from "../../components/ButtonComponent";
+import ImageUploadComponent from "../../components/ImageUploadComponent";
+
+// Utilities
+import { getCurrentDate, getFormattedDate, getFormattedTime } from "../../utils/utils";
 
 // Constants
 import sizes from "../../constants/sizes";
 import fonts from "../../constants/fonts";
 import colors from "../../constants/colors";
+
+// Context
+import { useTogsContext } from "../../providers/AppProvider";
 
 // Data
 const serviceList = [
@@ -59,6 +56,9 @@ const tenureList = [
 
 
 const EventFormScreen = () => {
+
+    const { user, onAddEvent } = useTogsContext();
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
 
     // const serviceRef = React.useRef(null);
     const [selectedService, setSelectedService] = React.useState('tournament');
@@ -124,14 +124,29 @@ const EventFormScreen = () => {
 
 
     // Form Submit Handler
-    const { handleSubmit, control, reset } = useForm();
-    const onSubmit = (data) => {
-        console.log(data);
-        reset();
+    const { handleSubmit, control, reset, resetField } = useForm();
+    const onSubmit = async (data) => {
+        try {
+            setIsSubmitting(true)
+            data.createdAt = getCurrentDate() // June 10th 2023, 2:48:48 am
+            data.creatorId = user?.userId
+            await onAddEvent( data )
+            resetField();
+            reset();
+            setIsSubmitting(false)
+        }
+        catch( errro ) {
+            console.error( 'Event Submit Error >> ', error )
+            setIsSubmitting(false)
+        }
     };
 
   return (
+    
     <SafeAreaProvider>
+        <StatusBar
+            style="dark"
+        />
         <KeyboardAwareScrollView
             enableAutomaticScroll={true}
             enableOnAndroid={true}
@@ -166,9 +181,7 @@ const EventFormScreen = () => {
                             placeholderStyle={styles.placeholderStyles}
                             onOpen={onServiceOpen}
                             onChangeValue={ currentValue => {
-                                // console.log('CurrentVValue',currentValue)
                                 onChange(currentValue)
-                                // serviceRef.current = currentValue
                                 setSelectedService( prevVal => prevVal = currentValue )
                             }}
                             // onClose={() => serviceRef.current = value}
@@ -434,6 +447,19 @@ const EventFormScreen = () => {
                 />
 
 
+                <Text style={styles.label}>Upload Image</Text>
+                <Controller
+                    name="image"
+                    defaultValue=""
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <ImageUploadComponent
+                            onUpload={onChange}
+                            image={value ? value : null}
+                        />
+                    )}
+                />
+
                 <Text style={styles.label}>Bio</Text>
                 <Controller
                     name="bio"
@@ -457,7 +483,18 @@ const EventFormScreen = () => {
                         marginVertical: 20
                     }}
                 >
-                    <ButtonComponent label="Continue" onPress={handleSubmit(onSubmit)} />
+                <View style={{ marginVertical: 20 }}>
+                    {
+                        isSubmitting ?
+                            (
+                                <ActivityIndicator size='large' color={colors.primaryColor} />
+                            )
+                            :
+                            (
+                                <ButtonComponent label="Continue" onPress={handleSubmit(onSubmit)} />
+                            )
+                    }
+                </View>
                 </View>
 
             </View>

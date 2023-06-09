@@ -23,7 +23,7 @@ const storeReducer = ( state=initialState, action ) => {
             console.log( "SIGN OUT" );
             return {
                 ...state,
-                user: {}
+                user: null
             }
 
         case ACTIONS.SIGN_UP :

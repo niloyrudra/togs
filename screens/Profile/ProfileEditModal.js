@@ -229,7 +229,8 @@ export default ProfileEditModal
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        // zIndex:1111111
     },
     input: {
         borderStyle: "solid",
