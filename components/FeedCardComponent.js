@@ -34,21 +34,58 @@ const FeedCardComponent = ({item}) => {
         {/* Content */}
         <View style={{...styles.content, justifyContent: 'space-between'}}>
             {/* Title */}
-            <FeedImageTitleComponent title={item.title} img={item.img}  />
+            <FeedImageTitleComponent title={item?.title ?? item?.creator?.name} img={item?.creator?.photoURL ?? null}  />
+            {/* <FeedImageTitleComponent title={item?.creator?.name} img={null}  /> */}
             {/* Time */}
             <View>
-                <Text style={styles.time}>{item.time}</Text>
+                <Text style={styles.time}>{item.startDate}</Text>
             </View>
         </View>
 
         {/* Description */}
         <View style={styles.content}>
-            <Text style={styles.info}>{item.content}</Text>
+            <Text style={styles.info}>
+                {/* {item.bio} */}
+                {item.content}
+            </Text>
         </View>
 
         {/* Gallery */}
         <View style={styles.content}>
-            {
+        {
+            item.image && (
+                <>
+                    <Image
+                        key={Math.random().toString()}
+                        source={{uri: item.image}}
+                        style={{
+                            width: '32.5%', // 106,
+                            height: 106,
+                            borderRadius: 7
+                        }}
+                    />
+                    <Image
+                        key={Math.random().toString()}
+                        source={{uri: item.image}}
+                        style={{
+                            width: '32.5%', // 106,
+                            height: 106,
+                            borderRadius: 7
+                        }}
+                    />
+                    <Image
+                        key={Math.random().toString()}
+                        source={{uri: item.image}}
+                        style={{
+                            width: '32.5%', // 106,
+                            height: 106,
+                            borderRadius: 7
+                        }}
+                    />
+                </>
+            )
+        }
+            {/* {
                 item.gallery.map( (item, index) => (
                     <Image
                         key={index}
@@ -60,14 +97,23 @@ const FeedCardComponent = ({item}) => {
                         }}
                     />
                 ))
-            }
+            } */}
         </View>
 
         {/* Footer */}
         <View style={styles.footer}>
-            <StatWidgetComponent count={item.likes} iconName="heart" />
-            <StatWidgetComponent count={item.comments} iconName="message" />
-            <StatWidgetComponent count={item.share} iconName="export" />
+            <StatWidgetComponent
+                count={0} // {item.likes}
+                iconName="heart"
+            />
+            <StatWidgetComponent
+                count={0} // {item.comments}
+                iconName="message" 
+            />
+            <StatWidgetComponent
+                count={0} // {item.share}
+                iconName="export" 
+            />
         </View>
 
     </TouchableOpacity>

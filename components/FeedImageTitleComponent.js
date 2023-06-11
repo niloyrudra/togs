@@ -5,13 +5,15 @@ import React from 'react'
 import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 
-const FeedImageTitleComponent = ({title, img}) => {
+const FeedImageTitleComponent = ({title, img=null}) => {
   return (
     <View style={styles.content}>
-        <Image
-        source={img}
-        style={styles.image}
-        />
+        {img && (
+            <Image
+                source={{ uri: img}}
+                style={styles.image}
+            />
+        )}
         <Text style={styles.title}>{title}</Text>
     </View>
   )
@@ -27,7 +29,8 @@ const styles = StyleSheet.create({
     },
     image: {
         width: 36,
-        height: 36
+        height: 36,
+        borderRadius: 18
     },
     title: {
         color: colors.dark,

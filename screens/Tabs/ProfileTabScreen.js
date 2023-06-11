@@ -22,6 +22,8 @@ import ProfileEditModal from '../Profile/ProfileEditModal';
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 import fonts from '../../constants/fonts'
+import DefaultUserAvatarComponent from '../../components/DefaultUserAvatarComponent';
+import { ActivityIndicator } from 'react-native';
 
 // Dummy Data
 const POSTS=[
@@ -66,6 +68,30 @@ const PEOPLE=[
 // Helper
 const PostRoute = ( {numCols=3} ) => {
   const navigation = useNavigation()
+  const { user, posts } = useTogsContext();
+  const [ownedPosts, setOwnedPosts] = React.useState(posts);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if(user?.userId) {
+      setIsLoading(true)
+      const userPosts = posts.filter( post => post.creatorId == user?.userId )
+      setOwnedPosts(userPosts)
+      setIsLoading(false)
+    }
+  },[user?.userId])
+
+  if(isLoading) return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent:"center",
+        alignItems:"center"
+      }}
+    >
+      <ActivityIndicator size={sizes.xlLoader} color={colors.primaryColor} />
+    </View>
+  );
   return (
   <View
     style={{
@@ -74,10 +100,13 @@ const PostRoute = ( {numCols=3} ) => {
     }}
   >
     <FlatList
-      data={POSTS}
-      keyExtractor={item => item.id}
+      data={ownedPosts}
+      // keyExtractor={item => item.id}
+      key={Math.random().toString()}
       numColumns={numCols}
-      renderItem={({item, index}) => (
+      renderItem={({item, index}) => {
+        // console.log(item.image)
+        return (
         <TouchableOpacity
           style={{
             margin: 4,
@@ -85,11 +114,46 @@ const PostRoute = ( {numCols=3} ) => {
           }}
           onPress={() => navigation.navigate( 'PostScreen', {post: item} ) }
         >
-          <Image
-            source={item.img}
-          />
+          {
+            item.image ?
+              (
+                <View
+                  style={{
+                    flexGrow:1,
+                    // shadow
+                      elevation: 4,
+                      shadowColor: colors.shadowColor,
+                      shadowOffset: {width: -2, height: 4},
+                      shadowOpacity: 0.5,
+                      shadowRadius: 3,
+
+                      margin:2
+                  }}
+                >
+                  <Image
+                    source={{uri:item.image}}
+                    style={{
+                      flexGrow:1,
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: 8,
+                    }}
+                  />
+                </View>
+              )
+              :
+              (
+                <View
+                  style={{
+                    flex:1,
+                    backgroundColor: colors.secondaryColor
+                  }}
+                />
+              )
+          }
+          
         </TouchableOpacity>
-      )}
+      )}}
       ListFooterComponent={(
         <View style={{
           marginTop: 100,
@@ -268,18 +332,20 @@ const renderTabBar = props => (
 );
 
 const renderScene = SceneMap({
-  posts: () => (<PostRoute numCols={3}/>),
+  posts: () => (<PostRoute numCols={3} />),
   events: EventRoute,
 });
 
 
 const ProfileTabScreen = ( {navigation} ) => {
-  const { user } = useTogsContext();
+  const { user, events, posts } = useTogsContext();
 
   const editRef = React.useRef();
   const layout = useWindowDimensions();
 
-  const [profilePic, setProfilePic] = React.useState(user?.photoURL ?? '');
+  const [ownedEvents, setOwnedEvents] = React.useState([]);
+  
+  // const [profilePic, setProfilePic] = React.useState(user?.photoURL ?? '');
   const [index, setIndex] = React.useState(0);
 
   const [routes] = React.useState([
@@ -289,8 +355,10 @@ const ProfileTabScreen = ( {navigation} ) => {
   const [showEditModal, setShowEditModal] = React.useState(false)
 
   React.useEffect(() => {
-    setProfilePic(user?.photoURL)
-    // return setProfilePic('')
+    if( user?.userId ) {
+      const userEvents = events.filter( event => event.creatorId == user?.userId )
+      setOwnedEvents(userEvents)
+    }
   },[user?.userId])
 
   return (
@@ -318,14 +386,24 @@ const ProfileTabScreen = ( {navigation} ) => {
 
             {/* User's Profile Pic & Name */}
             <View>
-              <Image
-                source={ profilePic ? {uri: profilePic} : require('../../assets/user/user.png')}
-                style={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: 36
-                }}
-              />
+              {
+                user?.photoURL ?
+                  (
+                    <Image
+                      source={{ uri: user.photoURL }}
+                      style={{
+                        width: 72,
+                        height: 72,
+                        borderRadius: 36
+                      }}
+                    />
+                  )
+                  :
+                  (
+                    <DefaultUserAvatarComponent />
+                  )
+              }
+
               <View
                 style={{
                   marginTop: 12
@@ -350,7 +428,7 @@ const ProfileTabScreen = ( {navigation} ) => {
               </View>
 
               <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>{user?.events?.length ?? '0'}</Text>
+                <Text style={styles.userStatNum}>{ownedEvents.length ?? '0'}</Text>
                 <Text style={styles.userStatLabel}>No. of Events</Text>
               </View>
 
@@ -392,14 +470,14 @@ const ProfileTabScreen = ( {navigation} ) => {
 
           {
             showEditModal &&
-              <ProfileEditModal
-                  refEle={editRef}
+              (<ProfileEditModal
+                refEle={editRef}
                   navigation={navigation}
                   isVisible={showEditModal}
                   // searchResultData={ searchResultData }
                   // query={searchQuery}
-                  onClose={() => setShowEditModal(false)}
-              />
+                onClose={() => setShowEditModal(false)}
+              />)
           }
 
         </View>
@@ -435,7 +513,8 @@ const styles = StyleSheet.create({
     color: colors.dark,
     lineHeight: sizes.fontTitle,
     fontWeight: '600',
-    fontFamily: fonts.bold
+    fontFamily: fonts.bold,
+    textAlign:"center"
   },
   userStat: {
     justifyContent:"center",

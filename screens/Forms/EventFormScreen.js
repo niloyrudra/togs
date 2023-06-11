@@ -129,7 +129,11 @@ const EventFormScreen = () => {
         try {
             setIsSubmitting(true)
             data.createdAt = getCurrentDate() // June 10th 2023, 2:48:48 am
-            data.creatorId = user?.userId
+            data.creatorId = user.userId
+            data.creator = {
+                name: user.displayName,
+                photoURL: user.photoURL
+            }
             await onAddEvent( data )
             resetField();
             reset();
@@ -140,6 +144,8 @@ const EventFormScreen = () => {
             setIsSubmitting(false)
         }
     };
+
+    console.log(user)
 
   return (
     
@@ -460,9 +466,9 @@ const EventFormScreen = () => {
                     )}
                 />
 
-                <Text style={styles.label}>Bio</Text>
+                <Text style={styles.label}>Description</Text>
                 <Controller
-                    name="bio"
+                    name="content"
                     defaultValue=""
                     control={control}
                     render={({ field: { onChange, value } }) => (
@@ -473,7 +479,7 @@ const EventFormScreen = () => {
                         value={value}
                         multiline={true}
                         numberOfLines={6}
-                        placeholder="Write Bio"
+                        placeholder="Write a description"
                     />
                     )}
                 />
@@ -491,7 +497,7 @@ const EventFormScreen = () => {
                             )
                             :
                             (
-                                <ButtonComponent label="Continue" onPress={handleSubmit(onSubmit)} />
+                                <ButtonComponent label="Submit" onPress={handleSubmit(onSubmit)} />
                             )
                     }
                 </View>

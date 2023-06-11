@@ -106,6 +106,8 @@ export const AppProvider = ({ children = null }) => {
   }
 
   const onAddEvent = async ( eventData ) => {
+    // console.log(eventData)
+    // return
     try{
       const  newEventModel = eventData;
       await db
@@ -208,9 +210,6 @@ export const AppProvider = ({ children = null }) => {
           snapshot.forEach(doc => {
             if ( doc && doc.exists ) docSet.push(doc.data())
           });
-          
-          console.log( "All Events", docSet )
-
           dispatch({
             type: ACTIONS.GET_ALL_EVENTS,
             payload: docSet
@@ -220,6 +219,32 @@ export const AppProvider = ({ children = null }) => {
     }
     catch(error) {
       console.error( 'GET ALL EVENTS Error', error )
+    }
+  }
+
+  const onFetchUserSpecificEvents = async ( userId ) => {
+    try{
+      await db
+        .collection("events")
+        .where( 'creatorId', '==', userId )
+        .get()
+        .then( snapshot => {
+          const docSet = []
+          snapshot.forEach(doc => {
+            if ( doc && doc.exists ) docSet.push(doc.data())
+          });
+          
+          console.log( "All User Events", docSet )
+
+          dispatch({
+            type: ACTIONS.GET_USER_SPECIFIC_EVENTS,
+            payload: docSet
+          });
+
+        });
+    }
+    catch(error) {
+      console.error( 'GET ALL User EVENTS Error', error )
     }
   }
 
@@ -233,7 +258,7 @@ export const AppProvider = ({ children = null }) => {
           snapshot.forEach(doc => {
             if ( doc && doc.exists ) docSet.push(doc.data())
           });
-          console.log( "All Posts", docSet )
+          // console.log( "All Posts", docSet )
           dispatch({
             type: ACTIONS.GET_ALL_POSTS,
             payload: docSet
@@ -246,15 +271,20 @@ export const AppProvider = ({ children = null }) => {
     }
   }
 
+
+
   // Value
   const value = {
     user: state.user,
+    events: state.events,
+    posts: state.posts,
     onSignUp,
     onSignIn,
     onSignOut,
     onUpdateUserInfo,
     onAddEvent,
     onFetchAllEvents,
+    onFetchUserSpecificEvents,
     onAddPost,
     onFetchAllPosts
   }

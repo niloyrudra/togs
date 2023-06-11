@@ -28,13 +28,29 @@ const HomeFeedCardComponent = ({item, style=null}) => {
             ...style
         }}
     >
-        <Image
-            source={item.banner}
-            style={{
-            width: '100%',
-            height: 128
-            }}
-        />
+        {
+            item.image ?
+                (
+                    <Image
+                        source={{uri: item.image}}
+                        style={{
+                        width: '100%',
+                        height: 128
+                        }}
+                    />
+                )
+                :
+                (
+                    <View
+                        style={{
+                            width: '100%',
+                            height: 128,
+                            backgroundColor: colors.secondaryColor
+                        }}
+                    />
+                )
+        }
+
 
         {/* Content */}
         <View style={styles.container}>
@@ -42,17 +58,17 @@ const HomeFeedCardComponent = ({item, style=null}) => {
             <View style={{...styles.content, marginBottom: 10, justifyContent: 'space-between'}}>
 
                 {/* Title */}
-                <FeedImageTitleComponent title={item.title} img={item.author.img}  />
+                <FeedImageTitleComponent title={item?.creator?.name} img={item?.creator?.photoURL}  />
 
                 {/* Price */}
                 <View style={styles.content}>
-                    <Text style={styles.price}>${item.price}</Text>
+                    <Text style={styles.price}>${item?.price ?? '0.00'}</Text>
                 </View>
 
             </View>
 
             <View style={{...styles.content, gap: 15}}>
-                <MetaWidgetComponent location={item.date} iconName="clock" />
+                <MetaWidgetComponent location={item.startDate} iconName="clock" />
                 <MetaWidgetComponent location={item.location} iconName="location-pin" />
             </View>
 

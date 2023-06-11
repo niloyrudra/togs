@@ -194,7 +194,7 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                                     style={styles.input}
                                     placeholder="Show Date Picker"
                                     onFocus={showDatePicker}
-                                    value={value.toString()}
+                                    value={value ? value.toString() : ''}
                                 />
                                 <DateTimePickerModal
                                     isVisible={isDatePickerVisible}

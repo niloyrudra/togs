@@ -8,14 +8,18 @@ import HomeTabScreen from '../screens/Tabs/HomeTabScreen'
 import ProfileTabScreen from '../screens/Tabs/ProfileTabScreen'
 import QuicksTabScreen from '../screens/Tabs/QuicksTabScreen'
 
+// Components
+import DefaultUserAvatarComponent from '../components/DefaultUserAvatarComponent';
+
 // Constants
 import colors from '../constants/colors';
 import sizes from '../constants/sizes';
+import { useTogsContext } from '../providers/AppProvider';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-
+    const {user} = useTogsContext()
     return (
         <Tab.Navigator
             screenOptions={({route,  navigation }) => ({
@@ -61,9 +65,23 @@ const TabNavigator = () => {
                             paddingLeft: 20
                         }}
                     >
-                        <Image
-                            source={require( '../assets/user/user.png' )}
-                        />
+                        {
+                            user?.photoURL ?
+                                (
+                                    <Image
+                                        source={{uri: user.photoURL}}
+                                        style={{
+                                            width:60,
+                                            height:60,
+                                            borderRadius: 30
+                                        }}
+                                    />
+                                )
+                                :
+                                (
+                                    <DefaultUserAvatarComponent />
+                                )
+                        }
                     </View>
                 ),
                 headerTitle: () => (
@@ -124,9 +142,23 @@ const TabNavigator = () => {
                             paddingLeft: 20
                         }}
                     >
-                        <Image
-                            source={require( '../assets/user/user.png' )}
-                        />
+                        {
+                            user?.photoURL ?
+                                (
+                                    <Image
+                                        source={{uri: user.photoURL}}
+                                        style={{
+                                            width:60,
+                                            height:60,
+                                            borderRadius: 30
+                                        }}
+                                    />
+                                )
+                                :
+                                (
+                                    <DefaultUserAvatarComponent />
+                                )
+                        }
                     </View>
                 ),
                 headerTitle: () => (
@@ -188,9 +220,23 @@ const TabNavigator = () => {
                             paddingLeft: 20
                         }}
                     >
-                        <Image
-                            source={require( '../assets/user/user.png' )}
-                        />
+                        {
+                            user?.photoURL ?
+                                (
+                                    <Image
+                                        source={{uri: user.photoURL}}
+                                        style={{
+                                            width:60,
+                                            height:60,
+                                            borderRadius: 30
+                                        }}
+                                    />
+                                )
+                                :
+                                (
+                                    <DefaultUserAvatarComponent />
+                                )
+                        }
                     </View>
                 ),
                 headerTitle: () => (

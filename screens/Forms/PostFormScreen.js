@@ -37,7 +37,11 @@ const PostFormScreen = () => {
         try {
             setIsSubmitting(true)
             data.createdAt = getCurrentDate() // June 10th 2023, 2:48:48 am
-            data.creatorId = user?.userId
+            data.creatorId = user.userId
+            data.creator = {
+                name: user.displayName,
+                photoURL: user.photoURL
+            }
             await onAddPost( data )
             resetField();
             reset();

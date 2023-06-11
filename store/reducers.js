@@ -5,6 +5,8 @@ export const initialState = {
     users: [],
     events: [],
     posts: [],
+    userSpecificEvents: [],
+    userSpecificPosts: [],
 };
 
 const storeReducer = ( state=initialState, action ) => {
@@ -62,6 +64,13 @@ const storeReducer = ( state=initialState, action ) => {
                 events: state.events.forEach( event => event.id == payload.id ? event = payload : '' )
             }
 
+        case ACTIONS.GET_ALL_EVENTS :
+            console.log( "GET ALL EVENTS" );
+            return {
+                ...state,
+                events: payload
+            }
+            
         // Post actions
         case ACTIONS.ADD_POST :
             console.log( "ADD POST" );
@@ -69,19 +78,26 @@ const storeReducer = ( state=initialState, action ) => {
                 ...state,
                 posts: [ ...state.posts, payload ]
             }
-
+                
         case ACTIONS.DELETE_POST :
             console.log( "DELETE POST" );
             return {
                 ...state,
                 posts: state.posts.filter( post => post.id !== payload )
             }
-
+                    
         case ACTIONS.UPDATE_POST :
             console.log( "UPDATE POST" );
             return {
                 ...state,
                 posts: state.posts.forEach( post => post.id == payload.id ? post = payload : '' )
+            }
+
+        case ACTIONS.GET_ALL_POSTS :
+            console.log( "GET ALL POSTS" );
+            return {
+                ...state,
+                posts: payload
             }
 
         // Connection actions

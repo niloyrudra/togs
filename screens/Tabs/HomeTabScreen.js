@@ -1,5 +1,6 @@
-import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native'
+import { StyleSheet, View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native'
 import React from 'react'
+// import { useIsFocused } from '@react-navigation/native'
 
 // Components
 import SearchComponent from '../../components/SearchComponent'
@@ -11,13 +12,31 @@ import ElementListComponent from '../../components/ElementListComponent'
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 
+// Context
+import { useTogsContext } from '../../providers/AppProvider'
+
 const HomeTabScreen = ({ navigation }) => {
+  // const isFocused = useIsFocused()
+
+  const { onFetchAllEvents, events } = useTogsContext();
+
+  const [isLoading, setIsLoading] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
 
   // Handlers
   const onChangeHandler = ( value ) => {
     setSearchTerm( prevVal => prevVal = value)
   }
+
+  React.useEffect(() => {
+    const unSubscriber = async () => {
+        setIsLoading(true);
+        await onFetchAllEvents();
+        setIsLoading(false);
+        // await onFetchAllPosts();
+    }
+    unSubscriber();
+  }, [])
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
@@ -35,12 +54,49 @@ const HomeTabScreen = ({ navigation }) => {
 
         {/* Popular Events */}
         <EventListComponent label="Popular Events" dataType={{type:'popular-event'}}>
-          <ElementListComponent/>
+          {
+            isLoading ?
+              (
+                <View
+                  style={{
+                    height: 100,
+                    width: '100%',
+                    justifyContent:"center",
+                    alignItems:"center"
+                  }}
+                >
+                  <ActivityIndicator size="large" color={colors.primaryColor} />
+                </View>
+              )
+              :
+              (
+                <ElementListComponent data={events} />
+              )
+          }
         </EventListComponent>
 
         {/* Nearby Events */}
         <EventListComponent label="Nearby Events" dataType={{type:'nearby-event'}}>
-          <ElementListComponent style={{transform: [{scale: 0.9}], marginHorizontal: -4, marginTop: -4 }} />
+          {
+            isLoading ?
+              (
+                <View
+                  style={{
+                    height: 100,
+                    width: '100%',
+                    justifyContent:"center",
+                    alignItems:"center"
+                  }}
+                >
+                  <ActivityIndicator size="large" color={colors.primaryColor} />
+                </View>
+              )
+              :
+              (
+                <ElementListComponent data={events} style={{transform: [{scale: 0.9}], marginHorizontal: -4, marginTop: -4 }} />
+              )
+          }
+          
         </EventListComponent>
 
       </ScrollView>
