@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -72,18 +72,22 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
     const [isSubmitted, setIsSubmitted] = React.useState(false)
     const [userData, setUserData] = React.useState( route?.params?.userData )
     const [sports, setSports] = React.useState([])
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
     
     // Handlers
     const submitHandler = async () => {
         if( userData ) {            
             try{
+                setIsSubmitting(true)
                 userData.chosenSports = sports
                 await onSignUp( userData )
                 setSports([])
                 setIsSubmitted(true)
+                setIsSubmitting(false)
             }
             catch(err) {
                 console.error("Fav Sports Screen Submit Func error >> ", err)
+                setIsSubmitting(false)
             }
         }
 
@@ -127,11 +131,7 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
                 </Text>
             </View>
 
-            <View
-                style={{
-                    // flex: 1
-                }}
-            >
+            <View>
 
                 <View
                     style={{
@@ -154,11 +154,20 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
             </View>
 
             {/* Submit Button */}
-            <ButtonComponent
-                label="Continue"
-                enableShadow
-                onPress={submitHandler}
-            />
+            {
+                isSubmitting ?
+                    (
+                        <ActivityIndicator size='large' color={colors.primaryColor} />
+                    )
+                    :
+                    (
+                        <ButtonComponent
+                            onPress={submitHandler}
+                            label="Continue"
+                            enableShadow
+                        />
+                    )
+            }
 
             <BottomScreenIndicatorComponent />
 

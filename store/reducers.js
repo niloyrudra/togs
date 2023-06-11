@@ -33,6 +33,13 @@ const storeReducer = ( state=initialState, action ) => {
                 user: payload
             }
 
+        case ACTIONS.UPDATE_USER_INFO :
+            console.log( "UPDATE USER INFO" );
+            return {
+                ...state,
+                user: payload
+            }
+
         // Event actions
         case ACTIONS.ADD_EVENT :
             console.log( "ADD EVENT" );

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -28,6 +28,7 @@ const SignInScreen = ( { navigation } ) => {
     const [password, setPassword] = React.useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState('');
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
 
     const onResetHandler = React.useCallback(() => {
         setEmail('')
@@ -48,10 +49,13 @@ const SignInScreen = ( { navigation } ) => {
         }
     
         try {
+            setIsSubmitting(true)
             await onSignIn( email, password );
             onResetHandler()
+            setIsSubmitting(false)
         } catch (error) {
             setErrorMessage(error.message)
+            setIsSubmitting(false)
         }
     }
 
@@ -113,11 +117,22 @@ const SignInScreen = ( { navigation } ) => {
                     />
                 </View>
 
-                <ButtonComponent
-                    onPress={signIn}
-                    label="Continue"
-                    enableShadow
-                />
+                {
+                    isSubmitting ?
+                        (
+                            <ActivityIndicator size='large' color={colors.primaryColor} />
+                        )
+                        :
+                        (
+                            <ButtonComponent
+                                onPress={signIn}
+                                label="Continue"
+                                enableShadow
+                            />
+                        )
+                }
+
+                
 
             </View>
 

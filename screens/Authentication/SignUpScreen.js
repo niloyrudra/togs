@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -25,6 +25,7 @@ const SignUpScreen = ( { navigation } ) => {
     const [nameError, setNameError] = React.useState("")
     const [emailError, setEmailError] = React.useState("")
     const [passwordError, setPasswordError] = React.useState("")
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
     
     // Handlers
     const validatorHandler = () => {
@@ -83,6 +84,7 @@ const SignUpScreen = ( { navigation } ) => {
         const isValid = validatorHandler()
         if ( isValid ) {
             try {
+                setIsSubmitting(true)
                 setIsSubmitted(true)
                 const user = {
                     email,
@@ -95,6 +97,7 @@ const SignUpScreen = ( { navigation } ) => {
                 setInterest('')
                 setEmail('')
                 setPassword('')
+                setIsSubmitting(false)
 
                 navigation.navigate( 'FavoriteSports', { userData: user } )
 
@@ -196,11 +199,20 @@ const SignUpScreen = ( { navigation } ) => {
                     {passwordError.length > 0 && <Text style={styles.errorMsg}>{passwordError}</Text>}
                 </View>
 
-                <ButtonComponent
-                    label="Continue"
-                    enableShadow
-                    onPress={submitHandler}
-                />
+                {
+                    isSubmitting ?
+                        (
+                            <ActivityIndicator size='large' color={colors.primaryColor} />
+                        )
+                        :
+                        (
+                            <ButtonComponent
+                                onPress={submitHandler}
+                                label="Continue"
+                                enableShadow
+                            />
+                        )
+                }
 
             </View>
 

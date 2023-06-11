@@ -275,14 +275,23 @@ const renderScene = SceneMap({
 
 const ProfileTabScreen = ( {navigation} ) => {
   const { user } = useTogsContext();
+
   const editRef = React.useRef();
   const layout = useWindowDimensions();
+
+  const [profilePic, setProfilePic] = React.useState(user?.photoURL ?? '');
   const [index, setIndex] = React.useState(0);
+
   const [routes] = React.useState([
     { key: 'posts', title: 'Posts' },
     { key: 'events', title: 'Events' },
   ]);
   const [showEditModal, setShowEditModal] = React.useState(false)
+
+  React.useEffect(() => {
+    setProfilePic(user?.photoURL)
+    // return setProfilePic('')
+  },[user?.userId])
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
@@ -310,7 +319,7 @@ const ProfileTabScreen = ( {navigation} ) => {
             {/* User's Profile Pic & Name */}
             <View>
               <Image
-                source={require('../../assets/user/user.png')}
+                source={ profilePic ? {uri: profilePic} : require('../../assets/user/user.png')}
                 style={{
                   width: 72,
                   height: 72,
@@ -336,12 +345,12 @@ const ProfileTabScreen = ( {navigation} ) => {
             >
 
               <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>{user?.connections?.length}</Text>
+                <Text style={styles.userStatNum}>{user?.connections?.length ?? '0'}</Text>
                 <Text style={styles.userStatLabel}>Connection</Text>
               </View>
 
               <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>{user?.events?.length}</Text>
+                <Text style={styles.userStatNum}>{user?.events?.length ?? '0'}</Text>
                 <Text style={styles.userStatLabel}>No. of Events</Text>
               </View>
 

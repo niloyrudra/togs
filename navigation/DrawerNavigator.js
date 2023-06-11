@@ -13,20 +13,20 @@ import colors from '../constants/colors';
 import CountryListScreen from '../screens/Drawer/CountryListScreen';
 import HelpScreen from '../screens/Drawer/HelpScreen';
 import NotificationsScreen from '../screens/Drawer/NotificationsScreen';
-import PreferencesScreen from '../screens/Drawer/PreferencesScreen';
+// import PreferencesScreen from '../screens/Drawer/PreferencesScreen';
 import LanguagesScreen from '../screens/Drawer/LanguagesScreen';
 import PrivacyPolicyScreen from '../screens/Drawer/PrivacyPolicyScreen';
 import WelcomeScreen from '../screens/Welcome/WelcomeScreen';
 import TabNavigator from './TabNavigator';
 import PostFormScreen from '../screens/Forms/PostFormScreen';
 import EventFormScreen from '../screens/Forms/EventFormScreen';
+import SinglePostScreen from '../screens/Post/SinglePostScreen';
 
 // Components
 import SectionLabel from '../components/SectionLabel';
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
-import SinglePostScreen from '../screens/Post/SinglePostScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -309,7 +309,7 @@ const DrawerNavigator = () => {
                 ),
             })}
         />
-        <Drawer.Screen name='Preferences' component={PreferencesScreen} options={({navigation, route}) => ({
+        {/* <Drawer.Screen name='Preferences' component={PreferencesScreen} options={({navigation, route}) => ({
                 headerTitle: "Preferences",
                 headerStyle: {
                     backgroundColor: colors.dark
@@ -348,7 +348,7 @@ const DrawerNavigator = () => {
                     </View>
                 ),
             })}
-        />
+        /> */}
         <Drawer.Screen name='PrivacyPolicy' component={PrivacyPolicyScreen} options={({navigation, route}) => ({
                 headerTitle: "Privacy Policy",
                 headerStyle: {
@@ -396,7 +396,7 @@ const DrawerNavigator = () => {
 export default DrawerNavigator;
 
 const DrawerContent = ( {navigation} ) => {
-  const { onSignOut } = useTogsContext();
+  const { user, onSignOut } = useTogsContext();
     return (
         <View style={{
             flex: 1,
@@ -459,7 +459,7 @@ const DrawerContent = ( {navigation} ) => {
 
                 {/* User's Profile Pic & Name */}
                 <Image
-                    source={require('../assets/user/user.png')}
+                    source={ user?.photoURL ? { uri: user.photoURL } : require('../assets/user/user.png')}
                     style={{
                         width: 72,
                         height: 72,
@@ -483,7 +483,7 @@ const DrawerContent = ( {navigation} ) => {
                             marginBottom: 5
                         }}
                     >
-                        Jacob Johnson
+                        {user?.displayName ?? 'Anonymous'}
                     </Text>
 
                     <Text
@@ -493,7 +493,7 @@ const DrawerContent = ( {navigation} ) => {
                             color: colors.white
                         }}
                     >
-                        jackoljohnsoxn@gmail.com
+                        {user?.email ?? ''}
                     </Text>
                 </View>
 
@@ -507,7 +507,7 @@ const DrawerContent = ( {navigation} ) => {
                         paddingHorizontal: 20,
                         paddingVertical: 10
                     }}
-                    onPress={() => console.log( 'Edit Button' )}
+                    onPress={() => navigation.navigate( "Profile", {path: 'profile'} )}
                 >
                     <Text style={{color: colors.dark, fontSize: 15, fontWeight: '500'}}>Edit Profile</Text>
                 </TouchableOpacity>

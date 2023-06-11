@@ -6,6 +6,9 @@ import ButtonComponent from "../../components/ButtonComponent";
 // import { SafeAreaProvider } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+// Components
+import ImageUploadComponent from '../../components/ImageUploadComponent'
+
 // Utils
 import { getFormattedDate } from '../../utils/utils';
 
@@ -15,7 +18,14 @@ import fonts from "../../constants/fonts";
 import colors from "../../constants/colors";
 import { Ionicons } from '@expo/vector-icons';
 
+// Context
+import { useTogsContext } from '../../providers/AppProvider';
+
+// import { updateDoc } from 'firebase/database'
+
 const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
+
+    const { user, onUpdateUserInfo } = useTogsContext();
 
     const modelAnimatedValue = React.useRef( new Animated.Value(0) ).current
 
@@ -60,12 +70,12 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
     };
 
     const { handleSubmit, control, reset } = useForm();
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        await onUpdateUserInfo( user, data )
         reset();
         onClose();
     };
-
+    
     return (
         <View>
             <KeyboardAwareScrollView
@@ -87,7 +97,7 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                             alignItems: "center"
                         }}
                     >
-                        <View/>
+                        
                         <View>
                             <Text style={{fontFamily: fonts.bold, fontSize: sizes.fontTitle, color: colors.dark}}>Edit Your Information</Text>
                         </View>
@@ -98,10 +108,23 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={styles.label}>Name</Text>
+                    <Text style={styles.label}>Upload Profile Photo</Text>
                     <Controller
-                        name="name"
-                        defaultValue=""
+                        name="photoURL"
+                        defaultValue={user.photoURL}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <ImageUploadComponent
+                                onUpload={onChange}
+                                image={value}
+                            />
+                        )}
+                    />
+
+                    <Text style={styles.label}>First Name</Text>
+                    <Controller
+                        name="firstName"
+                        defaultValue={user.firstName}
                         control={control}
                         render={({ field: { onChange, value } }) => (
                             <TextInput
@@ -113,10 +136,10 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                         )}
                     />
 
-                    <Text style={styles.label}>Email</Text>
+                    <Text style={styles.label}>Last Name</Text>
                     <Controller
-                        name="email"
-                        defaultValue=""
+                        name="lastName"
+                        defaultValue={user.lastName}
                         control={control}
                         render={({ field: { onChange, value } }) => (
                             <TextInput
@@ -124,15 +147,30 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                                 selectionColor={"#5188E3"}
                                 onChangeText={onChange}
                                 value={value}
-                                keyboardType='email-address'
+                            />
+                        )}
+                    />
+
+                    <Text style={styles.label}>Age</Text>
+                    <Controller
+                        name="age"
+                        defaultValue={user.age}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                style={styles.input}
+                                selectionColor={"#5188E3"}
+                                onChangeText={onChange}
+                                value={value}
+                                keyboardType='number-pad'
                             />
                         )}
                     />
 
                     <Text style={styles.label}>Phone Number</Text>
                     <Controller
-                        name="phonNum"
-                        defaultValue=""
+                        name="phoneNumber"
+                        defaultValue={user.phoneNumber}
                         control={control}
                         render={({ field: { onChange, value } }) => (
                             <TextInput
@@ -147,8 +185,8 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
 
                     <Text style={styles.label}>Date of Birth</Text>
                     <Controller
-                        name="birth"
-                        defaultValue=""
+                        name="birthDate"
+                        defaultValue={user.birthDate}
                         control={control}
                         render={({ field: { onChange, value } }) => (
                             <View>
@@ -174,8 +212,8 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
 
                     <Text style={styles.label}>Location/Address</Text>
                     <Controller
-                        name="location"
-                        defaultValue=""
+                        name="address"
+                        defaultValue={user.address}
                         control={control}
                         render={({ field: { onChange, value } }) => (
                         <TextInput
@@ -183,7 +221,7 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                             selectionColor={"#5188E3"}
                             onChangeText={onChange}
                             value={value}
-                            placeholder="Your Location"
+                            placeholder="Your Location/Address"
                         />
                         )}
                     />
@@ -192,7 +230,7 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                     <Text style={styles.label}>Bio</Text>
                     <Controller
                         name="bio"
-                        defaultValue=""
+                        defaultValue={user.bio}
                         control={control}
                         render={({ field: { onChange, value } }) => (
                         <TextInput

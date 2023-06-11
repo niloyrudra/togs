@@ -21,7 +21,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.niloyrudra.togs"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +37,11 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "fe1190f4-e0d4-453c-af50-24e74ecfefa2"
+      }
+    }
   }
 }
