@@ -1,30 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import React from 'react'
 import { Image } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
-const getWidgetIcon = ( iconName ) => {
-    switch( iconName ) {
-        case 'heart' :
-            return require('../assets/icons/widget/heart.png')
-            break;
-        case 'message' :
-            return require('../assets/icons/widget/message.png')
-            break;
-        case 'export' :
-            return require('../assets/icons/widget/export.png')
-            break;
-    }
-}
+import { getWidgetIcon } from '../utils/utils'
 
-const StatWidgetComponent = ({count, iconName }) => {
+const StatWidgetComponent = ({count=null, iconName, style=null, onPress }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.count}>{count}</Text>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+    >
+      {count != null && (<Text style={styles.count}>{count}</Text>)}
       <Image
         source={getWidgetIcon(iconName)}
-        style={styles.icon}
+        style={{...styles.icon, ...style}}
       />
-    </View>
+    </TouchableOpacity>
   )
 }
 

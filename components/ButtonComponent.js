@@ -4,11 +4,12 @@ import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 import sizes from '../constants/sizes'
 
-const ButtonComponent = ( { label, onPress, bgColor = colors.primaryColor, color=colors.white, enableShadow=null } ) => {
+const ButtonComponent = ( { label, disabled=false, onPress, bgColor = colors.primaryColor, color=colors.white, enableShadow=null } ) => {
   return (
     <TouchableOpacity
-        style={enableShadow ? { backgroundColor: bgColor, ...styles.button, ...styles.shadow } : { backgroundColor: bgColor, ...styles.button }}
+        style={enableShadow ? { backgroundColor: bgColor, ...styles.button, ...styles.shadow, opacity: disabled ? 0.5 : 1 } : { backgroundColor: bgColor, ...styles.button, opacity: disabled ? 0.5 : 1 }}
         onPress={onPress}
+        disabled={disabled}
     >
         <Text
             style={{

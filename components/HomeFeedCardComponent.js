@@ -8,10 +8,13 @@ import MetaWidgetComponent from './MetaWidgetComponent';
 // Constants
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeFeedCardComponent = ({item, style=null}) => {
+    const navigation = useNavigation()
   return (
     <TouchableOpacity
+        key={Math.random().toString()}
         style={{
             backgroundColor: colors.white,
             borderRadius: 7,
@@ -27,6 +30,8 @@ const HomeFeedCardComponent = ({item, style=null}) => {
 
             ...style
         }}
+
+        onPress={() => navigation.navigate('EventScreen', {event: item,  prevScreen: 'Home'})}
     >
         {
             item.image ?

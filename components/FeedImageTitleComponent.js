@@ -6,11 +6,12 @@ import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 
 const FeedImageTitleComponent = ({title, img=null}) => {
+    // console.log(img)
   return (
     <View style={styles.content}>
         {img && (
             <Image
-                source={{ uri: img}}
+                source={ img ? { uri: img} : require('../assets/user/user-icon-3.png')}
                 style={styles.image}
             />
         )}

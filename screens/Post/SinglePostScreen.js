@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 import React from 'react'
 
+// Components
+import StatWidgetComponent from '../../components/StatWidgetComponent'
+
 // Constants
 import colors from '../../constants/colors'
 import fonts from '../../constants/fonts'
 import sizes from '../../constants/sizes'
+import { StatusBar } from 'expo-status-bar'
 
 const SinglePostScreen = ({route}) => {
     const [post, setPost] = React.useState( route?.params?.post ?? {} )
@@ -13,20 +17,93 @@ const SinglePostScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-        <Image
-            source={post?.img}
-            style={{
-                width: '100%',
-                height: Dimensions.get('screen').width * 0.6,
-                borderRadius: 10
-            }}
+        <StatusBar
+            style="dark"
         />
-        <Text style={styles.postTitle}>{ post?.title}</Text>
+        {
+            post?.image ?
+                (
+                    <Image
+                        source={{uri: post.image}}
+                        style={{
+                            width: '100%',
+                            height: Dimensions.get('screen').width * 0.6,
+                            borderRadius: 10
+                        }}
+                    />
+                )
+                :
+                (
+                    <View
+                        style={{
+                            width: '100%',
+                            height: Dimensions.get('screen').width * 0.6,
+                            borderRadius: 10,
+                            backgroundColor: colors.secondaryColor
+                        }}
+                    />
+                )
+        }
+
+        <View
+            style={{
+                width:"100%",
+                flexDirection:'row',
+                justifyContent:"space-between",
+                alignItems:"center"
+            }}
+        >
+            <View>
+                <Text style={styles.postTitle}>{ post?.title}</Text>
+            </View>
+
+            {/* Footer */}
+            <View style={{
+                flexDirection: "row",
+                justifyContent:"space-between",
+                gap: 20
+            }}>
+                <StatWidgetComponent
+                    // count={0} // {item.likes}
+                    iconName="heart"
+                    style={{
+                        width: 25,
+                        height: 25,
+                    }}
+                    onPress={() => console.log( 'Like/Dislike the current post' )}
+                />
+                <StatWidgetComponent
+                    // count={0} // {item.comments}
+                    iconName="message"
+                    style={{
+                        width: 25,
+                        height: 25,
+                    }}
+                    onPress={() => console.log( 'Show Messages' )}
+                />
+                <StatWidgetComponent
+                    // count={0} // {item.share}
+                    iconName="export"
+                    style={{
+                        width: 25,
+                        height: 25,
+                    }}
+                    onPress={() => console.log( 'Share Messages' )}
+                />
+            </View>
+
+        </View>
+
+
         <Text style={styles.postMeta}>
-            {post?.metaData}
+            <Text>Created by: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{post?.creator?.name}</Text></Text>
         </Text>
+        <Text style={styles.postMeta}>
+            <Text>Created at: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{post?.createdAt}</Text></Text>
+        </Text>
+
         <Text style={styles.postDescription}>
-            {post?.description}
+            {post?.content}
         </Text>
     </View>
   );
@@ -49,11 +126,22 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
         color: colors.primaryColor,
         fontFamily: fonts.bold,
-        fontWeight: '800'
+        fontWeight: '800',
+        textTransform: 'capitalize'
+    },
+    postSubTitle: {
+        fontSize: 20,
+        // marginTop: 20,
+        marginBottom: 10,
+        letterSpacing: 0.5,
+        color: colors.secondaryColor,
+        fontFamily: fonts.bold,
+        fontWeight: '800',
+        textTransform: 'uppercase'
     },
     postMeta: {
         fontSize: sizes.fontSubTitle,
-        marginBottom: 20,
+        marginBottom: 5,
         letterSpacing: 0.25,
         color: colors.subHeadingColor,
         fontFamily: fonts.regular,

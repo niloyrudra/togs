@@ -10,7 +10,7 @@ import fonts from '../constants/fonts'
 import StatWidgetComponent from './StatWidgetComponent'
 
 
-const FeedCardComponent = ({item}) => {
+const FeedCardComponent = ({item, onPress}) => {
   return (
     <TouchableOpacity
         style={{
@@ -29,62 +29,76 @@ const FeedCardComponent = ({item}) => {
             shadowOffset: 5,
             shadowOpacity: 5
         }}
+        onPress={onPress}
     >
 
         {/* Content */}
         <View style={{...styles.content, justifyContent: 'space-between'}}>
             {/* Title */}
             <FeedImageTitleComponent title={item?.title ?? item?.creator?.name} img={item?.creator?.photoURL ?? null}  />
-            {/* <FeedImageTitleComponent title={item?.creator?.name} img={null}  /> */}
             {/* Time */}
-            <View>
-                <Text style={styles.time}>{item.startDate}</Text>
-            </View>
+            {
+                item?.startDate && (
+                    <View>
+                        <Text style={styles.time}>{item.startDate}</Text>
+                    </View>
+                )
+            }
+            {
+                !item?.startDate && item?.createdAt && (
+                    <View>
+                        <Text style={styles.time}>{item.createdAt.substring( item.createdAt.length-11, item.createdAt.length ).trim()}</Text>
+                    </View>
+                )
+            }
         </View>
 
         {/* Description */}
-        <View style={styles.content}>
-            <Text style={styles.info}>
-                {/* {item.bio} */}
-                {item.content}
-            </Text>
-        </View>
+        {
+            item?.content && (
+                <View style={styles.content}>
+                    <Text style={styles.info}>
+                        {item.content}
+                    </Text>
+                </View>
+            )
+        }
 
         {/* Gallery */}
         <View style={styles.content}>
-        {
-            item.image && (
-                <>
-                    <Image
-                        key={Math.random().toString()}
-                        source={{uri: item.image}}
-                        style={{
-                            width: '32.5%', // 106,
-                            height: 106,
-                            borderRadius: 7
-                        }}
-                    />
-                    <Image
-                        key={Math.random().toString()}
-                        source={{uri: item.image}}
-                        style={{
-                            width: '32.5%', // 106,
-                            height: 106,
-                            borderRadius: 7
-                        }}
-                    />
-                    <Image
-                        key={Math.random().toString()}
-                        source={{uri: item.image}}
-                        style={{
-                            width: '32.5%', // 106,
-                            height: 106,
-                            borderRadius: 7
-                        }}
-                    />
-                </>
-            )
-        }
+            {
+                item?.image && (
+                    <>
+                        <Image
+                            key={Math.random().toString()}
+                            source={item?.image ? {uri: item.image} : require('../assets/temp/events/event-1.png') }
+                            style={{
+                                width: '32.5%', // 106,
+                                height: 106,
+                                borderRadius: 7
+                            }}
+                        />
+                        <Image
+                            key={Math.random().toString()}
+                            source={item?.image ? {uri: item.image} : require('../assets/temp/events/event-1.png') }
+                            style={{
+                                width: '32.5%', // 106,
+                                height: 106,
+                                borderRadius: 7
+                            }}
+                        />
+                        <Image
+                            key={Math.random().toString()}
+                            source={item?.image ? {uri: item.image} : require('../assets/temp/events/event-1.png') }
+                            style={{
+                                width: '32.5%', // 106,
+                                height: 106,
+                                borderRadius: 7
+                            }}
+                        />
+                    </>
+                )
+            }
             {/* {
                 item.gallery.map( (item, index) => (
                     <Image
@@ -105,14 +119,17 @@ const FeedCardComponent = ({item}) => {
             <StatWidgetComponent
                 count={0} // {item.likes}
                 iconName="heart"
+                onPress={() => console.log("LIKE")}
             />
             <StatWidgetComponent
                 count={0} // {item.comments}
-                iconName="message" 
+                iconName="message"
+                onPress={() => console.log("MESSAGES")}
             />
             <StatWidgetComponent
                 count={0} // {item.share}
-                iconName="export" 
+                iconName="export"
+                onPress={() => console.log("SHARE")}
             />
         </View>
 

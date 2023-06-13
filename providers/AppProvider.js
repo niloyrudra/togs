@@ -208,7 +208,7 @@ export const AppProvider = ({ children = null }) => {
         .then( snapshot => {
           const docSet = []
           snapshot.forEach(doc => {
-            if ( doc && doc.exists ) docSet.push(doc.data())
+            if ( doc && doc.exists ) docSet.push({ ...doc.data(), id: doc.id })
           });
           dispatch({
             type: ACTIONS.GET_ALL_EVENTS,
@@ -256,7 +256,7 @@ export const AppProvider = ({ children = null }) => {
         .then( snapshot => {
           const docSet = []
           snapshot.forEach(doc => {
-            if ( doc && doc.exists ) docSet.push(doc.data())
+            if ( doc && doc.exists ) docSet.push({ ...doc.data(), id: doc.id })
           });
           // console.log( "All Posts", docSet )
           dispatch({

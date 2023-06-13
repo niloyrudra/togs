@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, FlatList, View, SafeAreaView, Image, FlatArea, TouchableOpacity } from 'react-native'
+import { StatusBar, StyleSheet, FlatList, View, SafeAreaView } from 'react-native'
 import React from 'react'
 import { ActivityIndicator } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
@@ -9,13 +9,10 @@ import FeedCardComponent from '../../components/FeedCardComponent'
 
 // Constants
 import colors from '../../constants/colors'
-// import sizes from '../../constants/sizes'
-// import fonts from '../../constants/fonts'
+import sizes from '../../constants/sizes'
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider'
-import { Dimensions } from 'react-native'
-import sizes from '../../constants/sizes'
 
 // Dummy data
 const DATA = [
@@ -56,7 +53,7 @@ const QuicksTabScreen = ( {navigation, route} ) => {
 
   const isFocused = useIsFocused()
 
-  const { events, posts, onFetchAllPosts } = useTogsContext();
+  const { events, posts } = useTogsContext();
 
   const [isLoading, setIsLoading] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -65,15 +62,6 @@ const QuicksTabScreen = ( {navigation, route} ) => {
   const onChangeHandler = ( value ) => {
     setSearchTerm( prevVal => prevVal = value)
   }
-
-  React.useEffect(() => {
-    const unSubscriber = async () => {
-      setIsLoading(true);
-      await onFetchAllPosts();
-      setIsLoading(false);
-    }
-    unSubscriber();
-  }, [])
 
   if( isLoading ) return (
     <View style={styles.container}>
@@ -94,7 +82,7 @@ const QuicksTabScreen = ( {navigation, route} ) => {
           key={Math.random().toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => (
-            <FeedCardComponent item={item} />
+            <FeedCardComponent item={item} onPress={() => item?.services ? navigation.navigate( 'EventScreen', {event: item, prevScreen: 'Quicks'} ) : navigation.navigate('PostScreen', {post: item, prevScreen: 'Quicks'}) } />
           )}
           ListFooterComponent={(
             <View style={{height:50}} />
@@ -120,5 +108,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-
 })

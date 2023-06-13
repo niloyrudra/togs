@@ -21,12 +21,15 @@ import TabNavigator from './TabNavigator';
 import PostFormScreen from '../screens/Forms/PostFormScreen';
 import EventFormScreen from '../screens/Forms/EventFormScreen';
 import SinglePostScreen from '../screens/Post/SinglePostScreen';
+import SingleEventScreen from '../screens/Event/SingleEventScreen'
 
 // Components
 import SectionLabel from '../components/SectionLabel';
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
+import sizes from '../constants/sizes';
+import fonts from '../constants/fonts';
 
 const Drawer = createDrawerNavigator();
 
@@ -107,10 +110,11 @@ const DrawerNavigator = () => {
             )
         })} />
 
-        <Drawer.Screen name="PostScreen" component={SinglePostScreen} options={({navigation, route}) => {
-            const title = route?.params?.post?.title ?? "Post"
+        <Drawer.Screen name="EventScreen" component={SingleEventScreen} options={({navigation, route}) => {
+            const title = route?.params?.event?.services ?? "Event"
+            const prevScreen = route?.params?.prevScreen ?? "Home"
             return ({
-                headerTitle: { title },
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
                 headerTitleAlign: "center",
                 headerShadowVisible: false,
                 headerTitleStyle: {
@@ -121,7 +125,30 @@ const DrawerNavigator = () => {
                         style={{
                             marginLeft: 10
                         }}
-                        onPress={() => navigation.navigate("Profile")}
+                        onPress={() => navigation.navigate( prevScreen )}
+                    >
+                        <Ionicons name="chevron-back" size={26} color="black" />
+                    </TouchableOpacity>
+                )
+            }
+        )}} />
+
+        <Drawer.Screen name="PostScreen" component={SinglePostScreen} options={({navigation, route}) => {
+            const title = route?.params?.post?.title ?? "Post"
+            const prevScreen = route?.params?.prevScreen ?? "Quicks"
+            return ({
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
+                headerTitleStyle: {
+                    fontWeight: '800'
+                },
+                headerLeft: () => (
+                    <TouchableOpacity
+                        style={{
+                            marginLeft: 10
+                        }}
+                        onPress={() => navigation.navigate(prevScreen)}
                     >
                         <Ionicons name="chevron-back" size={26} color="black" />
                     </TouchableOpacity>

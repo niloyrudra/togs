@@ -5,6 +5,10 @@ import React from 'react'
 import colors from '../../constants/colors'
 import fonts from '../../constants/fonts'
 import sizes from '../../constants/sizes'
+import { StatusBar } from 'expo-status-bar'
+
+// Components
+import StatWidgetComponent from '../../components/StatWidgetComponent'
 
 const SingleEventScreen = ({route}) => {
     const [event, setEvent] = React.useState( route?.params?.event ?? {} )
@@ -13,20 +17,98 @@ const SingleEventScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-        <Image
-            source={event?.img}
-            style={{
-                width: '100%',
-                height: Dimensions.get('screen').width * 0.6,
-                borderRadius: 10
-            }}
+
+        <StatusBar
+            style="dark"
         />
-        <Text style={styles.eventTitle}>{ event?.title}</Text>
+
+        {
+            event?.image ?
+                (
+                    <Image
+                        source={{uri:event.image}}
+                        style={{
+                            width: '100%',
+                            height: Dimensions.get('screen').width * 0.6,
+                            borderRadius: 10
+                        }}
+                    />
+                )
+                :
+                (
+                    <View
+                        style={{
+                            width: '100%',
+                            height: Dimensions.get('screen').width * 0.6,
+                            borderRadius: 10,
+                            backgroundColor: colors.secondaryColor
+                        }}
+                    />
+                )
+        }
+
+        <View
+            style={{
+                // flex:1,
+                // height:0,
+                width:"100%",
+                flexDirection:'row',
+                justifyContent:"space-between",
+                alignItems:"center"
+            }}
+        >
+            <View>
+                <Text style={styles.eventTitle}>{ event?.services}</Text>
+                <Text style={styles.eventSubTitle}>{event?.activities}</Text>
+            </View>
+
+            {/* Footer */}
+            <View style={{
+                flexDirection: "row",
+                justifyContent:"space-between",
+                gap: 20
+            }}>
+                <StatWidgetComponent
+                    // count={0} // {item.likes}
+                    iconName="heart"
+                    style={{
+                        width: 25,
+                        height: 25,
+                    }}
+                    onPress={() => console.log( 'Like/Dislike the current event' )}
+                />
+                <StatWidgetComponent
+                    // count={0} // {item.comments}
+                    iconName="message"
+                    style={{
+                        width: 25,
+                        height: 25,
+                    }}
+                    onPress={() => console.log( 'Show Messages' )}
+                />
+                <StatWidgetComponent
+                    // count={0} // {item.share}
+                    iconName="export"
+                    style={{
+                        width: 25,
+                        height: 25,
+                    }}
+                    onPress={() => console.log( 'Share Messages' )}
+                />
+            </View>
+
+        </View>
+
+
         <Text style={styles.eventMeta}>
-            {event?.metaData}
+            <Text>Created by: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{event?.creator?.name}</Text></Text>
         </Text>
+        <Text style={styles.eventMeta}>
+            <Text>Created at: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{event?.createdAt}</Text></Text>
+        </Text>
+
         <Text style={styles.eventDescription}>
-            {event?.description}
+            {event?.content}
         </Text>
     </View>
   );
@@ -49,11 +131,22 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
         color: colors.primaryColor,
         fontFamily: fonts.bold,
-        fontWeight: '800'
+        fontWeight: '800',
+        textTransform: 'capitalize'
+    },
+    eventSubTitle: {
+        fontSize: 20,
+        // marginTop: 20,
+        marginBottom: 10,
+        letterSpacing: 0.5,
+        color: colors.secondaryColor,
+        fontFamily: fonts.bold,
+        fontWeight: '800',
+        textTransform: 'uppercase'
     },
     eventMeta: {
         fontSize: sizes.fontSubTitle,
-        marginBottom: 20,
+        marginBottom: 5,
         letterSpacing: 0.25,
         color: colors.subHeadingColor,
         fontFamily: fonts.regular,
@@ -61,7 +154,7 @@ const styles = StyleSheet.create({
     },
     eventDescription: {
         fontSize: sizes.fontText,
-        marginBottom: 30,
+        marginVertical: 30,
         letterSpacing: 0.5,
         color: colors.textColor,
         fontFamily: fonts.regular,

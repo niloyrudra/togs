@@ -26,24 +26,24 @@ import DefaultUserAvatarComponent from '../../components/DefaultUserAvatarCompon
 import { ActivityIndicator } from 'react-native';
 
 // Dummy Data
-const POSTS=[
-  {id:1, img: require('../../assets/temp/posts/post-1.png'), title: 'Post 1', metaData: 'Created at 12/06/2023.', description: 'Post 1 description goes here...' },
-  {id:2, img: require('../../assets/temp/posts/post-2.png'), title: 'Post 2', metaData: 'Created at 12/06/2023.', description: 'Post 2 description goes here...' },
-  {id:3, img: require('../../assets/temp/posts/post-3.png'), title: 'Post 3', metaData: 'Created at 12/06/2023.', description: 'Post 3 description goes here...' },
-  {id:4, img: require('../../assets/temp/posts/post-4.png'), title: 'Post 4', metaData: 'Created at 12/06/2023.', description: 'Post 4 description goes here...' },
-  {id:5, img: require('../../assets/temp/posts/post-5.png'), title: 'Post 5', metaData: 'Created at 12/06/2023.', description: 'Post 5 description goes here...' },
-  {id:6, img: require('../../assets/temp/posts/post-6.png'), title: 'Post 6', metaData: 'Created at 12/06/2023.', description: 'Post 6 description goes here...' },
-  {id:7, img: require('../../assets/temp/posts/post-7.png'), title: 'Post 7', metaData: 'Created at 12/06/2023.', description: 'Post 7 description goes here...' },
-  {id:8, img: require('../../assets/temp/posts/post-8.png'), title: 'Post 7', metaData: 'Created at 12/06/2023.', description: 'Post 8 description goes here...' },
-  {id:9, img: require('../../assets/temp/posts/post-1.png'), title: 'Post 8', metaData: 'Created at 12/06/2023.', description: 'Post 9 description goes here...' },
-  {id:10, img: require('../../assets/temp/posts/post-2.png'), title: 'Post 9', metaData: 'Created at 12/06/2023.', description: 'Post 10 description goes here...' },
-  {id:11, img: require('../../assets/temp/posts/post-3.png'), title: 'Post 10', metaData: 'Created at 12/06/2023.', description: 'Post 11 description goes here...' },
-  {id:12, img: require('../../assets/temp/posts/post-4.png'), title: 'Post 11', metaData: 'Created at 12/06/2023.', description: 'Post 12 description goes here...' },
-  {id:13, img: require('../../assets/temp/posts/post-5.png'), title: 'Post 12', metaData: 'Created at 12/06/2023.', description: 'Post 13 description goes here...' },
-  {id:14, img: require('../../assets/temp/posts/post-6.png'), title: 'Post 13', metaData: 'Created at 12/06/2023.', description: 'Post 14 description goes here...' },
-  {id:15, img: require('../../assets/temp/posts/post-7.png'), title: 'Post 14', metaData: 'Created at 12/06/2023.', description: 'Post 15 description goes here...' },
-  {id:16, img: require('../../assets/temp/posts/post-8.png'), title: 'Post 15', metaData: 'Created at 12/06/2023.', description: 'Post 16 description goes here...' },
-];
+// const POSTS=[
+//   {id:1, img: require('../../assets/temp/posts/post-1.png'), title: 'Post 1', metaData: 'Created at 12/06/2023.', description: 'Post 1 description goes here...' },
+//   {id:2, img: require('../../assets/temp/posts/post-2.png'), title: 'Post 2', metaData: 'Created at 12/06/2023.', description: 'Post 2 description goes here...' },
+//   {id:3, img: require('../../assets/temp/posts/post-3.png'), title: 'Post 3', metaData: 'Created at 12/06/2023.', description: 'Post 3 description goes here...' },
+//   {id:4, img: require('../../assets/temp/posts/post-4.png'), title: 'Post 4', metaData: 'Created at 12/06/2023.', description: 'Post 4 description goes here...' },
+//   {id:5, img: require('../../assets/temp/posts/post-5.png'), title: 'Post 5', metaData: 'Created at 12/06/2023.', description: 'Post 5 description goes here...' },
+//   {id:6, img: require('../../assets/temp/posts/post-6.png'), title: 'Post 6', metaData: 'Created at 12/06/2023.', description: 'Post 6 description goes here...' },
+//   {id:7, img: require('../../assets/temp/posts/post-7.png'), title: 'Post 7', metaData: 'Created at 12/06/2023.', description: 'Post 7 description goes here...' },
+//   {id:8, img: require('../../assets/temp/posts/post-8.png'), title: 'Post 7', metaData: 'Created at 12/06/2023.', description: 'Post 8 description goes here...' },
+//   {id:9, img: require('../../assets/temp/posts/post-1.png'), title: 'Post 8', metaData: 'Created at 12/06/2023.', description: 'Post 9 description goes here...' },
+//   {id:10, img: require('../../assets/temp/posts/post-2.png'), title: 'Post 9', metaData: 'Created at 12/06/2023.', description: 'Post 10 description goes here...' },
+//   {id:11, img: require('../../assets/temp/posts/post-3.png'), title: 'Post 10', metaData: 'Created at 12/06/2023.', description: 'Post 11 description goes here...' },
+//   {id:12, img: require('../../assets/temp/posts/post-4.png'), title: 'Post 11', metaData: 'Created at 12/06/2023.', description: 'Post 12 description goes here...' },
+//   {id:13, img: require('../../assets/temp/posts/post-5.png'), title: 'Post 12', metaData: 'Created at 12/06/2023.', description: 'Post 13 description goes here...' },
+//   {id:14, img: require('../../assets/temp/posts/post-6.png'), title: 'Post 13', metaData: 'Created at 12/06/2023.', description: 'Post 14 description goes here...' },
+//   {id:15, img: require('../../assets/temp/posts/post-7.png'), title: 'Post 14', metaData: 'Created at 12/06/2023.', description: 'Post 15 description goes here...' },
+//   {id:16, img: require('../../assets/temp/posts/post-8.png'), title: 'Post 15', metaData: 'Created at 12/06/2023.', description: 'Post 16 description goes here...' },
+// ];
 
 const EVENTS=[
   {id:1, img: require('../../assets/temp/events/event-1.png'), title: 'Event 1', metaData: 'Created at 23/06/2023', description: 'Event 1 description is here...', navName: ''},
@@ -69,6 +69,7 @@ const PEOPLE=[
 const PostRoute = ( {numCols=3} ) => {
   const navigation = useNavigation()
   const { user, posts } = useTogsContext();
+
   const [ownedPosts, setOwnedPosts] = React.useState(posts);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -112,7 +113,7 @@ const PostRoute = ( {numCols=3} ) => {
             margin: 4,
             flex: 1,
           }}
-          onPress={() => navigation.navigate( 'PostScreen', {post: item} ) }
+          onPress={() => navigation.navigate( 'PostScreen', {post: item, prevScreen: 'Profile'} ) }
         >
           {
             item.image ?
@@ -155,16 +156,13 @@ const PostRoute = ( {numCols=3} ) => {
         </TouchableOpacity>
       )}}
       ListFooterComponent={(
-        <View style={{
-          marginTop: 100,
-        }}>      
-          <FloatingAction
-            floatingIcon={<Ionicons name="add-outline" style={{marginTop:0}} size={50} color={colors.white} />}
-            onPressMain={() => navigation.navigate('PostEdit')}
-            position='right'
-          />
-        </View>
+        <View style={{marginTop: 100}}/>
       )}
+    />
+    <FloatingAction
+      floatingIcon={<Ionicons name="add-outline" style={{marginTop:0}} size={50} color={colors.white} />}
+      onPressMain={() => navigation.navigate('PostEdit')}
+      position='right'
     />
   </View>
 )};
@@ -409,7 +407,7 @@ const ProfileTabScreen = ( {navigation} ) => {
                   marginTop: 12
                 }}
               >
-                <Text style={styles.UserName}>{user?.displayName ?? 'Anonymous'}</Text>
+                <Text style={styles.userName}>{user?.displayName ?? 'Anonymous'}</Text>
               </View>
             </View>
 
@@ -455,7 +453,7 @@ const ProfileTabScreen = ( {navigation} ) => {
           </View>
 
           {/* Profile Edit Button */}
-          <ButtonComponent label="Edit Profile" onPress={() => setShowEditModal(true)} />
+          <ButtonComponent disabled={ user?.userId ? false : true } label="Edit Profile" onPress={() => setShowEditModal(true)} />
 
           {/* Tab Scenes for Posts and Events */}
           <TabView
@@ -490,15 +488,12 @@ export default ProfileTabScreen;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // paddingHorizontal: 20,
     justifyContent: 'center',
-    // backgroundColor: colors.white
   },
   container: {
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
-    // backgroundColor: colors.white
   },
   eventTitle: {
     fontSize: 16,
@@ -508,7 +503,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     marginVertical: 10,
   },
-  UserName: {
+  userName: {
     fontSize: 14,
     color: colors.dark,
     lineHeight: sizes.fontTitle,
