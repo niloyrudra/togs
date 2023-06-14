@@ -10,10 +10,21 @@ import { StatusBar } from 'expo-status-bar'
 // Components
 import StatWidgetComponent from '../../components/StatWidgetComponent'
 
+// Context
+import { useTogsContext } from '../../providers/AppProvider'
+
 const SingleEventScreen = ({route}) => {
+
+    const {user, onUpdateListOfUserVisitedEvents} = useTogsContext()
     const [event, setEvent] = React.useState( route?.params?.event ?? {} )
 
-    React.useEffect(() => setEvent( prevVal => prevVal = route?.params?.event ), [ route?.params?.event?.id ])
+    React.useEffect(() => {
+        setEvent( prevVal => prevVal = route?.params?.event )
+        const update = async () => {
+            await onUpdateListOfUserVisitedEvents(user, route.params.event.id)
+        }
+        update()
+    }, [ route?.params?.event?.id ])
 
   return (
     <View style={styles.container}>
@@ -26,31 +37,20 @@ const SingleEventScreen = ({route}) => {
             event?.image ?
                 (
                     <Image
-                        source={{uri:event.image}}
-                        style={{
-                            width: '100%',
-                            height: Dimensions.get('screen').width * 0.6,
-                            borderRadius: 10
-                        }}
+                        source={{uri: event.image}}
+                        style={styles.banner}
                     />
                 )
                 :
                 (
                     <View
-                        style={{
-                            width: '100%',
-                            height: Dimensions.get('screen').width * 0.6,
-                            borderRadius: 10,
-                            backgroundColor: colors.secondaryColor
-                        }}
+                        style={{...styles.banner,backgroundColor: colors.secondaryColor}}
                     />
                 )
         }
 
         <View
             style={{
-                // flex:1,
-                // height:0,
                 width:"100%",
                 flexDirection:'row',
                 justifyContent:"space-between",
@@ -123,6 +123,11 @@ const styles = StyleSheet.create({
         alignItems:"flex-start",
         paddingVertical: 30,
         paddingHorizontal: 20
+    },
+    banner: {
+        width: '100%',
+        height: Dimensions.get('screen').width * 0.6,
+        borderRadius: 10,
     },
     eventTitle: {
         fontSize: 24,

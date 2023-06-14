@@ -336,12 +336,13 @@ const renderScene = SceneMap({
 
 
 const ProfileTabScreen = ( {navigation} ) => {
-  const { user, events, posts } = useTogsContext();
+  const { user, events, userRole } = useTogsContext();
 
   const editRef = React.useRef();
   const layout = useWindowDimensions();
 
   const [ownedEvents, setOwnedEvents] = React.useState([]);
+  const [visitedEvents, setVisitedEvents] = React.useState([]);
   
   // const [profilePic, setProfilePic] = React.useState(user?.photoURL ?? '');
   const [index, setIndex] = React.useState(0);
@@ -354,8 +355,15 @@ const ProfileTabScreen = ( {navigation} ) => {
 
   React.useEffect(() => {
     if( user?.userId ) {
-      const userEvents = events.filter( event => event.creatorId == user?.userId )
-      setOwnedEvents(userEvents)
+      if( userRole == 'individual' ) {
+        setOwnedEvents([])
+        const eventsVisited = events.filter( event => user.visitedEvents.includes(event.id))
+        setVisitedEvents(eventsVisited)
+      }
+      if( userRole == 'service-provider' ) {
+        const userEvents = events.filter( event => event.creatorId == user?.userId )
+        setOwnedEvents(userEvents)
+      }
     }
   },[user?.userId])
 
@@ -427,26 +435,32 @@ const ProfileTabScreen = ( {navigation} ) => {
 
               <View style={styles.userStat}>
                 <Text style={styles.userStatNum}>{ownedEvents.length ?? '0'}</Text>
-                <Text style={styles.userStatLabel}>No. of Events</Text>
+                <Text style={styles.userStatLabel}>
+                  { userRole == 'individual' ? 'Events joined' : 'No. of Events' }
+                </Text>
               </View>
 
-              <View style={styles.userStat}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 4,
-                    alignItems:"center",
-                    justifyContent:"center"
-                  }}
-                >
-                  <Text style={styles.userStatNum}>{user?.ratings ?? 0}</Text>
-                  <Image
-                    source={ require('../../assets/icons/star.png') }
-                    style={styles.star}
-                  />
-                </View>
-                <Text style={styles.userStatLabel}>Ratings</Text>
-              </View>
+              {
+                userRole == 'service-provider' && (
+                  <View style={styles.userStat}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 4,
+                        alignItems:"center",
+                        justifyContent:"center"
+                      }}
+                    >
+                      <Text style={styles.userStatNum}>{user?.ratings ?? 0}</Text>
+                      <Image
+                        source={ require('../../assets/icons/star.png') }
+                        style={styles.star}
+                      />
+                    </View>
+                    <Text style={styles.userStatLabel}>Ratings</Text>
+                  </View>
+                )
+              }
 
             </View>
 
@@ -456,15 +470,118 @@ const ProfileTabScreen = ( {navigation} ) => {
           <ButtonComponent disabled={ user?.userId ? false : true } label="Edit Profile" onPress={() => setShowEditModal(true)} />
 
           {/* Tab Scenes for Posts and Events */}
-          <TabView
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            renderTabBar={renderTabBar}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
+          {
+            userRole == 'service-provider' && (
+              <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                renderTabBar={renderTabBar}
+                onIndexChange={setIndex}
+                initialLayout={{ width: layout.width }}
 
-            lazy={({ route }) => console.log( route.name )}
-          />
+                lazy={({ route }) => console.log( route.name )}
+              />
+            )
+          }
+
+          {
+            userRole == 'individual' && (
+              <View
+                style={{
+                  marginVertical: 20
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: fonts.bold,
+                    fontSize: sizes.fontSubTitle,
+                    color:colors.primaryColor,
+                  }}
+                >
+                  Events you visited
+                </Text>
+                {
+                  visitedEvents.length ? 
+                    (
+                      <FlatList
+                        data={visitedEvents}
+                        key={Math.random().toString()}
+                        ListHeaderComponent={
+                          <View style={{height:30}} />
+                        }
+                        renderItem={({item, index}) => (
+                          <TouchableOpacity
+                            style={{
+                              marginVertical: 5,
+                              borderWidth: 1,
+                              borderColor: colors.infoColor,
+                              borderRadius: 10,
+                              padding: 6
+                            }}
+                            onPress={() => navigation.navigate( 'EventScreen', {event: item, prevScreen: 'Profile'} )}
+                          >
+                            <View
+                              style={{
+                                flexDirection:"row",
+                                alignItems:"center"
+                              }}
+                            >
+                              {
+                                item?.image ?
+                                  (
+                                    <Image
+                                      source={{uri: item.image}}
+                                      style={{
+                                        width: 40,
+                                        height: 40,
+                                        borderRadius: 20,
+                                        marginRight: 20
+                                      }}
+                                    />
+                                  )
+                                  :
+                                  (
+                                    <View style={{width:40,height:40,borderRadius:20,marginRight:20,backgroundColor:colors.secondaryColor}}/>
+                                  )
+                              }
+                              <Text>{item?.title ?? item?.creator?.name}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        )}
+                        ListFooterComponent={
+                          <View style={{height:50}} />
+                        }
+                      />
+                    )
+                    :
+                    (
+                      <View
+                        style={{
+                          marginVertical: 15,
+                          marginHorizontal: 15,
+                          gap: 20
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: fonts.regular,
+                            fontSize: sizes.fontText,
+                            color:colors.infoColor,
+                          }}
+                        >You haven't visited any event yet.</Text>
+                        <ButtonComponent
+                          label="Visit Events"
+                          onPress={() => navigation.navigate("Quicks")}
+                          
+                          bgColor={colors.dark}
+                        />
+                      </View>
+                    )
+                }
+              </View>
+
+            )
+          }
 
           {
             showEditModal &&
@@ -488,12 +605,12 @@ export default ProfileTabScreen;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   eventTitle: {
     fontSize: 16,

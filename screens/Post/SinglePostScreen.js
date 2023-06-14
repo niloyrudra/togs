@@ -25,22 +25,13 @@ const SinglePostScreen = ({route}) => {
                 (
                     <Image
                         source={{uri: post.image}}
-                        style={{
-                            width: '100%',
-                            height: Dimensions.get('screen').width * 0.6,
-                            borderRadius: 10
-                        }}
+                        style={styles.banner}
                     />
                 )
                 :
                 (
                     <View
-                        style={{
-                            width: '100%',
-                            height: Dimensions.get('screen').width * 0.6,
-                            borderRadius: 10,
-                            backgroundColor: colors.secondaryColor
-                        }}
+                        style={{...styles.banner,backgroundColor: colors.secondaryColor}}
                     />
                 )
         }
@@ -118,6 +109,11 @@ const styles = StyleSheet.create({
         alignItems:"flex-start",
         paddingVertical: 30,
         paddingHorizontal: 20
+    },
+    banner: {
+        width: '100%',
+        height: Dimensions.get('screen').width * 0.6,
+        borderRadius: 10,
     },
     postTitle: {
         fontSize: 24,

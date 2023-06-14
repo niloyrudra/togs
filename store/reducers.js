@@ -2,11 +2,10 @@ import ACTIONS from "./storeActions";
 
 export const initialState = {
     user: null,
+    userRole: null,
     users: [],
     events: [],
     posts: [],
-    userSpecificEvents: [],
-    userSpecificPosts: [],
 };
 
 const storeReducer = ( state=initialState, action ) => {
@@ -40,6 +39,23 @@ const storeReducer = ( state=initialState, action ) => {
             return {
                 ...state,
                 user: payload
+            }
+
+        case ACTIONS.USER_ROLE :
+            console.log( "USER ROLE" );
+            return {
+                ...state,
+                userRole: payload
+            }
+
+        case ACTIONS.UPDATE_USER_VISITED_EVENTS :
+            console.log( "UPDATE USER VISITED EVENTS" );
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    visitedEvents: [ ...state.user.visitedEvents, payload ]
+                }
             }
 
         // Event actions

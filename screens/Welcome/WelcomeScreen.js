@@ -1,13 +1,23 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, StatusBar } from 'react-native'
 import React from 'react'
-import colors from '../../constants/colors'
-
-import CarouselComponent from '../../components/CarouselComponent'
-import ButtonComponent from '../../components/ButtonComponent'
-import sizes from '../../constants/sizes'
 import { DrawerActions, StackActions } from '@react-navigation/native'
 
+// Components
+import CarouselComponent from '../../components/CarouselComponent'
+import OverlayComponent from '../../components/OverlayComponent'
+import ButtonComponent from '../../components/ButtonComponent'
+
+// Constants
+import colors from '../../constants/colors'
+import sizes from '../../constants/sizes'
+
+// Context
+import { useTogsContext } from '../../providers/AppProvider';
+
 const WelcomeScreen = ( { navigation } ) => {
+
+  const { onChangeUserRole } = useTogsContext();
+
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 
@@ -17,33 +27,9 @@ const WelcomeScreen = ( { navigation } ) => {
       />
 
       {/* Carousel */}
-      <View
-        style={{
-          flex:1,
-          position:"absolute",
-          top:0,
-          bottom:0,
-          left:0,
-          right:0,
-          // zIndex: 1000
-          // width: '115%',
-          // height: "110%"
-        }}
-      >
+      <View style={styles.carouselContainer}>
         <CarouselComponent />
-
-        <Image
-          source={require('../../assets/bg/overlay/overlay.png')}
-          style={{
-            position:"absolute",
-            // top:0,
-            // bottom:0,
-            // left:0,
-            // right:0,
-            width: '115%',
-            height: "110%"
-          }}
-        />
+        <OverlayComponent style={{ width: '115%', height: "110%" }} />
       </View>
 
       <View
@@ -89,22 +75,35 @@ const WelcomeScreen = ( { navigation } ) => {
 
           <View>
 
-            <ButtonComponent label="Service Provider" bgColor={colors.accentColor} onPress={() => navigation.navigate("HomeTab")} />
-            <ButtonComponent label="Individual" bgColor={colors.secondaryColor} onPress={() => {
-              navigation.dispatch(
-                // StackActions.replace('HomeTab', {user: 'user'})
-                DrawerActions.jumpTo('HomeTab', {user: 'user'})
-              )
-              // navigation.reset({
-              //   index: 0,
-              //   key: 'Home-60OyxbQY8RmHoMJAEFP-j', // null,
-              //   // actions: [
-              //   //   navigation.navigate({
-              //   //     routeName: 'Home'
-              //   //   })
-              //   // ]
-              // })
-            }} />
+            <ButtonComponent
+              label="Service Provider"
+              bgColor={colors.accentColor}
+              onPress={() => {
+                onChangeUserRole( 'service-provider' );
+                navigation.navigate("HomeTab")}}
+            />
+            <ButtonComponent
+              label="Individual"
+              bgColor={colors.secondaryColor}
+              onPress={() => {
+
+                onChangeUserRole( 'individual' );
+
+                navigation.dispatch(
+                  // StackActions.replace('HomeTab', {user: 'user'})
+                  DrawerActions.jumpTo('HomeTab', {user: 'user'})
+                )
+                // navigation.reset({
+                //   index: 0,
+                //   key: 'Home-60OyxbQY8RmHoMJAEFP-j', // null,
+                //   // actions: [
+                //   //   navigation.navigate({
+                //   //     routeName: 'Home'
+                //   //   })
+                //   // ]
+                // })
+              }}
+            />
 
           </View>
 
@@ -131,6 +130,14 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: 'center'
+  },
+  carouselContainer: {
+    flex:1,
+    position:"absolute",
+    top:0,
+    bottom:0,
+    left:0,
+    right:0,
   },
   container: {
     flex: 1,

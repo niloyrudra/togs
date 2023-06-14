@@ -48,6 +48,7 @@ export const AppProvider = ({ children = null }) => {
         // events: [],
         // posts: [],
         peopleYouMet: [],
+        visitedEvents: [],
         createdAt: getCurrentDate(),
         modifiedAt: null,
       };
@@ -176,6 +177,7 @@ export const AppProvider = ({ children = null }) => {
         chosenSports: chosenSports ? chosenSports : oldUserData.chosenSports,
         connections: oldUserData.connections,
         peopleYouMet: oldUserData.peopleYouMet,
+        visitedEvents: oldUserData.visitedEvents,
         createdAt: oldUserData.createdAt,
         modifiedAt: getCurrentDate(),
       };
@@ -271,22 +273,50 @@ export const AppProvider = ({ children = null }) => {
     }
   }
 
+  const onChangeUserRole = ( role ) => dispatch({ type: ACTIONS.USER_ROLE, payload: role })
 
+  const onUpdateListOfUserVisitedEvents = async ( user, eventId ) => {
+    try{
+      if( !user.visitedEvents.includes(eventId) ) {
+
+        await db
+          .collection("users")
+          .doc(user.userId)
+          .update(
+            {...user, visitedEvents: [ ...user.visitedEvents, eventId ]}
+          )
+          .then(() => {
+            console.log('User visited Events data Update successfully!')
+            dispatch({
+              type: ACTIONS.UPDATE_USER_VISITED_EVENTS,
+              payload: eventId
+            });
+          })
+      }
+          // Object.assign( {}, updatedUserModel )
+    }
+    catch(error) {
+      console.error( 'UPDATE USER INFO Error', error)
+    }
+  }
 
   // Value
   const value = {
     user: state.user,
     events: state.events,
     posts: state.posts,
+    userRole: state.userRole,
     onSignUp,
     onSignIn,
     onSignOut,
+    onChangeUserRole,
     onUpdateUserInfo,
     onAddEvent,
     onFetchAllEvents,
     onFetchUserSpecificEvents,
     onAddPost,
-    onFetchAllPosts
+    onFetchAllPosts,
+    onUpdateListOfUserVisitedEvents
   }
 
   return (

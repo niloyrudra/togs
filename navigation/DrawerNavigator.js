@@ -85,7 +85,7 @@ const DrawerNavigator = () => {
             ),
             
         })}
-        initialRouteName='Welcome'
+        initialRouteName="Welcome" //'HomeTab'
     >
         <Drawer.Screen name='Welcome' component={WelcomeScreen} options={{ headerShown: false }} />
 
@@ -574,6 +574,7 @@ const DrawerContent = ( {navigation} ) => {
                     onPress={ async () => {
                         console.log("Sign Out")
                         await onSignOut();
+                        navigation.dispatch( DrawerActions.closeDrawer() );
                     }}
                 >
                     <AntDesign name="logout" size={24} color="red" />
