@@ -296,7 +296,56 @@ export const AppProvider = ({ children = null }) => {
           // Object.assign( {}, updatedUserModel )
     }
     catch(error) {
-      console.error( 'UPDATE USER INFO Error', error)
+      console.error( 'UPDATE USER VISITED EVENTS Error', error)
+    }
+  }
+
+  const onAddComments = async ( eventId, commentData ) => {
+    try{
+      const  newCommentModel = commentData;
+      await db
+        .collection("allComments")
+        .doc( eventId )
+        .collection('comments')
+        .doc()
+        .set(
+          Object.assign( {}, newCommentModel )
+        )
+        .then(() => {
+          console.log('Add Comment successfully!')
+          dispatch({
+            type: ACTIONS.ADD_NEW_COMMENT,
+            payload: newCommentModel
+          });
+        });
+    }
+    catch(error) {
+      console.error( 'ADD COMMENTS Error', error)
+    }
+  }
+
+  const onGetAllComments = async ( eventId ) => {
+    try{
+      await db
+        .collection("allComments")
+        .doc(eventId)
+        .collection("comments")
+        .get()
+        .then( snapshot => {
+          const docSet = []
+          snapshot.forEach(doc => {
+            if ( doc && doc.exists ) docSet.push({ ...doc.data(), id: doc.id })
+          });
+          console.log("Get All Comments of event id >> ", eventId)
+          dispatch({
+            type: ACTIONS.GET_ALL_COMMENTS,
+            payload: docSet
+          });
+
+        });
+    }
+    catch(error) {
+      console.error( 'GET ALL COMMENTS Error', error)
     }
   }
 
@@ -306,6 +355,7 @@ export const AppProvider = ({ children = null }) => {
     events: state.events,
     posts: state.posts,
     userRole: state.userRole,
+    comments: state.comments,
     onSignUp,
     onSignIn,
     onSignOut,
@@ -316,7 +366,9 @@ export const AppProvider = ({ children = null }) => {
     onFetchUserSpecificEvents,
     onAddPost,
     onFetchAllPosts,
-    onUpdateListOfUserVisitedEvents
+    onUpdateListOfUserVisitedEvents,
+    onGetAllComments,
+    onAddComments
   }
 
   return (

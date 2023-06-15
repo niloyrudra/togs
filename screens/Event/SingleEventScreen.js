@@ -33,6 +33,7 @@ const SingleEventScreen = ({route}) => {
             style="dark"
         />
 
+        {/* Banner */}
         {
             event?.image ?
                 (
@@ -62,7 +63,7 @@ const SingleEventScreen = ({route}) => {
                 <Text style={styles.eventSubTitle}>{event?.activities}</Text>
             </View>
 
-            {/* Footer */}
+            {/* Widgets */}
             <View style={{
                 flexDirection: "row",
                 justifyContent:"space-between",

@@ -6,6 +6,7 @@ export const initialState = {
     users: [],
     events: [],
     posts: [],
+    comments: []
 };
 
 const storeReducer = ( state=initialState, action ) => {
@@ -150,7 +151,23 @@ const storeReducer = ( state=initialState, action ) => {
                 ...state,
                 rating: state.user.rating.filter( connectionUserId => connectionUserId !== payload )
             }
+
+        case ACTIONS.ADD_NEW_COMMENT :
+            console.log( "ADD NEW COMMENT" );
+            return {
+                ...state,
+                comments: [...state.comments, payload]
+            }
+
+        case ACTIONS.GET_ALL_COMMENTS :
+            console.log( "GET ALL COMMENTS" );
+            return {
+                ...state,
+                comments: payload
+            }
         
+
+
         default :
             throw new Error(`No data available!`);
     }
