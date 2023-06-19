@@ -85,7 +85,13 @@ const storeReducer = ( state=initialState, action ) => {
             console.log( "GET ALL EVENTS" );
             return {
                 ...state,
-                events: payload
+                events: payload,
+                comments: payload.map( event => {
+                    return {
+                        eventId: event.id,
+                        data: []
+                    };
+                }),
             }
             
         // Post actions
@@ -159,11 +165,25 @@ const storeReducer = ( state=initialState, action ) => {
                 comments: [...state.comments, payload]
             }
 
-        case ACTIONS.GET_ALL_COMMENTS :
-            console.log( "GET ALL COMMENTS" );
+        case ACTIONS.TOGGLE_EVENT_LIKES :
+            console.log( "TOGGLE EVENT LIKES" );
             return {
                 ...state,
-                comments: payload
+                events: [ ...state.events.filter(event => event.id != payload.id ), payload]
+            }
+
+        case ACTIONS.GET_ALL_COMMENTS :
+            console.log( "GET ALL COMMENTS" );
+            // const { id, data } = payload
+            return {
+                ...state,
+                comments: [ ...state.comments.filter( item => item.eventId != payload.eventId ), {...payload}]
+                // comments: [ ...state.comments, state.comments.forEach( item => {
+                //         console.log("Payload >> ",payload)
+                //         if( payload && payload?.eventId && item.eventId == payload.eventId ) return payload
+                //     })
+                // ]
+                
             }
         
 

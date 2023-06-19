@@ -9,8 +9,22 @@ import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 import StatWidgetComponent from './StatWidgetComponent'
 
+// Context
+import { useTogsContext } from '../providers/AppProvider'
 
-const FeedCardComponent = ({item, onPress}) => {
+const FeedCardComponent = ({ item, onPress, hasComments=null }) => {
+    const { user, comments, onGetComments } = useTogsContext()
+    const [eventCommentsCount, setEventCommentsCount] = React.useState(hasComments ? hasComments?.data?.length : 0)
+
+    React.useEffect(() => {
+        const update = async (eventId) => {
+            await onGetComments(eventId)
+        }
+        if( hasComments && hasComments.eventId && hasComments.data.length == 0 ) update(hasComments.eventId)
+    }, [hasComments?.eventId])
+    
+    // console.log(">>>>>>> >>>>>> ", comments)
+
   return (
     <TouchableOpacity
         style={{
@@ -58,7 +72,7 @@ const FeedCardComponent = ({item, onPress}) => {
             item?.content && (
                 <View style={styles.content}>
                     <Text style={styles.info}>
-                        {item.content}
+                        {item.content.substring(0, 150)}
                     </Text>
                 </View>
             )
@@ -117,17 +131,20 @@ const FeedCardComponent = ({item, onPress}) => {
         {/* Footer */}
         <View style={styles.footer}>
             <StatWidgetComponent
-                count={0} // {item.likes}
+                count={item?.likes?.length ?? 0}
+                style={{
+                    tintColor: item?.likes?.includes( user?.userId ) ? colors.accentColor : colors.infoColor
+                }}
                 iconName="heart"
                 onPress={() => console.log("LIKE")}
             />
             <StatWidgetComponent
-                count={0} // {item.comments}
+                count={eventCommentsCount} // {item.comments}
                 iconName="message"
                 onPress={() => console.log("MESSAGES")}
             />
             <StatWidgetComponent
-                count={0} // {item.share}
+                count={item?.shares?.length ?? 0} // {item.share}
                 iconName="export"
                 onPress={() => console.log("SHARE")}
             />

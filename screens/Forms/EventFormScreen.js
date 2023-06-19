@@ -129,6 +129,8 @@ const EventFormScreen = () => {
         try {
             setIsSubmitting(true)
             data.createdAt = getCurrentDate() // June 10th 2023, 2:48:48 am
+            data.likes = [];
+            data.shares = [];
             data.creatorId = user.userId
             data.creator = {
                 name: user.displayName,

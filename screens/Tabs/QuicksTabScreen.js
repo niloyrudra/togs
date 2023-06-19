@@ -49,11 +49,12 @@ const DATA = [
 ];
 
 const QuicksTabScreen = ( {navigation, route} ) => {
-  // console.log(route.params)
 
   const isFocused = useIsFocused()
 
-  const { events, posts } = useTogsContext();
+  const { events, posts, comments } = useTogsContext()
+
+  const [event, setEvent] = React.useState( route?.params?.event ?? {} )
 
   const [isLoading, setIsLoading] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -78,12 +79,14 @@ const QuicksTabScreen = ( {navigation, route} ) => {
       <View style={styles.container}>
         <FlatList
           data={[...events, ...posts]}
-          // keyExtractor={item => item.createdAt}
           key={Math.random().toString()}
           showsVerticalScrollIndicator={false}
-          renderItem={({item}) => (
-            <FeedCardComponent item={item} onPress={() => item?.services ? navigation.navigate( 'EventScreen', {event: item, prevScreen: 'Quicks'} ) : navigation.navigate('PostScreen', {post: item, prevScreen: 'Quicks'}) } />
-          )}
+          renderItem={({item}) => {
+            const commentData = comments.filter( snapshot => snapshot.eventId == item.id && snapshot );
+            console.log("commentData >> ", commentData)
+            return (
+            <FeedCardComponent item={item} hasComments={commentData.length ? commentData[0] : null} onPress={() => item?.services ? navigation.navigate( 'EventScreen', {event: item, prevScreen: 'Quicks'} ) : navigation.navigate('PostScreen', {post: item, prevScreen: 'Quicks'}) } />
+          )}}
           ListFooterComponent={(
             <View style={{height:50}} />
           )}

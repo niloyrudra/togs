@@ -107,8 +107,7 @@ export const AppProvider = ({ children = null }) => {
   }
 
   const onAddEvent = async ( eventData ) => {
-    // console.log(eventData)
-    // return
+
     try{
       const  newEventModel = eventData;
       await db
@@ -315,7 +314,7 @@ export const AppProvider = ({ children = null }) => {
           console.log('Add Comment successfully!')
           dispatch({
             type: ACTIONS.ADD_NEW_COMMENT,
-            payload: newCommentModel
+            payload: {eventId, newCommentModel}
           });
         });
     }
@@ -324,28 +323,61 @@ export const AppProvider = ({ children = null }) => {
     }
   }
 
-  const onGetAllComments = async ( eventId ) => {
+  const onGetComments = async (eventId) => {
     try{
       await db
         .collection("allComments")
         .doc(eventId)
         .collection("comments")
+        .orderBy('createdAt', "desc")
         .get()
         .then( snapshot => {
           const docSet = []
           snapshot.forEach(doc => {
-            if ( doc && doc.exists ) docSet.push({ ...doc.data(), id: doc.id })
-          });
-          console.log("Get All Comments of event id >> ", eventId)
+            if ( doc && doc.exists ) docSet.push(doc.data())
+          })
+          return docSet
+        })
+        .then( data => {
           dispatch({
             type: ACTIONS.GET_ALL_COMMENTS,
-            payload: docSet
+            payload: {eventId, data}
           });
-
         });
     }
     catch(error) {
       console.error( 'GET ALL COMMENTS Error', error)
+      dispatch({
+        type: ACTIONS.GET_ALL_COMMENTS,
+        payload: {eventId, data:[]}
+      });
+    }
+  }
+
+  const onToggleLikeEvent = async ( event, userId ) => {
+    try{
+      let newLikes = event.likes.includes( userId ) ? event.likes.filter( uId => uId != userId ) : [ ...event.likes, userId ]
+      const updatedEvent = {
+        ...event,
+        likes: newLikes
+      }
+      await db
+        .collection("events")
+        .doc(event.id)
+        .update(
+          {...updatedEvent}
+        )
+        .then(() => {
+          console.log('TOGGLE LIKES of EVENT successfully!')
+          dispatch({
+            type: ACTIONS.TOGGLE_EVENT_LIKES,
+            payload: updatedEvent
+          });
+        })
+          // Object.assign( {}, updatedUserModel )
+    }
+    catch(error) {
+      console.error( 'UPDATE USER INFO Error', error)
     }
   }
 
@@ -367,8 +399,9 @@ export const AppProvider = ({ children = null }) => {
     onAddPost,
     onFetchAllPosts,
     onUpdateListOfUserVisitedEvents,
-    onGetAllComments,
-    onAddComments
+    onAddComments,
+    onGetComments,
+    onToggleLikeEvent
   }
 
   return (

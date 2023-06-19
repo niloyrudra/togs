@@ -18,7 +18,7 @@ import { useTogsContext } from '../../providers/AppProvider'
 const HomeTabScreen = ({ navigation }) => {
   // const isFocused = useIsFocused()
 
-  const { onFetchAllEvents, events, onFetchAllPosts } = useTogsContext();
+  const { onFetchAllEvents, events, onFetchAllPosts, comments } = useTogsContext();
 
   const [isLoading, setIsLoading] = React.useState(false)
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -31,13 +31,18 @@ const HomeTabScreen = ({ navigation }) => {
   React.useEffect(() => {
     const unSubscriber = async () => {
         setIsLoading(true);
-        await onFetchAllEvents();
-        await onFetchAllPosts();
-        setIsLoading(false);
+        await Promise.all([
+          onFetchAllEvents(),
+          onFetchAllPosts()
+        ])
+        // await onFetchAllEvents();
         // await onFetchAllPosts();
-    }
-    unSubscriber();
-  }, [])
+        // await onGetComments()
+        setIsLoading(false);
+      }
+      unSubscriber();
+    }, [])
+    // console.log(comments)
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >

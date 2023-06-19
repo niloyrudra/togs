@@ -1,13 +1,14 @@
 import { Text, View, Animated, TextInput, StyleSheet, TouchableWithoutFeedback, Modal, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {useForm, Controller} from 'react-hook-form';
-import ButtonComponent from "../../components/ButtonComponent";
 // import { SafeAreaProvider } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {useForm, Controller} from 'react-hook-form';
+import { Ionicons } from '@expo/vector-icons';
 
 // Components
 import ImageUploadComponent from '../../components/ImageUploadComponent'
+import ButtonComponent from "../../components/ButtonComponent";
 
 // Utils
 import { getFormattedDate } from '../../utils/utils';
@@ -16,12 +17,9 @@ import { getFormattedDate } from '../../utils/utils';
 import sizes from "../../constants/sizes";
 import fonts from "../../constants/fonts";
 import colors from "../../constants/colors";
-import { Ionicons } from '@expo/vector-icons';
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
-
-// import { updateDoc } from 'firebase/database'
 
 const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
 

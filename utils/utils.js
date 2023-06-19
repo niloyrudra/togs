@@ -1,12 +1,8 @@
 import moment from "moment/moment";
 
-export const getFormattedDate = ( date ) => {
-    return moment(date).format('DD/MM/YYYY');
-}
+export const getFormattedDate = ( date ) => moment(date).format('DD/MM/YYYY');
 
-export const getFormattedTime = ( time ) => {
-    return moment(time).format('h:mm a');
-}
+export const getFormattedTime = ( time ) => moment(time).format('h:mm a');
 
 export const getWidgetIcon = ( iconName ) => {
     switch( iconName ) {
@@ -23,3 +19,4 @@ export const getWidgetIcon = ( iconName ) => {
 }
 
 export const getCurrentDate = () => moment().format('MMMM Do YYYY, h:mm:ss a');
+export const getCurrentDateLit = () => moment().format('lll'); // Jun 20, 2023 1:43 AM

@@ -1,6 +1,6 @@
 export default {
     primaryColor: '#060450',
-    primaryColorTrans: '',
+    primaryColorTrans: '#06045067',
     white: '#fff',
     dark: '#000',
     textDark: '#252525',
