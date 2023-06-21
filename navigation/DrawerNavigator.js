@@ -25,11 +25,13 @@ import SingleEventScreen from '../screens/Event/SingleEventScreen'
 
 // Components
 import SectionLabel from '../components/SectionLabel';
+import DefaultUserAvatarComponent from '../components/DefaultUserAvatarComponent'
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
 import sizes from '../constants/sizes';
 import fonts from '../constants/fonts';
+import UserListScreen from '../screens/Event/partials/UserListScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -109,6 +111,29 @@ const DrawerNavigator = () => {
                 </TouchableOpacity>
             )
         })} />
+
+        <Drawer.Screen name="UserList" component={UserListScreen} options={({navigation, route}) => {
+            const title = route?.params?.title ?? "People you know!"
+            const prevScreen = route?.params?.prevScreen ?? "Profile"
+            return ({
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
+                headerTitleStyle: {
+                    fontWeight: '800'
+                },
+                headerLeft: () => (
+                    <TouchableOpacity
+                        style={{
+                            marginLeft: 10
+                        }}
+                        onPress={() => navigation.navigate( prevScreen )}
+                    >
+                        <Ionicons name="chevron-back" size={26} color="black" />
+                    </TouchableOpacity>
+                )
+            }
+        )}} />
 
         <Drawer.Screen name="EventScreen" component={SingleEventScreen} options={({navigation, route}) => {
             const title = route?.params?.event?.services ?? "Event"
@@ -485,14 +510,37 @@ const DrawerContent = ( {navigation} ) => {
             >
 
                 {/* User's Profile Pic & Name */}
-                <Image
+                {/* <Image
                     source={ user?.photoURL ? { uri: user.photoURL } : require('../assets/user/user.png')}
                     style={{
                         width: 72,
                         height: 72,
                         borderRadius: 36
                     }}
-                />
+                /> */}
+                {
+                    user?.photoURL ?
+                        (
+                            <Image
+                                source={{uri: user.photoURL}}
+                                style={{
+                                    width: 72,
+                                    height: 72,
+                                    borderRadius: 36
+                                }}
+                            />
+                        )
+                        :
+                        (
+                            <DefaultUserAvatarComponent
+                                style={{
+                                    width: 72,
+                                    height: 72,
+                                    borderRadius: 36
+                                }}
+                            />
+                        )
+                }
 
                 {/* User Info */}
                 <View

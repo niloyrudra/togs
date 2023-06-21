@@ -15,6 +15,7 @@ import { useTogsContext } from '../../providers/AppProvider'
 import CommentModal from './CommentModal'
 // import CommentListItemComponent from '../../components/CommentListItemComponent'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import moment from 'moment'
 
 const SingleEventScreen = ({ navigation, route}) => {
 
@@ -68,9 +69,9 @@ const SingleEventScreen = ({ navigation, route}) => {
               console.log( "Action Activity Type", result.activityType )
             } else {
               // shared
-              console.log( "Shared" )
               await onShareEvent(event)
               setShared(prevVal => prevVal = route?.params?.event?.shares?.length)
+              console.log( "Shared" )
             }
           } else if (result.action === Share.dismissedAction) {
             // dismissed
@@ -180,11 +181,20 @@ const SingleEventScreen = ({ navigation, route}) => {
 
 
             <Text style={styles.eventMeta}>
-                <Text>Created by: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{event?.creator?.name}</Text></Text>
+                <Text>Created by: <Text style={styles.meta}>{event?.creator?.name}</Text></Text>
             </Text>
             <Text style={styles.eventMeta}>
-                <Text>Created at: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{event?.createdAt}</Text></Text>
+                <Text>Created at: <Text style={styles.meta}>{event?.createdAt}</Text></Text>
             </Text>
+
+            <View
+                style={{
+                    marginVertical: 10
+                }}
+            >
+                <Text>Start on <Text style={styles.meta}>{event?.startDate ?? moment.format('Do/MMMM/YYYY')}</Text></Text>
+                <Text>End on <Text style={styles.meta}>{event?.startDate ?? moment.format('Do/MMMM/YYYY')}</Text></Text>
+            </View>
 
             <Text style={styles.eventDescription}>
                 {event?.content}
@@ -258,5 +268,9 @@ const styles = StyleSheet.create({
         color: colors.textColor,
         fontFamily: fonts.regular,
         fontWeight: '500'
+    },
+    meta: {
+        textTransform:'uppercase',
+        fontStyle:'italic'
     }
 })

@@ -245,6 +245,7 @@ const EventRoute = () => {
               justifyContent:"space-between",
               alignItems: "center"
             }}
+            onPress={() => navigation.navigate("UserList")}
           >
             <View
               style={{
@@ -266,12 +267,12 @@ const EventRoute = () => {
             </View>
 
             <View
-            style={{
-              flexDirection: 'row',
-              justifyContent:"space-between",
-              alignItems: "center",
-              gap: 10
-            }}
+              style={{
+                flexDirection: 'row',
+                justifyContent:"space-between",
+                alignItems: "center",
+                gap: 10
+              }}
             >
               <Text
                 style={{
