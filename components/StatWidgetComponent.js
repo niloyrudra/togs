@@ -7,9 +7,10 @@ import { getWidgetIcon } from '../utils/utils'
 import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 
-const StatWidgetComponent = ({count=null, iconName, style=null, onPress, counterBelow=false }) => {
+const StatWidgetComponent = ({count=null, iconName, style=null, onPress, counterBelow=false, disabled=false }) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       style={ counterBelow ? {...styles.container2} : {...styles.container}}
       onPress={onPress}
     >

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions, Image, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, Image, Share, Alert } from 'react-native'
 import React from 'react'
 
 // Constants
@@ -20,11 +20,13 @@ const SingleEventScreen = ({ navigation, route}) => {
 
     const commentRef = React.useRef()
 
-    const {user, comments, onUpdateListOfUserVisitedEvents, onGetComments, onToggleLikeEvent } = useTogsContext()
+    const {user, comments, onUpdateListOfUserVisitedEvents, onGetComments, onToggleLikeEvent, onShareEvent } = useTogsContext()
     const [event, setEvent] = React.useState( route?.params?.event ?? {} )
     const [ isLiked, setIsLiked ] = React.useState( route?.params?.event?.likes?.includes( user?.userId ))
+    const [ shared, setShared ] = React.useState( route?.params?.event?.shares?.length )
     const [showCommentModal, setShowCommentModal] = React.useState(false)
-
+    
+    // Like Action Handler
     const toggleLikesEventHandler = async () => {
         try {
             setIsLiked(prevVal => prevVal = !prevVal)
@@ -53,9 +55,36 @@ const SingleEventScreen = ({ navigation, route}) => {
         }
     }
 
+    // Share Action Handler
+    const onShare = async () => {
+        try {
+          const result = await Share.share({
+            message: `"${event?.content}" - Event starts at ${event?.startDate} and ends at ${event?.endDate}.`, // 'React Native | A framework for building native apps using React',
+          });
+
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+              console.log( "Action Activity Type", result.activityType )
+            } else {
+              // shared
+              console.log( "Shared" )
+              await onShareEvent(event)
+              setShared(prevVal => prevVal = route?.params?.event?.shares?.length)
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+            console.log("Dismissed!")
+          }
+        } catch (error) {
+          Alert.alert(error.message);
+        }
+    };
+
     React.useEffect(() => {
         setEvent( prevVal => prevVal = route?.params?.event )
         setIsLiked( prevVal => prevVal =  route?.params?.event?.likes?.includes( user?.userId ))
+        setShared( prevVal => prevVal =  route?.params?.event?.shares?.length )
         const update = async () => {
             try {
                 await onUpdateListOfUserVisitedEvents( user, route.params.event.id )
@@ -68,7 +97,7 @@ const SingleEventScreen = ({ navigation, route}) => {
         update()
     }, [ route?.params?.event?.id ])
     
-    console.log( event.likes )
+    // console.log( event.likes )
 
   return (
     <SafeAreaView style={styles.container}>
@@ -113,11 +142,7 @@ const SingleEventScreen = ({ navigation, route}) => {
                     justifyContent:"space-between",
                     gap: 20
                 }}>
-                    {/* <Image
-                        style={{
-                            tintColor
-                        }}
-                    /> */}
+
                     <StatWidgetComponent
                         count={event.likes.length}
                         counterBelow={true}
@@ -140,14 +165,14 @@ const SingleEventScreen = ({ navigation, route}) => {
                         onPress={() => setShowCommentModal(true)}
                     />
                     <StatWidgetComponent
-                        count={event.shares.length}
+                        count={shared}
                         counterBelow={true}
                         iconName="export"
                         style={{
                             width: 25,
                             height: 25,
                         }}
-                        onPress={() => console.log( 'Share Messages' )}
+                        onPress={onShare}
                     />
                 </View>
 

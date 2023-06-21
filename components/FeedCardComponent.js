@@ -136,16 +136,19 @@ const FeedCardComponent = ({ item, onPress, hasComments=null }) => {
                     tintColor: item?.likes?.includes( user?.userId ) ? colors.accentColor : colors.infoColor
                 }}
                 iconName="heart"
+                disabled={true}
                 onPress={() => console.log("LIKE")}
             />
             <StatWidgetComponent
                 count={eventCommentsCount} // {item.comments}
                 iconName="message"
+                disabled={true}
                 onPress={() => console.log("MESSAGES")}
             />
             <StatWidgetComponent
                 count={item?.shares?.length ?? 0} // {item.share}
                 iconName="export"
+                disabled={true}
                 onPress={() => console.log("SHARE")}
             />
         </View>

@@ -16,8 +16,6 @@ import sizes from '../../constants/sizes'
 import { useTogsContext } from '../../providers/AppProvider'
 
 const HomeTabScreen = ({ navigation }) => {
-  // const isFocused = useIsFocused()
-
   const { onFetchAllEvents, events, onFetchAllPosts, comments } = useTogsContext();
 
   const [isLoading, setIsLoading] = React.useState(false)
@@ -35,14 +33,10 @@ const HomeTabScreen = ({ navigation }) => {
           onFetchAllEvents(),
           onFetchAllPosts()
         ])
-        // await onFetchAllEvents();
-        // await onFetchAllPosts();
-        // await onGetComments()
         setIsLoading(false);
       }
       unSubscriber();
     }, [])
-    // console.log(comments)
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >

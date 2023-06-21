@@ -10,7 +10,7 @@ import ACTIONS from '../store/storeActions';
 import storeReducer, { initialState } from '../store/reducers';
 
 // Utilities
-import { getCurrentDate } from '../utils/utils'
+import { getCurrentDate, getCurrentDateLit } from '../utils/utils'
 
 export const AppContext = React.createContext( initialState );
 
@@ -356,7 +356,7 @@ export const AppProvider = ({ children = null }) => {
 
   const onToggleLikeEvent = async ( event, userId ) => {
     try{
-      let newLikes = event.likes.includes( userId ) ? event.likes.filter( uId => uId != userId ) : [ ...event.likes, userId ]
+      let newLikes = event.shares.includes( userId ) ? event.shares.filter( uId => uId != userId ) : [ ...event.shares, userId ]
       const updatedEvent = {
         ...event,
         likes: newLikes
@@ -371,6 +371,33 @@ export const AppProvider = ({ children = null }) => {
           console.log('TOGGLE LIKES of EVENT successfully!')
           dispatch({
             type: ACTIONS.TOGGLE_EVENT_LIKES,
+            payload: updatedEvent
+          });
+        })
+          // Object.assign( {}, updatedUserModel )
+    }
+    catch(error) {
+      console.error( 'UPDATE USER INFO Error', error)
+    }
+  }
+
+  const onShareEvent = async ( event ) => {
+    try{
+      const sharedAt = getCurrentDateLit()
+      const updatedEvent = {
+        ...event,
+        shares: [ ...event.shares, sharedAt ]
+      }
+      await db
+        .collection("events")
+        .doc(event.id)
+        .update(
+          {...updatedEvent}
+        )
+        .then(() => {
+          console.log('EVENT SHARED successfully!')
+          dispatch({
+            type: ACTIONS.EVENT_SHARED,
             payload: updatedEvent
           });
         })
@@ -401,7 +428,8 @@ export const AppProvider = ({ children = null }) => {
     onUpdateListOfUserVisitedEvents,
     onAddComments,
     onGetComments,
-    onToggleLikeEvent
+    onToggleLikeEvent,
+    onShareEvent
   }
 
   return (

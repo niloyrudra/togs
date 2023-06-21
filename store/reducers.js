@@ -172,6 +172,13 @@ const storeReducer = ( state=initialState, action ) => {
                 events: [ ...state.events.filter(event => event.id != payload.id ), payload]
             }
 
+        case ACTIONS.EVENT_SHARED :
+            console.log( "EVENT SHARED" );
+            return {
+                ...state,
+                events: [ ...state.events.filter(event => event.id != payload.id ), payload]
+            }
+
         case ACTIONS.GET_ALL_COMMENTS :
             console.log( "GET ALL COMMENTS" );
             // const { id, data } = payload
