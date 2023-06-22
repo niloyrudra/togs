@@ -18,75 +18,53 @@ import sizes from '../../../constants/sizes'
 // Context
 // import { useTogsContext } from '../../../providers/AppProvider'
 
-const PEOPLE = [
+const EVENTS = [
   {
-    age: "",
-    bio: "",
-    chosenSports: [5],
-    connections: [],
-    createdAt: "June 12th 2023, 5:19:55 am",
-    displayName: "XYZ pqr",
-    email: "xyz@gmail.com",
-    firstName: "XYZ",
-    interest: "Soccer",
-    lastName: "pqr",
-    modifiedAt: null,
-    peopleYouMet: [],
-    phoneNumber: "",
-    photoURL: "",
-    rating: 0,
-    userId: "btPSHBhhNtfDXm5ggStyskfokN73",
-    visitedEvents: []
+    activities: "yoga",
+    content: "The yoga event...!",
+    createdAt: "June 10th 2023, 3:17:15 am",
+    creator: {
+    name: "Nill Rudra",
+    photoURL: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ftogs-eafe6928-6d96-47bf-87a8-d31b20d344bc/ImagePicker/80129fff-8f5b-498e-91a6-ce4812977a36.jpeg"},
+    creatorId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
+    endDate: "31/07/2023",
+    id: "5K7DxMOWV8ANxiqGU5e0",
+    image: "https://firebasestorage.googleapis.com/v0/b/togs-abcca.appspot.com/o/7f8bf514-40a7-42b4-be5f-662558c12963.jpeg?alt=media&token=ec4e9fd4-3a1b-4e73-97ed-2e80e0da77a8",
+    likes: [ "PGsyqeBFKDSXq4EvpzZqnix0mMK2", "0Slm53iDVaPBVsxKetaOA1Jem2u1" ],
+    location: "Gulshan-1, Dhaka",
+    price: "510",
+    services: "venue",
+    shares: [ "Jun 21, 2023 7:03 PM", "Jun 21, 2023 7:06 PM" ],
+    startDate: "30/06/2023",
+    time: "",
+    workingHours: "6:30 pm",
   },
   {
-    age: "",
-    bio: "",
-    chosenSports: [9],
-    connections: [],
-    createdAt: "May 1st 2023, 12:17:15 am",
-    displayName: "Harry Handerson",
-    email: "abcd@gmail.com",
-    firstName: "Harry",
-    interest: "Soccer",
-    lastName: "Handerson",
-    modifiedAt: null,
-    peopleYouMet: [],
-    phoneNumber: "",
-    photoURL: "",
-    rating: 0,
-    userId: "btW2PKGvIjWMHFvawPa1wNUfjVK2",
-    visitedEvents: []
-  },
-  {
-    address: "Middle Badda, Dhaka 1212, Bangladesh",
-    age: "34",
-    bio: "This is a bio....",
-    birthDate: "10/02/1989",
-    chosenSports: [8, 9, 5, 3],
-    connections: [],
-    createdAt: "June 5th 2023, 2:17:15 am",
-    displayName: "Niloy Rudra",
-    email: "nill@gmail.com",
-    firstName: "Niloy",
-    interest: "Chess",
-    lastName: "Rudra",
-    modifiedAt: "June 14th 2023, 4:33:56 am",
-    peopleYouMet: [],
-    phoneNumber: "111-222-333",
-    photoURL: "https://firebasestorage.googleapis.com/v0/b/togs-abcca.appspot.com/o/831000a6-b78f-471c-9977-deeb7896af7e.jpeg?alt=media&token=6c3563b6-b579-4d48-8743-f7949e13aec2",
-    rating: 0,
-    userId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
-    visitedEvents: [ "5K7DxMOWV8ANxiqGU5e0", "KoV9otZJYh2SkGXS6lm9", "qPoLtqRhQjp8WdKS9Apb" ],
+    activities: "soccer",
+    content: "Here is soccer tournament in Madrid.",
+    createdAt: "June 12th 2023, 3:53:02 am",
+    creator: {
+    name: "Nill Rudra",
+    photoURL: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ftogs-eafe6928-6d96-47bf-87a8-d31b20d344bc/ImagePicker/80129fff-8f5b-498e-91a6-ce4812977a36.jpeg"},
+    creatorId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
+    endDate: "31/07/2023",
+    id: "qPoLtqRhQjp8WdKS9Apb",
+    image: "",
+    likes: [],
+    location: "Madrid",
+    price: "1569",
+    services: "tournament",
+    shares: [],
+    startDate: "01/07/2023",
+    time: "6:30 pm",
   }
 ];
 
-const UserListScreen = ({people=PEOPLE}) => {
+const EventListScreen = ({events=EVENTS}) => {
   const navigation = useNavigation();
 
-  const profileRef = React.useRef();
-  const [ selectedUser, setSelectedUser ] = React.useState(null)
-  const [ showModal, setShowModal ] = React.useState(false)
-  const [ isLoading, setIsLoading ] = React.useState(false)
+//   const [ selectedEvent, setSelectedEvent ] = React.useState(null)
+//   const [ isLoading, setIsLoading ] = React.useState(false)
 
   return (
     <View style={styles.container}>
@@ -96,7 +74,6 @@ const UserListScreen = ({people=PEOPLE}) => {
 
       <View
         style={{
-          // marginVertical: 20
           flex:1,
           width:"100%"
         }}
@@ -109,14 +86,14 @@ const UserListScreen = ({people=PEOPLE}) => {
             marginBottom: 10
           }}
         >
-          Total number of people - {people.length}
+          Total number of event(s) - {events.length}
         </Text>
         {
-          people.length ? 
+          events.length ? 
             (
               <FlatList
-                data={people}
-                keyExtraction= {item => item.userId}
+                data={events}
+                keyExtraction= {item => item.id}
                 // key ={Math.random().toString()}
                 // ListHeaderComponent={
                 //   <View style={{height:30}} />
@@ -125,8 +102,8 @@ const UserListScreen = ({people=PEOPLE}) => {
                   <TouchableOpacity
                     style={styles.list}
                     onPress={() => {
-                      setSelectedUser( prevValue => prevValue = item )
-                      setShowModal( prevValue => prevValue = true )
+                        navigation.navigate("EventScreen", {event: item, prevScreen: 'EventList'})
+                    //   setSelectedEvent( prevValue => prevValue = item )
                     }}
                   >
                     <View
@@ -137,10 +114,10 @@ const UserListScreen = ({people=PEOPLE}) => {
                       }}
                     >
                       {
-                        item?.photoURL ?
+                        item?.image ?
                           (
                             <Image
-                              source={{uri: item.photoURL}}
+                              source={{uri: item.image}}
                               style={{
                                 width: 40,
                                 height: 40,
@@ -151,19 +128,20 @@ const UserListScreen = ({people=PEOPLE}) => {
                           )
                           :
                           (
-                            <DefaultUserAvatarComponent
+                            <View
                               style={{
                                 width: 40,
                                 height: 40,
                                 borderRadius: 20,
-                                marginRight: 20
+                                marginRight: 20,
+                                backgroundColor: colors.secondaryColor
                               }}
                             />
                           )
                       }
                       <View>
-                        <Text style={styles.userName}>{item?.displayName ?? 'Anonymous'}</Text>
-                        <Text style={styles.email}>{item?.email}</Text>
+                        <Text style={styles.services}>{item?.services ?? 'Anonymous'}</Text>
+                        <Text style={styles.activities}>{item?.activities}</Text>
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -188,7 +166,7 @@ const UserListScreen = ({people=PEOPLE}) => {
                     fontSize: sizes.fontText,
                     color:colors.infoColor,
                   }}
-                >No people available yet.</Text>
+                >No event available yet.</Text>
                 <ButtonComponent
                   label="Go Back"
                   onPress={() => navigation.navigate("Profile")}
@@ -200,24 +178,11 @@ const UserListScreen = ({people=PEOPLE}) => {
         }
       </View>
 
-      {
-        showModal &&
-          (
-            <ProfileModal
-              refEle={profileRef}
-              navigation={navigation}
-              isVisible={showModal}
-              selectedUser={selectedUser}
-              onClose={() => setShowModal(false)}
-            />
-          )
-      }
-
     </View>
   )
 }
 
-export default UserListScreen
+export default EventListScreen
 
 const styles = StyleSheet.create({
     container: {
@@ -247,16 +212,16 @@ const styles = StyleSheet.create({
 
       elevation: 3,
     },
-    userName: {
+    services: {
       fontFamily: fonts.bold,
       fontSize: sizes.fontSubTitle,
       fontWeight: '800',
       color: colors.secondaryColor
     },
-    email: {
+    activities: {
       fontFamily: fonts.italic,
       fontSize: sizes.fontText,
       fontWeight: '600',
       color: colors.infoColor
     }
-  })
+})

@@ -169,14 +169,21 @@ const storeReducer = ( state=initialState, action ) => {
             console.log( "TOGGLE EVENT LIKES" );
             return {
                 ...state,
-                events: [ ...state.events.filter(event => event.id != payload.id ), payload]
+                events: [ ...state.events.filter(event => event.id != payload.id ), payload ]
+            }
+
+        case ACTIONS.UPDATE_USER_CONNECTIONS :
+            console.log( "UPDATE USER CONNECTIONS" );
+            return {
+                ...state,
+                user: payload
             }
 
         case ACTIONS.EVENT_SHARED :
             console.log( "EVENT SHARED" );
             return {
                 ...state,
-                events: [ ...state.events.filter(event => event.id != payload.id ), payload]
+                events: [ ...state.events.filter( event => event.id != payload.id ), payload ]
             }
 
         case ACTIONS.GET_ALL_COMMENTS :
@@ -184,13 +191,7 @@ const storeReducer = ( state=initialState, action ) => {
             // const { id, data } = payload
             return {
                 ...state,
-                comments: [ ...state.comments.filter( item => item.eventId != payload.eventId ), {...payload}]
-                // comments: [ ...state.comments, state.comments.forEach( item => {
-                //         console.log("Payload >> ",payload)
-                //         if( payload && payload?.eventId && item.eventId == payload.eventId ) return payload
-                //     })
-                // ]
-                
+                comments: [ ...state.comments.filter( item => item.eventId != payload.eventId ), { ...payload } ]
             }
         
 

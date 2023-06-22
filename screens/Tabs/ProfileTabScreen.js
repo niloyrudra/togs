@@ -192,6 +192,7 @@ const EventRoute = () => {
               justifyContent:"space-between",
               alignItems: "center"
             }}
+            onPress={() => navigation.navigate("EventList") }
           >
             <View
               style={{
@@ -431,7 +432,7 @@ const ProfileTabScreen = ( {navigation} ) => {
 
               <View style={styles.userStat}>
                 <Text style={styles.userStatNum}>{user?.connections?.length ?? '0'}</Text>
-                <Text style={styles.userStatLabel}>Connection</Text>
+                <Text style={styles.userStatLabel}>Connections</Text>
               </View>
 
               <View style={styles.userStat}>
@@ -586,14 +587,14 @@ const ProfileTabScreen = ( {navigation} ) => {
 
           {
             showEditModal &&
-              (<ProfileEditModal
-                refEle={editRef}
+              (
+                <ProfileEditModal
+                  refEle={editRef}
                   navigation={navigation}
                   isVisible={showEditModal}
-                  // searchResultData={ searchResultData }
-                  // query={searchQuery}
-                onClose={() => setShowEditModal(false)}
-              />)
+                  onClose={() => setShowEditModal(false)}
+                />
+              )
           }
 
         </View>

@@ -381,6 +381,32 @@ export const AppProvider = ({ children = null }) => {
     }
   }
 
+  const onToggleConnectUser = async ( user, connectedUserId ) => {
+    try{
+      let newConnections = user.connections.includes( connectedUserId ) ? user.connections.filter( uId => uId != connectedUserId ) : [ ...user.connections, connectedUserId ]
+      const updatedUser = {
+        ...user,
+        connections: newConnections
+      }
+      await db
+        .collection("users")
+        .doc(user.userId)
+        .update(
+          {...updatedUser}
+        )
+        .then(() => {
+          console.log('UPDATE USER CONNECTIONS successfully!')
+          dispatch({
+            type: ACTIONS.UPDATE_USER_CONNECTIONS,
+            payload: updatedUser
+          });
+        })
+    }
+    catch(error) {
+      console.error( 'UPDATE USER CONNECTIONS Error', error)
+    }
+  }
+
   const onShareEvent = async ( event ) => {
     try{
       const sharedAt = getCurrentDateLit()
@@ -429,7 +455,8 @@ export const AppProvider = ({ children = null }) => {
     onAddComments,
     onGetComments,
     onToggleLikeEvent,
-    onShareEvent
+    onShareEvent,
+    onToggleConnectUser
   }
 
   return (

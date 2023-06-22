@@ -22,6 +22,8 @@ import PostFormScreen from '../screens/Forms/PostFormScreen';
 import EventFormScreen from '../screens/Forms/EventFormScreen';
 import SinglePostScreen from '../screens/Post/SinglePostScreen';
 import SingleEventScreen from '../screens/Event/SingleEventScreen'
+import UserListScreen from '../screens/Event/partials/UserListScreen';
+import EventListScreen from '../screens/Event/partials/EventListScreen';
 
 // Components
 import SectionLabel from '../components/SectionLabel';
@@ -31,7 +33,6 @@ import DefaultUserAvatarComponent from '../components/DefaultUserAvatarComponent
 import { useTogsContext } from '../providers/AppProvider';
 import sizes from '../constants/sizes';
 import fonts from '../constants/fonts';
-import UserListScreen from '../screens/Event/partials/UserListScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -114,6 +115,29 @@ const DrawerNavigator = () => {
 
         <Drawer.Screen name="UserList" component={UserListScreen} options={({navigation, route}) => {
             const title = route?.params?.title ?? "People you know!"
+            const prevScreen = route?.params?.prevScreen ?? "Profile"
+            return ({
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
+                headerTitleStyle: {
+                    fontWeight: '800'
+                },
+                headerLeft: () => (
+                    <TouchableOpacity
+                        style={{
+                            marginLeft: 10
+                        }}
+                        onPress={() => navigation.navigate( prevScreen )}
+                    >
+                        <Ionicons name="chevron-back" size={26} color="black" />
+                    </TouchableOpacity>
+                )
+            }
+        )}} />
+
+        <Drawer.Screen name="EventList" component={EventListScreen} options={({navigation, route}) => {
+            const title = route?.params?.title ?? "All Events!"
             const prevScreen = route?.params?.prevScreen ?? "Profile"
             return ({
                 headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
