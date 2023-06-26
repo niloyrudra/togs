@@ -1,52 +1,78 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+
+// Components
 import ButtonComponent from './ButtonComponent';
+
+// Constants
 import colors from '../constants/colors';
+import sizes from '../constants/sizes';
 
-const RatingComponent = () => {
-  const [starRating, setStarRating] = React.useState(null);
+// Context
+import { useTogsContext } from '../providers/AppProvider';
+
+const RatingComponent = ({ hasAlreadyRated=null, currentUser }) => {
+
+  const { user, onRatingUser } = useTogsContext();
+
+  const [starRating, setStarRating] = React.useState( hasAlreadyRated ? hasAlreadyRated : null);
   const [ isSubmitted, setIsSubmitted ] = React.useState(false)
+  const [ isLoading, setIsLoading ] = React.useState(false)
 
-  const onRatingHandler = ( rate ) => {
-    setStarRating( prevValue => prevValue = rate )
-    setIsSubmitted(true)
+  const onRatingHandler = async () => {
+    try {
+      setIsLoading(true)
+      await onRatingUser( user.userId, currentUser, starRating )
+      setIsLoading(false)
+    }
+    catch( error ) {
+      console.error(error)
+      setIsLoading(false)
+    }
   }
 
+  React.useEffect(() => {
+    if( hasAlreadyRated && !isSubmitted && !starRating ) {
+      setStarRating(prevValue => prevValue = hasAlreadyRated)
+    }
+    if( starRating && !isSubmitted ) setIsSubmitted( prevValue => prevValue = true )
+  }, [starRating])
+
+
   return (
-    // <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.heading}>{starRating ? `${starRating}*` : 'Tap to rate'}</Text>
         <View style={styles.stars}>
-          <TouchableOpacity onPress={() => onRatingHandler(1)}>
+          <TouchableOpacity onPress={() => setStarRating( prevValue => prevValue = 1)}>
             <MaterialIcons
               name={starRating >= 1 ? 'star' : 'star-border'}
               size={32}
               style={starRating >= 1 ? styles.starSelected : styles.starUnselected}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onRatingHandler(2)}>
+          <TouchableOpacity onPress={() => setStarRating( prevValue => prevValue = 2)}>
             <MaterialIcons
               name={starRating >= 2 ? 'star' : 'star-border'}
               size={32}
               style={starRating >= 2 ? styles.starSelected : styles.starUnselected}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onRatingHandler(3)}>
+          <TouchableOpacity onPress={() => setStarRating( prevValue => prevValue = 3)}>
             <MaterialIcons
               name={starRating >= 3 ? 'star' : 'star-border'}
               size={32}
               style={starRating >= 3 ? styles.starSelected : styles.starUnselected}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onRatingHandler(4)}>
+          <TouchableOpacity onPress={() => setStarRating( prevValue => prevValue = 4)}>
             <MaterialIcons
               name={starRating >= 4 ? 'star' : 'star-border'}
               size={32}
               style={starRating >= 4 ? styles.starSelected : styles.starUnselected}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onRatingHandler(5)}>
+          <TouchableOpacity onPress={() => setStarRating( prevValue => prevValue = 5)}>
             <MaterialIcons
               name={starRating >= 5 ? 'star' : 'star-border'}
               size={32}
@@ -56,27 +82,37 @@ const RatingComponent = () => {
         </View>
 
         {
-          isSubmitted && (
+          isLoading ?
+          (
             <View
               style={{
-                width:'100%'
+                flex:1
               }}
             >
-              <ButtonComponent
-                label="Done"
-                bgColor={colors.accentColor}
-                enableShadow={true}
-                onPress={() => {
-                  console.log(starRating)
-                  setIsSubmitted(false)
-                }}
-              />
+              <ActivityIndicator size={sizes.xlLoader} color={colors.accentColor} />
             </View>
           )
+          :
+            (hasAlreadyRated && !isSubmitted) ?
+            ''
+            :
+            (
+              <View
+                style={{
+                  width:'100%'
+                }}
+              >
+                <ButtonComponent
+                  label="Done"
+                  bgColor={colors.accentColor}
+                  enableShadow={true}
+                  onPress={onRatingHandler}
+                />
+              </View>
+            )
         }
 
       </View>
-    // </SafeAreaView>
   );
 }
 
@@ -84,7 +120,6 @@ export default RatingComponent;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     width: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',

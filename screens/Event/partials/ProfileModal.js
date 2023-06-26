@@ -1,11 +1,8 @@
-import { Text, View, Animated, TextInput, StyleSheet, Modal, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { Text, View, Animated, StyleSheet, Modal, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React from 'react'
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {useForm, Controller} from 'react-hook-form';
 import { Ionicons } from '@expo/vector-icons';
 
 // Components
-// import ImageUploadComponent from '../../../components/ImageUploadComponent'
 import ButtonComponent from "../../../components/ButtonComponent";
 import RatingComponent from "../../../components/RatingComponent"
 
@@ -21,13 +18,15 @@ import colors from "../../../constants/colors";
 import { useTogsContext } from '../../../providers/AppProvider';
 import { ActivityIndicator } from 'react-native';
 
-const ProfileModal = ({ navigation, refEle, selectedUser, isVisible, onClose }) => {
+const ProfileModal = ({ navigation, refEle, selectedUserId, isVisible, onClose }) => {
 
-    const { user, onToggleConnectUser } = useTogsContext()
+    const { user, users, onToggleConnectUser } = useTogsContext()
 
     const modelAnimatedValue = React.useRef( new Animated.Value(0) ).current
 
+    const [ selectedUser, setSelectedUser ] = React.useState( users?.filter( user => user.userId == selectedUserId )[0] )
     const [ showModal, setShowModal ] = React.useState( isVisible )
+    const [ hasAlreadyRated, setHasAlreadyRated ] = React.useState( selectedUser?.rating?.length ? selectedUser?.rating?.filter( rateObj => rateObj.userId == user.userId ) : false )
     const [ isConnected, setIsConnected ] = React.useState( user?.connections?.includes( selectedUser.userId ) )
 
     const [ isLoading, setIsLoading ] = React.useState(false)
@@ -70,18 +69,12 @@ const ProfileModal = ({ navigation, refEle, selectedUser, isVisible, onClose }) 
         outputRange: [700, -100]
     });
 
-    // const { handleSubmit, control, reset } = useForm();
-    const handleSubmit = async () => {
-        // await onUpdateUserInfo( user, data )
-        // reset();
-        // onClose();
-    };
-    
     React.useEffect( () => {
-        setIsConnected( user?.connections?.includes( selectedUser?.userId ) )
-    }, [ selectedUser?.userId ] );
+        setSelectedUser( prevValue => prevValue = users?.filter( user => user.userId == selectedUserId )[0] );
 
-    console.log(user.connections )
+        setHasAlreadyRated( selectedUser?.rating?.length ? selectedUser?.rating?.filter( rateObj => rateObj.userId == user.userId ) : false )
+        setIsConnected( user?.connections?.includes( selectedUser?.userId ) )
+    }, [ selectedUserId ] );
 
     return (
         <Modal>
@@ -126,10 +119,10 @@ const ProfileModal = ({ navigation, refEle, selectedUser, isVisible, onClose }) 
                         </View>
 
                         <View>
-                            <Text style={{fontFamily: fonts.bold, fontSize: sizes.fontTitle, color: colors.primaryColor}}>{user?.displayName ?? 'Anonymous'}</Text>
+                            <Text style={{fontFamily: fonts.bold, fontSize: sizes.fontTitle, color: colors.primaryColor}}>{selectedUser?.displayName ?? 'Anonymous'}</Text>
                         </View>
                         <View>
-                            <Text style={{fontFamily: fonts.regular, fontSize: sizes.fontSubTitle, color: colors.infoColor}}>{user?.email}</Text>
+                            <Text style={{fontFamily: fonts.regular, fontSize: sizes.fontSubTitle, color: colors.infoColor}}>{selectedUser?.email}</Text>
                         </View>
                         {
                             isConnected && (
@@ -144,13 +137,10 @@ const ProfileModal = ({ navigation, refEle, selectedUser, isVisible, onClose }) 
                         <Text style={{fontFamily: fonts.regular, fontSize: sizes.fontSubTitle, color: colors.infoColor}}>{selectedUser?.address ?? "No data available."}</Text>
                         
                         <Text style={styles.label}>Bio</Text>
-                        {/* <Text style={{fontFamily: fonts.regular, fontSize: sizes.fontSubTitle, color: colors.infoColor}}>{user?.bio ?? "No data available."}</Text> */}
                         <Text style={{fontFamily: fonts.regular, fontSize: sizes.fontSubTitle, color: colors.infoColor}}>No data available.</Text>
 
                         <Text style={styles.label}>Number of events attended</Text>
                         <Text style={{fontFamily: fonts.regular, fontSize: sizes.fontSubTitle, color: colors.infoColor}}>{selectedUser?.visitedEvents?.length ?? 0}</Text>
-
-
 
                         <View
                             style={{
@@ -166,7 +156,7 @@ const ProfileModal = ({ navigation, refEle, selectedUser, isVisible, onClose }) 
                                             enableShadow={true}
                                             label={ isConnected ? "Disconnection -" : "Connection +" }
                                             bgColor={isConnected ? colors.dark : colors.accentColor}
-                                            onPress={() => toggleConnectionHandler( selectedUser.userId )}
+                                            onPress={() => toggleConnectionHandler( selectedUser?.userId )}
                                         />
                                     )
                                     :
@@ -176,9 +166,16 @@ const ProfileModal = ({ navigation, refEle, selectedUser, isVisible, onClose }) 
                                         </View>
                                     )
                             }
-                            {/* <ButtonComponent label="Rate" bgColor={colors.textGreen} onPress={handleSubmit} /> */}
-                            
-                            <RatingComponent />
+                            {
+                                hasAlreadyRated[0] ? 
+                                    (
+                                        <RatingComponent hasAlreadyRated={hasAlreadyRated[0].rating} currentUser={selectedUser} />
+                                    )
+                                    :
+                                    (
+                                        <RatingComponent currentUser={selectedUser} />
+                                    )
+                            }
 
                         </View>
 
@@ -201,7 +198,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 20,
-        // zIndex:1111111
     },
     content: {
         flex: 1,

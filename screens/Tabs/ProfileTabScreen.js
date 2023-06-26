@@ -4,6 +4,7 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { FloatingAction } from 'react-native-floating-action';
+import { ActivityIndicator } from 'react-native';
 
 // Icons
 import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
@@ -23,7 +24,6 @@ import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 import fonts from '../../constants/fonts'
 import DefaultUserAvatarComponent from '../../components/DefaultUserAvatarComponent';
-import { ActivityIndicator } from 'react-native';
 
 // Dummy Data
 // const POSTS=[
@@ -192,7 +192,7 @@ const EventRoute = () => {
               justifyContent:"space-between",
               alignItems: "center"
             }}
-            onPress={() => navigation.navigate("EventList") }
+            onPress={() => navigation.navigate("EventList" ) }
           >
             <View
               style={{

@@ -41,12 +41,10 @@ export const AppProvider = ({ children = null }) => {
         photoURL: user?.photoURL ? user.photoURL : '',
         userId: user?.uid ? user.uid : '',
         email: user?.email ? user.email : '',
-        rating: 0,
+        rating: [],
         interest: interest ? interest : '',
         chosenSports: chosenSports ? chosenSports : [],
         connections: [],
-        // events: [],
-        // posts: [],
         peopleYouMet: [],
         visitedEvents: [],
         createdAt: getCurrentDate(),
@@ -171,7 +169,7 @@ export const AppProvider = ({ children = null }) => {
         email: oldUserData.email,
         address: address ? address.trim() : oldUserData.address,
         birthDate: birthDate ? birthDate : oldUserData.birthDate,
-        rating: oldUserData.email,
+        rating: oldUserData.rating,
         interest: interest ? interest.trim() : oldUserData.interest,
         chosenSports: chosenSports ? chosenSports : oldUserData.chosenSports,
         connections: oldUserData.connections,
@@ -259,7 +257,6 @@ export const AppProvider = ({ children = null }) => {
           snapshot.forEach(doc => {
             if ( doc && doc.exists ) docSet.push({ ...doc.data(), id: doc.id })
           });
-          // console.log( "All Posts", docSet )
           dispatch({
             type: ACTIONS.GET_ALL_POSTS,
             payload: docSet
@@ -269,6 +266,28 @@ export const AppProvider = ({ children = null }) => {
     }
     catch(error) {
       console.error( 'GET ALL POSTS Error', error )
+    }
+  }
+
+  const onFetchAllUsers = async (userId) => {
+    try{
+      const docSet = []
+      await db
+        .collection("users")
+        .get()
+        .then( snapshot => {
+          snapshot.forEach(doc => {
+            if ( doc && doc.exists && doc.id != userId ) docSet.push({ ...doc.data(), id: doc.id })
+          });
+          dispatch({
+            type: ACTIONS.GET_ALL_USERS,
+            payload: docSet
+          });
+        });
+        return docSet
+    }
+    catch(error) {
+      console.error( 'GET ALL USERS Error', error )
     }
   }
 
@@ -427,16 +446,53 @@ export const AppProvider = ({ children = null }) => {
             payload: updatedEvent
           });
         })
-          // Object.assign( {}, updatedUserModel )
     }
     catch(error) {
       console.error( 'UPDATE USER INFO Error', error)
     }
   }
 
+  const onRatingUser = async ( userId, currentUser, rating ) => {
+    try{
+      const ratingArr = currentUser.rating?.filter( rateObj => rateObj.userId == userId )
+      ?
+        [
+          ...currentUser.rating.filter( rateObj => rateObj.userId != userId ),
+          {userId, rating}
+        ]
+      :
+        [
+          ...currentUser.rating,
+          {userId, rating}
+        ]
+
+      const updatedUser = {
+        ...currentUser,
+        rating: ratingArr
+      }
+      await db
+        .collection("users")
+        .doc(currentUser.userId)
+        .update(
+          {...updatedUser}
+        )
+        .then(() => {
+          console.log('USER RATING successfully!')
+          dispatch({
+            type: ACTIONS.RATING_USER,
+            payload: updatedUser
+          });
+        })
+    }
+    catch(error) {
+      console.error( 'RATING USER Error', error)
+    }
+  }
+
   // Value
   const value = {
     user: state.user,
+    users: state.users,
     events: state.events,
     posts: state.posts,
     userRole: state.userRole,
@@ -446,6 +502,7 @@ export const AppProvider = ({ children = null }) => {
     onSignOut,
     onChangeUserRole,
     onUpdateUserInfo,
+    onFetchAllUsers,
     onAddEvent,
     onFetchAllEvents,
     onFetchUserSpecificEvents,
@@ -456,7 +513,8 @@ export const AppProvider = ({ children = null }) => {
     onGetComments,
     onToggleLikeEvent,
     onShareEvent,
-    onToggleConnectUser
+    onToggleConnectUser,
+    onRatingUser
   }
 
   return (

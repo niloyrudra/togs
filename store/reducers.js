@@ -3,6 +3,67 @@ import ACTIONS from "./storeActions";
 export const initialState = {
     user: null,
     userRole: null,
+    // users: [
+    //     {
+    //       age: "",
+    //       bio: "",
+    //       chosenSports: [5],
+    //       connections: [],
+    //       createdAt: "June 12th 2023, 5:19:55 am",
+    //       displayName: "XYZ pqr",
+    //       email: "xyz@gmail.com",
+    //       firstName: "XYZ",
+    //       interest: "Soccer",
+    //       lastName: "pqr",
+    //       modifiedAt: null,
+    //       peopleYouMet: [],
+    //       phoneNumber: "",
+    //       photoURL: "",
+    //       rating: [],
+    //       userId: "btPSHBhhNtfDXm5ggStyskfokN73",
+    //       visitedEvents: []
+    //     },
+    //     {
+    //       age: "",
+    //       bio: "",
+    //       chosenSports: [9],
+    //       connections: [],
+    //       createdAt: "May 1st 2023, 12:17:15 am",
+    //       displayName: "Harry Handerson",
+    //       email: "abcd@gmail.com",
+    //       firstName: "Harry",
+    //       interest: "Soccer",
+    //       lastName: "Handerson",
+    //       modifiedAt: null,
+    //       peopleYouMet: [],
+    //       phoneNumber: "",
+    //       photoURL: "",
+    //       rating: [],
+    //       userId: "btW2PKGvIjWMHFvawPa1wNUfjVK2",
+    //       visitedEvents: []
+    //     },
+    //     {
+    //       address: "Middle Badda, Dhaka 1212, Bangladesh",
+    //       age: "34",
+    //       bio: "This is a bio....",
+    //       birthDate: "10/02/1989",
+    //       chosenSports: [8, 9, 5, 3],
+    //       connections: [],
+    //       createdAt: "June 5th 2023, 2:17:15 am",
+    //       displayName: "Niloy Rudra",
+    //       email: "nill@gmail.com",
+    //       firstName: "Niloy",
+    //       interest: "Chess",
+    //       lastName: "Rudra",
+    //       modifiedAt: "June 14th 2023, 4:33:56 am",
+    //       peopleYouMet: [],
+    //       phoneNumber: "111-222-333",
+    //       photoURL: "https://firebasestorage.googleapis.com/v0/b/togs-abcca.appspot.com/o/831000a6-b78f-471c-9977-deeb7896af7e.jpeg?alt=media&token=6c3563b6-b579-4d48-8743-f7949e13aec2",
+    //       rating: [],
+    //       userId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
+    //       visitedEvents: [ "5K7DxMOWV8ANxiqGU5e0", "KoV9otZJYh2SkGXS6lm9", "qPoLtqRhQjp8WdKS9Apb" ],
+    //     }
+    // ],
     users: [],
     events: [],
     posts: [],
@@ -93,6 +154,13 @@ const storeReducer = ( state=initialState, action ) => {
                     };
                 }),
             }
+
+        case ACTIONS.GET_ALL_USERS :
+            console.log( "GET ALL USERS" );
+            return {
+                ...state,
+                users: payload,
+            }
             
         // Post actions
         case ACTIONS.ADD_POST :
@@ -140,24 +208,16 @@ const storeReducer = ( state=initialState, action ) => {
                 connections: state.user.connections.filter( connectionUserId => connectionUserId !== payload )
             }
         
-        // Connection actions
-        case ACTIONS.RATING :
-            console.log( "DO RATING" );
+        // Rating actions
+        case ACTIONS.RATING_USER :
+            console.log( "DO RATING USER" );
             return {
                 ...state,
-                user: {
-                    ...state.user,
-                    rating: [ ...state.user.rating, payload ]
-                }
+                users: [...state.users.filter( (user) => user?.userId != payload?.userId ), payload]
+            
             }
-
-        case ACTIONS.UPDATE_RATING :
-            console.log( "UPDATE RATING" );
-            return {
-                ...state,
-                rating: state.user.rating.filter( connectionUserId => connectionUserId !== payload )
-            }
-
+        
+        // Comment Actions
         case ACTIONS.ADD_NEW_COMMENT :
             console.log( "ADD NEW COMMENT" );
             return {
