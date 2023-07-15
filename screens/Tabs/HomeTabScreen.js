@@ -1,6 +1,5 @@
 import { StyleSheet, View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native'
 import React from 'react'
-// import { useIsFocused } from '@react-navigation/native'
 
 // Components
 import SearchComponent from '../../components/SearchComponent'
@@ -15,16 +14,11 @@ import sizes from '../../constants/sizes'
 // Context
 import { useTogsContext } from '../../providers/AppProvider'
 
-const HomeTabScreen = ({ navigation }) => {
-  const { onFetchAllEvents, events, onFetchAllPosts, comments } = useTogsContext();
+const HomeTabScreen = () => {
+  const { onFetchAllEvents, events, onFetchAllPosts } = useTogsContext();
 
   const [isLoading, setIsLoading] = React.useState(false)
-  const [searchTerm, setSearchTerm] = React.useState('')
-
-  // Handlers
-  const onChangeHandler = ( value ) => {
-    setSearchTerm( prevVal => prevVal = value)
-  }
+  const [feeds, setFeeds] = React.useState(events)
 
   React.useEffect(() => {
     const unSubscriber = async () => {
@@ -32,17 +26,23 @@ const HomeTabScreen = ({ navigation }) => {
         await Promise.all([
           onFetchAllEvents(),
           onFetchAllPosts()
-        ])
+        ]);
         setIsLoading(false);
       }
       unSubscriber();
     }, [])
+    
+  React.useEffect(() => {
+    setFeeds( prevValue => prevValue = events)
+    console.log("Home feeds >> ",feeds)
+
+  }, [events.length])
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 
       {/* Search Bar */}
-      <SearchComponent onChangeText={onChangeHandler} />
+      <SearchComponent onChangeFeeds={setFeeds} data={events} />
 
       {/* Category Section */}
       <View style={styles.catContainer}>
@@ -70,7 +70,7 @@ const HomeTabScreen = ({ navigation }) => {
               )
               :
               (
-                <ElementListComponent data={events} />
+                <ElementListComponent data={feeds} />
               )
           }
         </EventListComponent>
@@ -93,7 +93,7 @@ const HomeTabScreen = ({ navigation }) => {
               )
               :
               (
-                <ElementListComponent data={events} style={{transform: [{scale: 0.9}], marginHorizontal: -4, marginTop: -4 }} />
+                <ElementListComponent data={feeds} style={{transform: [{scale: 0.9}], marginHorizontal: -4, marginTop: -4 }} />
               )
           }
           

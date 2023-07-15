@@ -42,6 +42,7 @@ const PostFormScreen = () => {
                 name: user.displayName,
                 photoURL: user.photoURL
             }
+            data.commentCount = 0
             await onAddPost( data )
             resetField();
             reset();

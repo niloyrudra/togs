@@ -136,6 +136,7 @@ const EventFormScreen = () => {
                 name: user.displayName,
                 photoURL: user.photoURL
             }
+            data.commentCount = 0
             await onAddEvent( data )
             resetField();
             reset();
@@ -165,6 +166,22 @@ const EventFormScreen = () => {
         >
 
             <View style={styles.container}>
+
+                <Text style={styles.label}>Event Title</Text>
+                <Controller
+                    name="title"
+                    defaultValue=""
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                    <TextInput
+                        style={styles.input}
+                        selectionColor={"#5188E3"}
+                        onChangeText={onChange}
+                        value={value}
+                        placeholder="Title"
+                    />
+                    )}
+                />
 
                 <Text style={styles.label}>Services</Text>
                 <Controller

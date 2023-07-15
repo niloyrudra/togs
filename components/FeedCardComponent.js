@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 
 // Components
@@ -12,19 +12,10 @@ import StatWidgetComponent from './StatWidgetComponent'
 // Context
 import { useTogsContext } from '../providers/AppProvider'
 
-const FeedCardComponent = ({ item, onPress, hasComments=null }) => {
-    const { user, comments, onGetComments } = useTogsContext()
-    const [eventCommentsCount, setEventCommentsCount] = React.useState(hasComments ? hasComments?.data?.length : 0)
-
-    React.useEffect(() => {
-        const update = async (eventId) => {
-            await onGetComments(eventId)
-        }
-        if( hasComments && hasComments.eventId && hasComments.data.length == 0 ) update(hasComments.eventId)
-    }, [hasComments?.eventId])
+const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
+    const { user } = useTogsContext()
+    const [eventCommentsCount, setEventCommentsCount] = React.useState( commentCount != null ? commentCount : 0)
     
-    // console.log(">>>>>>> >>>>>> ", comments)
-
   return (
     <TouchableOpacity
         style={{

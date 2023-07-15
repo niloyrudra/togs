@@ -6,6 +6,7 @@ import SectionTitleComponent from './SectionTitleComponent'
 import ViewAllComponent from './ViewAllComponent'
 
 const EventListComponent = ({label, dataType, children}) => {
+
   return (
     <View style={styles.container}>
 

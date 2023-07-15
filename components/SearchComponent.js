@@ -3,13 +3,22 @@ import React from 'react'
 
 import colors from '../constants/colors'
 
-const SearchComponent = () => {
-    const [searchTerm, setSearchTerm] = React.useState('')
+// Context
+import { useTogsContext } from '../providers/AppProvider'
+
+const SearchComponent = ({ onChangeFeeds=() => {}, data=null }) => {
+  const { events, posts } = useTogsContext()
+  
+  const [searchTerm, setSearchTerm] = React.useState('')
 
   // Handlers
   const onChangeHandler = ( value ) => {
     setSearchTerm( prevVal => prevVal = value)
   }
+  React.useEffect(() => {
+    const updatedFeeds = data ? data.filter( feed => feed.title.includes( searchTerm ) && feed ) : [...events, ...posts]?.filter( feed => feed.title.includes( searchTerm ) && feed )
+    onChangeFeeds( prevValue => prevValue = updatedFeeds )
+  }, [searchTerm])
 
   return (
     <View>

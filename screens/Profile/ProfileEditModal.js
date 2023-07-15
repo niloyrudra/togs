@@ -1,4 +1,4 @@
-import { Text, View, Animated, TextInput, StyleSheet, TouchableWithoutFeedback, Modal, TouchableOpacity, Image } from 'react-native'
+import { Text, View, Animated, TextInput, StyleSheet, TouchableWithoutFeedback, Modal, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import React from 'react'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -28,7 +28,7 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
     const modelAnimatedValue = React.useRef( new Animated.Value(0) ).current
 
     const [ showModal, setShowModal ] = React.useState( isVisible )
-    const [ isLoading, setIsLoading ] = React.useState( true )
+    const [ isLoading, setIsLoading ] = React.useState( false )
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
 
     React.useEffect( () => {
@@ -68,10 +68,13 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
     };
 
     const { handleSubmit, control, reset } = useForm();
+
     const onSubmit = async (data) => {
+        setIsLoading(true)
         await onUpdateUserInfo( user, data )
         reset();
         onClose();
+        setIsLoading(false)
     };
     
     return (
@@ -248,10 +251,19 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                             marginVertical: 20
                         }}
                     >
-                        <ButtonComponent label="Save" onPress={handleSubmit(onSubmit)} />
+                        {
+                            isLoading ?
+                                (
+                                    <ActivityIndicator size={sizes.xlLoader} color={colors.primaryColor} />
+                                )
+                                :
+                                (
+                                    <ButtonComponent label="Save" onPress={handleSubmit(onSubmit)} />
+                                )
+                        }
                     </View>
                     
-                    <View style={{height: 100}} />
+                    <View style={{height: 200}} />
 
                 </View>
 
