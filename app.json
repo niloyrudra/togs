@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "togs-app",
+    "slug": "togs-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/logo/splash-screen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.ashwinsuvarna043.togsapp"
+    },
+    "web": {
+      "favicon": "./assets/logo/logo.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2c6b9777-be35-4e93-9e7d-4d5335e7a4d3"
+      }
+    }
+  }
+}
