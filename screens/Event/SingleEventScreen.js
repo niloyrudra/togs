@@ -18,6 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import moment from 'moment'
 import ButtonComponent from '../../components/ButtonComponent'
 import { TouchableOpacity } from 'react-native'
+import EventJoinButtonComponent from '../../components/EventJoinButtonComponent'
 
 const SingleEventScreen = ({ navigation, route}) => {
 
@@ -106,19 +107,18 @@ const SingleEventScreen = ({ navigation, route}) => {
         update()
     }, [ route?.params?.event?.id ])
     
-    // console.log(route?.params?.event?.creatorId, creator)
-
   return (
     <SafeAreaView style={styles.container}>
-        <StatusBar
-            style="dark"
-        />
         <ScrollView
             style={{
                 flex:1,
                 // position:"relative"
             }}
         >
+            {/* Status Bar */}
+            <StatusBar
+                style="dark"
+            />
             <View
                 style={{
                     flex:1,
@@ -241,6 +241,7 @@ const SingleEventScreen = ({ navigation, route}) => {
                 {/* Event Description/Content */}
                 <View
                     style={{
+                        flex:1,
                         marginVertical: 10
                     }}
                 >
@@ -250,30 +251,7 @@ const SingleEventScreen = ({ navigation, route}) => {
                 </View>
 
                 {/* Join Event */}
-                <View
-                    style={{
-                        flex:1,
-                        // width: Dimensions.get("screen").width - 40,
-                        justifyContent:"center",
-                        alignItems: "flex-end"
-                    }}
-                >
-                    <View
-                        style={{
-                            width:"100%",
-                            height: 1,
-                            backgroundColor: '#ddd', // colors.placeholderColor,
-                            marginBottom: 15,
-                        }}
-                    />
-                    <ButtonComponent
-                        label="Click To Join"
-                        onPress={() => console.log("Joined!!!")}
-                        style={{
-                            width:"100%"
-                        }}
-                    />
-                </View>
+                <EventJoinButtonComponent event={event} />
 
 
                 {

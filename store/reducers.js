@@ -82,6 +82,17 @@ function updateOne(array, objId) {
    })
 }
 
+function updateEventOnJoining(array, objId, userId) {
+    return array.map((item) => {
+      if (objId === item.id) {
+      // update whatever you want
+      return {...item, joinedUsers: [...item.joinedUsers, userId]};
+     } else {
+      return item;
+     }
+   })
+}
+
 
 const storeReducer = ( state=initialState, action ) => {
     const { type, payload } = action;
@@ -249,9 +260,6 @@ const storeReducer = ( state=initialState, action ) => {
             return {
                 ...state,
                 events: updateOne(state.events, payload)
-                // events: state.events.map( event => {
-                //     if(event.id == payload) event.commentCount = parseInt(event.commentCount)+1;
-                // })
             }
 
         case ACTIONS.TOGGLE_EVENT_LIKES :
@@ -259,6 +267,13 @@ const storeReducer = ( state=initialState, action ) => {
             return {
                 ...state,
                 events: [ ...state.events.filter(event => event.id != payload.id ), payload ]
+            }
+
+        case ACTIONS.JOIN_EVENT_ACTION :
+            console.log( "JOIN EVENT ACTION" );
+            return {
+                ...state,
+                events: updateEventOnJoining( state.events, payload.eventId, payload.userId )
             }
 
         case ACTIONS.UPDATE_USER_CONNECTIONS :

@@ -237,7 +237,7 @@ export const AppProvider = ({ children = null }) => {
             if ( doc && doc.exists ) docSet.push(doc.data())
           });
           
-          console.log( "All User Events", docSet )
+          console.log( "All User Events" )
 
           dispatch({
             type: ACTIONS.GET_USER_SPECIFIC_EVENTS,
@@ -528,11 +528,33 @@ export const AppProvider = ({ children = null }) => {
         console.log('No user data found!')
       } else {
         let dataObj = doc.data();
-        console.log(dataObj.displayName);
+        // console.log(dataObj.displayName);
         return dataObj;
       }
     } catch (err){
       console.log('There is an error.', err)
+    }
+  }
+
+  const onJoinEvent = async ( event, userId ) => {
+    try{
+      const eventId = event.id;
+      await db
+        .collection("events")
+        .doc(eventId)
+        .update(
+          {...event, joinedUsers: [...event.joinedUsers, userId]}
+        )
+        .then(() => {
+          console.log('Joining Event...')
+          dispatch({
+            type: ACTIONS.JOIN_EVENT_ACTION,
+            payload: {eventId, userId}
+          });
+        })
+    }
+    catch(error) {
+      console.error( 'Join Event Error', error)
     }
   }
 
@@ -563,7 +585,8 @@ export const AppProvider = ({ children = null }) => {
     onShareEvent,
     onToggleConnectUser,
     onRatingUser,
-    getUserById
+    getUserById,
+    onJoinEvent
   }
 
   return (

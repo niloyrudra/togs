@@ -133,6 +133,7 @@ const EventFormScreen = () => {
             data.createdAt = getCurrentDate() // June 10th 2023, 2:48:48 am
             data.likes = [];
             data.shares = [];
+            data.joinedUsers = [];
             data.creatorId = user.userId
             // data.creator = {
             //     name: user.displayName,
@@ -149,8 +150,6 @@ const EventFormScreen = () => {
             setIsSubmitting(false)
         }
     };
-
-    // console.log(user)
 
   return (
     
@@ -245,6 +244,7 @@ const EventFormScreen = () => {
                                 minHeight: 380,
                                 // height:"auto"
                             }}
+                            // dropDownMaxHeight={240}
                             mode="BADGE"
                             theme="LIGHT"
                             multiple={false}
@@ -266,6 +266,10 @@ const EventFormScreen = () => {
                             onChangeValue={onChange}
                             zIndex={1000}
                             zIndexInverse={3000}
+                            // schema={{
+                            //     label: 'name',
+                            //     value: 'id',
+                            // }}
                         />
                     </View>
                     )}

@@ -76,13 +76,25 @@ const WelcomeScreen = ( { navigation } ) => {
           <View>
 
             <ButtonComponent
+              label="SKIP"
+              // bgColor={colors.accentColor}
+              onPress={() => {
+                onChangeUserRole( 'service-provider' );
+                navigation.navigate("HomeTab")
+              }}
+              style={{
+                backgroundColor: "transparent"
+              }}
+            />
+
+            {/* <ButtonComponent
               label="Service Provider"
               bgColor={colors.accentColor}
               onPress={() => {
                 onChangeUserRole( 'service-provider' );
                 navigation.navigate("HomeTab")}}
-            />
-            <ButtonComponent
+            /> */}
+            {/* <ButtonComponent
               label="Individual"
               bgColor={colors.secondaryColor}
               onPress={() => {
@@ -103,7 +115,7 @@ const WelcomeScreen = ( { navigation } ) => {
                 //   // ]
                 // })
               }}
-            />
+            /> */}
 
           </View>
 

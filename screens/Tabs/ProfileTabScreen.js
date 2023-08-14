@@ -63,8 +63,8 @@ const ProfileTabScreen = ( {navigation, route} ) => {
   ]);
   const [showEditModal, setShowEditModal] = React.useState(false)
 
-
   React.useEffect(() => {
+
     if( route?.params?.userId && route?.params?.userId != user?.userId ) {
 
       const altUserId = route?.params?.userId;
@@ -82,6 +82,7 @@ const ProfileTabScreen = ( {navigation, route} ) => {
       setOwnedEvents(userEvents)
       
     }
+    
     else if( user?.userId ) {
       if( userRole == 'individual' ) {
         setOwnedEvents([])
@@ -93,7 +94,7 @@ const ProfileTabScreen = ( {navigation, route} ) => {
         setOwnedEvents(userEvents)
       }
     }
-  },[user?.userId])
+  },[user?.userId, route?.params?.userId])
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >

@@ -35,8 +35,6 @@ const HomeTabScreen = () => {
     
   React.useEffect(() => {
     setFeeds( prevValue => prevValue = events)
-    // console.log("Home feeds >> ",feeds)
-
   }, [events?.length])
 
   return (

@@ -31,10 +31,10 @@ export const getCatList = () => [
     {id:7, name:"Soccer", icon:"football"}, // md-football/football
     {id:8, name:"Tennis", icon:"tennisball"},
     {id:9, name:"Volleyball", icon:"volleyball-ball"},
+    {id:10, name:"Yoga", icon:"yoga"},
 ];
 
 export const getActivityList = () => [
-    {label:"All", value: "all"},
     {label:"Baseball", value: "baseball"},
     {label:"Basketball", value: "basketball"},
     {label:"Cricket", value: "cricket"},
@@ -43,4 +43,5 @@ export const getActivityList = () => [
     {label:"Soccer", value: "soccer"},
     {label:"Tennis", value: "tennis"},
     {label:"Volleyball", value: "volleyball"},
+    {label:"Yoga", value: "yoga"},
 ];

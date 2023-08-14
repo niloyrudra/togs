@@ -22,6 +22,7 @@ const renderIcon = ( icon ) => {
             return ( <Ionicons name={icon} size={20} color={colors.dark} /> );
             break;
         case 'football-australian' :
+        case 'yoga' :
         case 'cricket' :
             return ( <MaterialCommunityIcons name={icon} size={20} color={colors.dark} /> );
             break;
