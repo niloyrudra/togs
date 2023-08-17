@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, ActivityIndicator, ScrollView } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -104,74 +104,79 @@ const FavoriteSportsScreen = ( { navigation, route } ) => {
   return (
     <SafeAreaView style={styles.container} mode="margin" edges={['right', 'bottom', 'left']} >
 
-        <StatusBar
-            style='dark'
-        />
+        <ScrollView>
 
-        <View
-            style={{
-                flex:1,
-                height: Dimensions.get('screen').height - 100
-            }}
-        >
-            
+            <StatusBar
+                style='dark'
+            />
+
             <View
-                style={styles.header}
+                style={{
+                    flex:1,
+                    // height: Dimensions.get('screen').height - 100
+                }}
             >
-
-                <TitleComponent label="Choose Sports" />
-
-                <Text
-                    style={{
-                        fontFamily: fonts.medium,
-                        color: colors.textColor
-                    }}
-                >
-                    Select your favorite sports to continue the app or skip this page.
-                </Text>
-            </View>
-
-            <View>
-
+                
                 <View
-                    style={{
-                        justifyContent:'space-evenly',
-                        flexDirection: 'row',
-                        gap: 15,
-                        flexWrap: 'wrap',
-                        paddingVertical: 30,
-                        overflow:'hidden'
-                    }}
+                    style={styles.header}
                 >
 
-                    {
-                        favoriteSports.map( (item, idx) => (
-                            <FavSportIconButtonComponent key={idx} item={item} onSelect={setSports} />
-                        ) )
-                    }
+                    <TitleComponent label="Choose Sports" />
+
+                    <Text
+                        style={{
+                            fontFamily: fonts.medium,
+                            color: colors.textColor
+                        }}
+                    >
+                        Select your favorite sports to continue the app or skip this page.
+                    </Text>
                 </View>
 
+                <View>
+
+                    <View
+                        style={{
+                            justifyContent:'space-evenly',
+                            flexDirection: 'row',
+                            gap: 15,
+                            flexWrap: 'wrap',
+                            paddingVertical: 30,
+                            overflow:'hidden'
+                        }}
+                    >
+
+                        {
+                            favoriteSports.map( (item, idx) => (
+                                <FavSportIconButtonComponent key={idx} item={item} onSelect={setSports} />
+                            ) )
+                        }
+                    </View>
+
+                </View>
+
+                {/* Submit Button */}
+                {
+                    isSubmitting ?
+                        (
+                            <ActivityIndicator size='large' color={colors.primaryColor} />
+                        )
+                        :
+                        (
+                            <ButtonComponent
+                                onPress={submitHandler}
+                                label="Continue"
+                                enableShadow
+                            />
+                        )
+                }
+
+                <BottomScreenIndicatorComponent />
+
             </View>
 
-            {/* Submit Button */}
-            {
-                isSubmitting ?
-                    (
-                        <ActivityIndicator size='large' color={colors.primaryColor} />
-                    )
-                    :
-                    (
-                        <ButtonComponent
-                            onPress={submitHandler}
-                            label="Continue"
-                            enableShadow
-                        />
-                    )
-            }
+        </ScrollView>
 
-            <BottomScreenIndicatorComponent />
-
-        </View>
 
     </SafeAreaView>
   )

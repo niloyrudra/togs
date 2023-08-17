@@ -15,6 +15,7 @@ import DefaultUserAvatarComponent from '../components/DefaultUserAvatarComponent
 import colors from '../constants/colors';
 import sizes from '../constants/sizes';
 import { useTogsContext } from '../providers/AppProvider';
+import AppLogoComponent from '../components/AppLogoComponent';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +36,7 @@ const TabNavigator = () => {
                 },
                 headerStyle: {
                     backgroundColor: colors.dark,
-                    height: 110
+                    height: 100, // 110
                 },
                 headerTintColor: colors.white,
                 headerTitleAlign: "center",
@@ -85,15 +86,7 @@ const TabNavigator = () => {
                     // </View>
                     <View style={{flex:1}} />
                 ),
-                headerTitle: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
+                headerTitle: () => (<AppLogoComponent/>),
                 headerRight: () => (
                     <View
                         style={{
@@ -163,15 +156,7 @@ const TabNavigator = () => {
                     // </View>
                     <View style={{flex:1}} />
                 ),
-                headerTitle: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
+                headerTitle: () => (<AppLogoComponent/>),
                 headerRight: () => (
                     <View
                         style={{
@@ -217,39 +202,32 @@ const TabNavigator = () => {
                     />
                 ),
                 headerLeft: () => (
-                    <View
-                        style={{
-                            paddingLeft: 20
-                        }}
-                    >
-                        {
-                            user?.photoURL ?
-                                (
-                                    <Image
-                                        source={{uri: user.photoURL}}
-                                        style={{
-                                            width:60,
-                                            height:60,
-                                            borderRadius: 30
-                                        }}
-                                    />
-                                )
-                                :
-                                (
-                                    <DefaultUserAvatarComponent />
-                                )
-                        }
-                    </View>
+                    // <View
+                    //     style={{
+                    //         paddingLeft: 20
+                    //     }}
+                    // >
+                    //     {
+                    //         user?.photoURL ?
+                    //             (
+                    //                 <Image
+                    //                     source={{uri: user.photoURL}}
+                    //                     style={{
+                    //                         width:60,
+                    //                         height:60,
+                    //                         borderRadius: 30
+                    //                     }}
+                    //                 />
+                    //             )
+                    //             :
+                    //             (
+                    //                 <DefaultUserAvatarComponent />
+                    //             )
+                    //     }
+                    // </View>
+                    <View style={{flex:1}} />
                 ),
-                headerTitle: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
+                headerTitle: () => (<AppLogoComponent/>),
                 headerRight: () => (
                     <View
                         style={{

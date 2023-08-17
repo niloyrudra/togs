@@ -93,9 +93,10 @@ const SingleEventScreen = ({ navigation, route}) => {
         setShared( prevVal => prevVal =  route?.params?.event?.shares?.length )
         const update = async () => {
             try {
+                const eventId = route.params.event.id
                 
-                await onUpdateListOfUserVisitedEvents( user, route.params.event.id )
-                await onGetComments( route.params.event.id )
+                await onUpdateListOfUserVisitedEvents( user, eventId )
+                await onGetComments( eventId )
 
                 const eventCreator = await getUserById( route?.params?.event?.creatorId );
                 setCreator(prevValue => prevValue = eventCreator);
@@ -112,7 +113,7 @@ const SingleEventScreen = ({ navigation, route}) => {
         <ScrollView
             style={{
                 flex:1,
-                // position:"relative"
+                width: '100%',
             }}
         >
             {/* Status Bar */}
@@ -122,8 +123,8 @@ const SingleEventScreen = ({ navigation, route}) => {
             <View
                 style={{
                     flex:1,
-                    // position:"relative",
-                    width: Dimensions.get("screen").width - 40,
+                    // width: Dimensions.get("screen").width - 40,
+                    // width: '100%',
                 }}
             >
 
@@ -284,7 +285,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     banner: {
-        width: Dimensions.get('screen').width,
+        // width: Dimensions.get('screen').width,
+        width: '100%',
         height: Dimensions.get('screen').width * 0.6,
         borderRadius: 10,
     },
@@ -325,7 +327,7 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     },
     meta: {
-        textTransform:'uppercase',
-        fontStyle:'italic'
+        textTransform: 'uppercase',
+        fontStyle: 'italic'
     }
 })

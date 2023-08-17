@@ -18,53 +18,58 @@ import sizes from '../../../constants/sizes'
 // Context
 // import { useTogsContext } from '../../../providers/AppProvider'
 
-const EVENTS = [
-  {
-    activities: "yoga",
-    content: "The yoga event...!",
-    createdAt: "June 10th 2023, 3:17:15 am",
-    creator: {
-    name: "Nill Rudra",
-    photoURL: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ftogs-eafe6928-6d96-47bf-87a8-d31b20d344bc/ImagePicker/80129fff-8f5b-498e-91a6-ce4812977a36.jpeg"},
-    creatorId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
-    endDate: "31/07/2023",
-    id: "5K7DxMOWV8ANxiqGU5e0",
-    image: "https://firebasestorage.googleapis.com/v0/b/togs-abcca.appspot.com/o/7f8bf514-40a7-42b4-be5f-662558c12963.jpeg?alt=media&token=ec4e9fd4-3a1b-4e73-97ed-2e80e0da77a8",
-    likes: [ "PGsyqeBFKDSXq4EvpzZqnix0mMK2", "0Slm53iDVaPBVsxKetaOA1Jem2u1" ],
-    location: "Gulshan-1, Dhaka",
-    price: "510",
-    services: "venue",
-    shares: [ "Jun 21, 2023 7:03 PM", "Jun 21, 2023 7:06 PM" ],
-    startDate: "30/06/2023",
-    time: "",
-    workingHours: "6:30 pm",
-  },
-  {
-    activities: "soccer",
-    content: "Here is soccer tournament in Madrid.",
-    createdAt: "June 12th 2023, 3:53:02 am",
-    creator: {
-    name: "Nill Rudra",
-    photoURL: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ftogs-eafe6928-6d96-47bf-87a8-d31b20d344bc/ImagePicker/80129fff-8f5b-498e-91a6-ce4812977a36.jpeg"},
-    creatorId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
-    endDate: "31/07/2023",
-    id: "qPoLtqRhQjp8WdKS9Apb",
-    image: "",
-    likes: [],
-    location: "Madrid",
-    price: "1569",
-    services: "tournament",
-    shares: [],
-    startDate: "01/07/2023",
-    time: "6:30 pm",
-  }
-];
+// const EVENTS = [
+//   {
+//     activities: "yoga",
+//     content: "The yoga event...!",
+//     createdAt: "June 10th 2023, 3:17:15 am",
+//     creator: {
+//     name: "Nill Rudra",
+//     photoURL: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ftogs-eafe6928-6d96-47bf-87a8-d31b20d344bc/ImagePicker/80129fff-8f5b-498e-91a6-ce4812977a36.jpeg"},
+//     creatorId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
+//     endDate: "31/07/2023",
+//     id: "5K7DxMOWV8ANxiqGU5e0",
+//     image: "https://firebasestorage.googleapis.com/v0/b/togs-abcca.appspot.com/o/7f8bf514-40a7-42b4-be5f-662558c12963.jpeg?alt=media&token=ec4e9fd4-3a1b-4e73-97ed-2e80e0da77a8",
+//     likes: [ "PGsyqeBFKDSXq4EvpzZqnix0mMK2", "0Slm53iDVaPBVsxKetaOA1Jem2u1" ],
+//     location: "Gulshan-1, Dhaka",
+//     price: "510",
+//     services: "venue",
+//     shares: [ "Jun 21, 2023 7:03 PM", "Jun 21, 2023 7:06 PM" ],
+//     startDate: "30/06/2023",
+//     time: "",
+//     workingHours: "6:30 pm",
+//   },
+//   {
+//     activities: "soccer",
+//     content: "Here is soccer tournament in Madrid.",
+//     createdAt: "June 12th 2023, 3:53:02 am",
+//     creator: {
+//     name: "Nill Rudra",
+//     photoURL: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ftogs-eafe6928-6d96-47bf-87a8-d31b20d344bc/ImagePicker/80129fff-8f5b-498e-91a6-ce4812977a36.jpeg"},
+//     creatorId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
+//     endDate: "31/07/2023",
+//     id: "qPoLtqRhQjp8WdKS9Apb",
+//     image: "",
+//     likes: [],
+//     location: "Madrid",
+//     price: "1569",
+//     services: "tournament",
+//     shares: [],
+//     startDate: "01/07/2023",
+//     time: "6:30 pm",
+//   }
+// ];
 
-const EventListScreen = ({events=EVENTS}) => {
+const EventListScreen = ({route}) => {
   const navigation = useNavigation();
 
-//   const [ selectedEvent, setSelectedEvent ] = React.useState(null)
+
+  const [ selectedEvent, setSelectedEvent ] = React.useState(route.params?.events?.length ?? [])
 //   const [ isLoading, setIsLoading ] = React.useState(false)
+
+  React.useEffect(() => {
+    if(route.params?.events) setSelectedEvent( prevValue => prevValue = route.params?.events )
+  }, [route.params?.events?.length]);
 
   return (
     <View style={styles.container}>
@@ -86,13 +91,13 @@ const EventListScreen = ({events=EVENTS}) => {
             marginBottom: 10
           }}
         >
-          Total number of event(s) - {events.length}
+          Total number of event(s) - {selectedEvent.length}
         </Text>
         {
-          events.length ? 
+          selectedEvent.length ? 
             (
               <FlatList
-                data={events}
+                data={selectedEvent}
                 keyExtraction= {item => item.id}
                 // key ={Math.random().toString()}
                 // ListHeaderComponent={
@@ -140,7 +145,8 @@ const EventListScreen = ({events=EVENTS}) => {
                           )
                       }
                       <View>
-                        <Text style={styles.services}>{item?.services ?? 'Anonymous'}</Text>
+                        <Text style={styles.title}>{item?.title ?? 'Anonymous'}</Text>
+                        {/* <Text style={styles.services}>{item?.services ?? 'Anonymous'}</Text> */}
                         <Text style={styles.activities}>{item?.activities}</Text>
                       </View>
                     </View>
@@ -212,7 +218,7 @@ const styles = StyleSheet.create({
 
       elevation: 3,
     },
-    services: {
+    title: {
       fontFamily: fonts.bold,
       fontSize: sizes.fontSubTitle,
       fontWeight: '800',

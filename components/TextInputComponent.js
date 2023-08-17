@@ -46,8 +46,9 @@ const TextInputComponent = ( props ) => {
                         style={{
                             position:"absolute",
                             right: 2,
-                            top: 31,
-                            backgroundColor: colors.white,
+                            top: 34,
+                            // top: 31,
+                            // backgroundColor: colors.white,
                             width: 45,
                             height: 45,
                             borderRadius: 45,

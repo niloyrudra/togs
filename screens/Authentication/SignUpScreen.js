@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, CheckBox } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { StatusBar } from 'expo-status-bar';
+import { Switch } from 'react-native-elements';
 
 // Components
 import ButtonComponent from '../../components/ButtonComponent'
@@ -15,10 +16,13 @@ import BottomScreenIndicatorComponent from '../../components/BottomScreenIndicat
 import fonts from '../../constants/fonts'
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes';
+// import { Switch } from 'react-native-gesture-handler';
+// import CheckBox from '@react-native-community/checkbox';
 
 const SignUpScreen = ( { navigation } ) => {
     const [isSubmitted, setIsSubmitted] = React.useState(false)
     const [name, setName] = React.useState("")
+    const [role, setRole] = React.useState(false)
     const [interest, setInterest] = React.useState("")
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
@@ -90,6 +94,7 @@ const SignUpScreen = ( { navigation } ) => {
                     email,
                     password,
                     interest,
+                    role,
                     name
                 }
 
@@ -184,6 +189,40 @@ const SignUpScreen = ( { navigation } ) => {
                     />
                 </View>
 
+                {/* Role */}
+                <View style={{ marginBottom: 20 }}>
+                    <TextInputLabelComponent label="Profile Type" />
+                    {/* <TextInputComponent
+                        placeholder="Interests"
+                        value={interest}
+                        onChange={setInterest}
+                    /> */}
+                    {/* <CheckBox
+                        disabled={false}
+                        value={role}
+                        onValueChange={setRole}
+                        style={styles.checkbox}
+                    /> */}
+                    <View
+                        style={{
+                            flexDirection:"row",
+                            alignItems:"center",
+                            justifyContent:"flex-start"
+                        }}
+                    >
+                        <Switch
+                            disabled={false}
+                            // trackColor={{false: '#767577', true: '#81b0ff'}}
+                            trackColor={{false: '#767577', true: colors.primaryColor}}
+                            thumbColor={role ? colors.white : '#f4f3f4'}
+                            value={role}
+                            onValueChange={setRole}
+                            style={styles.checkbox}
+                        />
+                        <Text style={styles.label}>Are you a Service Provider?</Text>
+                    </View>
+                </View>
+
                 {/* Password */}
                 <View style={{ marginBottom: 20 }}>
                     <TextInputLabelComponent label="Your password" />
@@ -271,5 +310,11 @@ const styles = StyleSheet.create({
     errorMsg: {
         color: colors.yellow,
         fontSize: sizes.fontText
-    }
+    },
+    checkbox: {
+        alignSelf: 'center',
+    },
+    label: {
+        margin: 8,
+    },
 })
