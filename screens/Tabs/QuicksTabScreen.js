@@ -56,7 +56,8 @@ const QuicksTabScreen = ( {navigation} ) => {
                     item={item}
                     commentCount={item?.commentCount ?? 0}
                     // onPress={() => item?.services ? navigation.navigate( 'EventScreen', {event: item, prevScreen: 'Quicks'} ) : navigation.navigate('PostScreen', {post: item, prevScreen: 'Quicks'}) }
-                    onPress={() => navigation.navigate( 'Profile', {userId: item?.creatorId} ) }
+                    // onPress={() => navigation.navigate( 'Profile', {userId: item?.creatorId} ) }
+                    onPress={() => navigation.navigate( 'ProfileAlt', {userId: item?.creatorId} ) }
                   />
                 )}}
                 ListFooterComponent={(

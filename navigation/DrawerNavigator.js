@@ -33,10 +33,24 @@ import DefaultUserAvatarComponent from '../components/DefaultUserAvatarComponent
 import { useTogsContext } from '../providers/AppProvider';
 import sizes from '../constants/sizes';
 import fonts from '../constants/fonts';
+import ProfileAltScreen from '../screens/Drawer/ProfileAltScreen';
 
 const Drawer = createDrawerNavigator();
 
+
 const DrawerNavigator = () => {
+
+    // const {getUserById} = useTogsContext()
+
+    // const getUserNameById = async (id) => {
+    //     if( id ) {
+    //         const user = await getUserById(id);
+    //         console.log(user)
+    //         if( user && user?.userId ) return user.displayName;
+    //     }
+    //     return '';
+    // }
+
   return (
     <Drawer.Navigator
         drawerContent={ props => <DrawerContent { ...props } /> }
@@ -93,6 +107,35 @@ const DrawerNavigator = () => {
         <Drawer.Screen name='Welcome' component={WelcomeScreen} options={{ headerShown: false }} />
 
         <Drawer.Screen name='HomeTab' component={TabNavigator} options={{ headerShown: false }} />
+
+        {/* <Drawer.Screen name='ProfileAlt' component={ProfileAltScreen} options={{ headerShown: false }} /> */}
+
+        <Drawer.Screen name="ProfileAlt" component={ProfileAltScreen} options={({navigation, route}) => {
+            // console.log(currentUserName)
+            // let currentUserName = 'Anonymous'
+            // React.useEffect(() => {
+            //     (async() => {
+            //         currentUserName = await getUserNameById( route.params?.userId );
+            //     })()
+            // }, [currentUserName, route?.params?.userId])
+
+            return ({
+                // headerTitle: {currentUserName},
+                headerTitle: 'Profile',
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
+                headerLeft: () => (
+                    <TouchableOpacity
+                        style={{
+                            marginLeft: 10
+                        }}
+                        onPress={() => navigation.navigate("Quicks")}
+                    >
+                        <Ionicons name="chevron-back" size={26} color="black" />
+                    </TouchableOpacity>
+                )
+            })
+        }} />
 
         <Drawer.Screen name="EventEdit" component={EventFormScreen} options={({navigation, route}) => ({
             headerTitle: 'Host Event',

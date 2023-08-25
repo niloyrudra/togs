@@ -67,25 +67,25 @@ const ProfileTabScreen = ( {navigation, route} ) => {
 
   React.useEffect(() => {
 
-    if( route?.params?.userId && route?.params?.userId != user?.userId ) {
+    // if( route?.params?.userId && route?.params?.userId != user?.userId ) {
 
-      const altUserId = route?.params?.userId;
-      setIsUserAlt(prevValue => prevValue = true)
+    //   const altUserId = route?.params?.userId;
+    //   setIsUserAlt(prevValue => prevValue = true)
 
-      const attendAltUser = async () => {
+    //   const attendAltUser = async () => {
 
-        const altUser = await getUserById(altUserId)
+    //     const altUser = await getUserById(altUserId)
 
-        setUserAlt(prevValue => prevValue = altUser)
-      }
-      attendAltUser();
+    //     setUserAlt(prevValue => prevValue = altUser)
+    //   }
+    //   attendAltUser();
 
-      const userEvents = events.filter( event => event.creatorId == userAlt?.userId )
-      setOwnedEvents(userEvents)
+    //   const userEvents = events.filter( event => event.creatorId == userAlt?.userId )
+    //   setOwnedEvents(userEvents)
       
-    }
+    // }
     
-    else if( user?.userId ) {
+    if( user?.userId ) {
       if( userRole == 'individual' ) {
         setOwnedEvents([])
         const eventsVisited = events.filter( event => user.visitedEvents.includes(event.id))
@@ -238,7 +238,9 @@ const ProfileTabScreen = ( {navigation, route} ) => {
                 onIndexChange={setIndex}
                 initialLayout={{ width: layout.width }}
 
-                lazy={({ route }) => console.log( route.name )}
+                lazy={({ route }) => {
+                  // console.log( route.title )
+                }}
               />
             )
           }
