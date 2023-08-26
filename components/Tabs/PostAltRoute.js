@@ -3,16 +3,19 @@ import React from 'react'
 // Navigation
 import { useNavigation } from '@react-navigation/native';
 
+// Components
+import NoDataNoticeComponent from '../NoDataNoticeComponent';
+import CardWithoutImageComponent from './partials/CardWithoutImageComponent'
+import CardWithImageComponent from './partials/CardWithImageComponent';
+
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
 
 // Constants
 import colors from '../../constants/colors';
 import sizes from '../../constants/sizes';
-import NoDataNoticeComponent from '../NoDataNoticeComponent';
-import fonts from '../../constants/fonts';
 
-const PostRoute = ( {numCols=3, userId=null} ) => {
+const PostAltRoute = ( {numCols=3, userId=null} ) => {
     const navigation = useNavigation()
     const { posts } = useTogsContext();
   
@@ -52,68 +55,34 @@ const PostRoute = ( {numCols=3, userId=null} ) => {
           (
               <FlatList
                   data={ownedPosts}
+                  // getItemLayout={}
                   // keyExtractor={item => item.id}
+                  // scrollEnabled={false}
+                  // listOptionProps={{nestedScrollEnabled: true}}
+                    nestedScrollEnabled={true}
                   key={Math.random().toString()}
                   numColumns={numCols}
                   renderItem={({item, index}) => {
                   return (
-                  <TouchableOpacity
+                    <TouchableOpacity
                       style={{
-                          margin: 4,
-                          flex: 1,
-                          // backgroundColor: colors.primaryColorTrans,
-                          // borderRadius: 15
+                        margin: 4,
+                        flex: 1,
                       }}
                       onPress={() => navigation.navigate( 'PostScreen', {post: item, prevScreen: 'ProfileAlt'} ) }
-                  >
+                    >
                       {
                         (item.image && !item.image.includes('file:')) ?
                           (
-                            <View
-                                style={{
-                                flexGrow:1,
-                                // shadow
-                                    elevation: 4,
-                                    shadowColor: colors.shadowColor,
-                                    shadowOffset: {width: -2, height: 4},
-                                    shadowOpacity: 0.5,
-                                    shadowRadius: 3,
-            
-                                    margin:2
-                                }}
-                            >
-                                <Image
-                                source={{uri:item.image}}
-                                style={{
-                                    flexGrow:1,
-                                    width: '100%',
-                                    height: '100%',
-                                    maxWidth: 120,
-                                    maxHeight: 120,
-                                    borderRadius: 8,
-                                }}
-                                />
-                            </View>
+                            <CardWithImageComponent image={item?.image} />
                           )
                           :
                           (
-                            <View
-                              style={{
-                                flex:1,
-                                maxWidth: '100%',
-                                minHeight: 75,
-                                borderRadius: 15,
-                                backgroundColor: colors.secondaryColor,
-                                justifyContent:"center",
-                                alignItems:"center"
-                              }}
-                            >
-                              <Text style={{color:colors.white,fontWeight:'800',fontFamily:fonts.bold}}>{item?.title ?? 'Anonymous Post'}</Text>
-                            </View>
+                            <CardWithoutImageComponent title={item?.title ?? ''} />
                           )
                       }
                       
-                  </TouchableOpacity>
+                    </TouchableOpacity>
                   )}}
                   ListFooterComponent={(
                   <View style={{marginTop: 100}}/>
@@ -130,6 +99,6 @@ const PostRoute = ( {numCols=3, userId=null} ) => {
   )
 };
 
-export default PostRoute
+export default PostAltRoute
 
 const styles = StyleSheet.create({})

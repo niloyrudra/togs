@@ -7,6 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 // Components
 import { FloatingAction } from 'react-native-floating-action';
+import CardWithoutImageComponent from './partials/CardWithoutImageComponent';
+import CardWithImageComponent from './partials/CardWithImageComponent';
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
@@ -70,42 +72,13 @@ const PostRoute = ( {numCols=3} ) => {
                             onPress={() => navigation.navigate( 'PostScreen', {post: item, prevScreen: 'Profile'} ) }
                         >
                             {
-                            item.image ?
+                              (item.image && !item.image.includes('file:')) ?
                                 (
-                                <View
-                                    style={{
-                                    flexGrow:1,
-                                    // shadow
-                                        elevation: 4,
-                                        shadowColor: colors.shadowColor,
-                                        shadowOffset: {width: -2, height: 4},
-                                        shadowOpacity: 0.5,
-                                        shadowRadius: 3,
-                
-                                        margin:2
-                                    }}
-                                >
-                                    <Image
-                                    source={{uri:item.image}}
-                                    style={{
-                                        flexGrow:1,
-                                        width: '100%',
-                                        height: '100%',
-                                        maxWidth: 120,
-                                        maxHeight: 120,
-                                        borderRadius: 8,
-                                    }}
-                                    />
-                                </View>
+                                  <CardWithImageComponent image={item?.image} />
                                 )
                                 :
                                 (
-                                <View
-                                    style={{
-                                    flex:1,
-                                    backgroundColor: colors.secondaryColor
-                                    }}
-                                />
+                                 <CardWithoutImageComponent title={item?.title ?? ''} />
                                 )
                             }
                             

@@ -1,4 +1,4 @@
-import { Image, View, FlatList, TouchableOpacity } from 'react-native'
+import { Image, View, FlatList, TouchableOpacity, Nestab } from 'react-native'
 import React from 'react'
 // Navigation
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import NoDataNoticeComponent from '../NoDataNoticeComponent';
 // Constants
 import colors from '../../constants/colors';
 
-const EventRoute = ({ numCols=3, ownedEvents=[]}) => {
+const EventAltRoute = ({ numCols=3, ownedEvents=[]}) => {
 
     const navigation = useNavigation();
   
@@ -34,59 +34,66 @@ const EventRoute = ({ numCols=3, ownedEvents=[]}) => {
                   <FlatList
                       data={createdEvents}
                       // keyExtractor={item => item.id}
+                    //   scrollEnabled={false}
+                    // listOptionProps={{nestedScrollEnabled: true}}
+                    // nestedScrollEnabled={true}
+                    // scrollViewProps={{
+                    //             nestedScrollEnabled: true,
+                    //             scrollEnabled: true,
+                    //             decelerationRate: "normal" // normal, fast
+                    //         }}
                       key={Math.random().toString()}
                       numColumns={numCols}
                       renderItem={({item, index}) => {
-                      // console.log(item.image)
                       return (
-                      <TouchableOpacity
-                          style={{
-                              margin: 4,
-                              flex: 1,
-                          }}
-                          onPress={() => navigation.navigate( 'EventScreen', {event: item, prevScreen: 'ProfileAlt'} ) }
-                      >
-                          {
-                          item.image ?
-                              (
-                              <View
-                                  style={{
-                                  flexGrow:1,
-                                  // shadow
-                                      elevation: 4,
-                                      shadowColor: colors.shadowColor,
-                                      shadowOffset: {width: -2, height: 4},
-                                      shadowOpacity: 0.5,
-                                      shadowRadius: 3,
-              
-                                      margin:2
-                                  }}
-                              >
-                                  <Image
-                                  source={{uri:item.image}}
-                                  style={{
-                                      flexGrow:1,
-                                      width: '100%',
-                                      height: '100%',
-                                      maxWidth: 120,
-                                      maxHeight: 120,
-                                      borderRadius: 8,
-                                  }}
-                                  />
-                              </View>
-                              )
-                              :
-                              (
-                              <View
-                                  style={{
-                                  flex:1,
-                                  backgroundColor: colors.secondaryColor
-                                  }}
-                              />
-                              )
-                          }
-                          
-                      </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                margin: 4,
+                                flex: 1,
+                            }}
+                            onPress={() => navigation.navigate( 'EventScreen', {event: item, prevScreen: 'ProfileAlt'} ) }
+                        >
+                            {
+                            item.image ?
+                                (
+                                <View
+                                    style={{
+                                    flexGrow:1,
+                                    // shadow
+                                        elevation: 4,
+                                        shadowColor: colors.shadowColor,
+                                        shadowOffset: {width: -2, height: 4},
+                                        shadowOpacity: 0.5,
+                                        shadowRadius: 3,
+                
+                                        margin:2
+                                    }}
+                                >
+                                    <Image
+                                    source={{uri:item.image}}
+                                    style={{
+                                        flexGrow:1,
+                                        width: '100%',
+                                        height: '100%',
+                                        maxWidth: 120,
+                                        maxHeight: 120,
+                                        borderRadius: 8,
+                                    }}
+                                    />
+                                </View>
+                                )
+                                :
+                                (
+                                <View
+                                    style={{
+                                    flex:1,
+                                    backgroundColor: colors.secondaryColor
+                                    }}
+                                />
+                                )
+                            }
+                            
+                        </TouchableOpacity>
                       )}}
                       ListFooterComponent={(
                       <View style={{marginTop: 100}}/>
@@ -104,4 +111,4 @@ const EventRoute = ({ numCols=3, ownedEvents=[]}) => {
     )
 };
 
-export default EventRoute
+export default EventAltRoute

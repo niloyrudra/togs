@@ -34,6 +34,54 @@ export const getCatList = () => [
     {id:10, name:"Yoga", icon:"yoga"},
 ];
 
+export const getSportList = () => [
+    {
+        id: 4,
+        title: 'Poll',
+        image: require('../assets/favs/🎱.png')
+    },
+    {
+        id: 5,
+        title: 'Basketball',
+        image: require('../assets/favs/🏀.png')
+    },
+    {
+        id: 6,
+        title: 'Football',
+        image: require('../assets/favs/🏈.png')
+    },
+    {
+        id: 7,
+        title: 'Baseball',
+        image: require('../assets/favs/⚾.png')
+    },
+    {
+        id: 8,
+        title: 'Tennis Ball',
+        image: require('../assets/favs/🎾.png')
+    },
+    {
+        id: 9,
+        title: 'Soccer Ball',
+        image: require('../assets/favs/⚽.png')
+    },
+    {
+        id: 1,
+        title: 'Volleyball',
+        image: require('../assets/favs/🏐.png')
+    },
+    {
+        id: 2,
+        title: 'Football US',
+        image: require('../assets/favs/🏉.png')
+    },
+    {
+        id: 3,
+        title: 'Dumble',
+        image: require('../assets/favs/dumble.png')
+    },
+];
+
 export const getActivityList = () => [
     {label:"Baseball", value: "baseball"},
     {label:"Basketball", value: "basketball"},

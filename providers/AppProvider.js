@@ -298,6 +298,8 @@ export const AppProvider = ({ children = null }) => {
 
   const onChangeUserRole = ( role ) => dispatch({ type: ACTIONS.USER_ROLE, payload: role })
 
+  const onFilteredEventList = ( eventCatId ) => dispatch({ type: ACTIONS.UPDATE_HOME_EVENT_LIST, payload: eventCatId })
+
   const onUpdateListOfUserVisitedEvents = async ( user, eventId ) => {
     try{
       if( !user.visitedEvents.includes(eventId) ) {
@@ -568,6 +570,7 @@ export const AppProvider = ({ children = null }) => {
     userRole: state.userRole,
     comments: state.comments,
     signInError: state.signInError,
+    updatedEventList: state.updatedEventList,
     onSignUp,
     onSignIn,
     onSignOut,
@@ -587,7 +590,8 @@ export const AppProvider = ({ children = null }) => {
     onToggleConnectUser,
     onRatingUser,
     getUserById,
-    onJoinEvent
+    onJoinEvent,
+    onFilteredEventList
   }
 
   return (

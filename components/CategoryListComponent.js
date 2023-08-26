@@ -9,6 +9,9 @@ import { getCatList } from '../utils/utils';
 // Constants
 import colors from '../constants/colors';
 
+// Context
+import { useTogsContext } from '../providers/AppProvider';
+
 const CAT_LIST = getCatList();
 
 const renderIcon = ( icon ) => {
@@ -32,7 +35,10 @@ const renderIcon = ( icon ) => {
     }
 }
 
-const CategoryListComponent = () => {
+const CategoryListComponent = ({filterRef}) => {
+
+    const {onFilteredEventList} = useTogsContext()
+
   return (
     <>
       <FlatList
@@ -54,6 +60,10 @@ const CategoryListComponent = () => {
                     // justifyContent: 'space-between',
                     alignItems: "center",
                     gap: 6
+                }}
+                onPress={() => {
+                    onFilteredEventList( item?.name?.toLocaleLowerCase() )
+                    filterRef.current = item?.name?.toLocaleLowerCase()
                 }}
             >
                 {

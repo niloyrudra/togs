@@ -16,55 +16,10 @@ import sizes from '../../constants/sizes';
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
 import { StatusBar } from 'expo-status-bar';
+import { getSportList } from '../../utils/utils';
 
 // Dummy Data
-const favoriteSports = [
-    {
-        id: 4,
-        title: 'Poll',
-        image: require('../../assets/favs/🎱.png')
-    },
-    {
-        id: 5,
-        title: 'Basketball',
-        image: require('../../assets/favs/🏀.png')
-    },
-    {
-        id: 6,
-        title: 'Football',
-        image: require('../../assets/favs/🏈.png')
-    },
-    {
-        id: 7,
-        title: 'Baseball',
-        image: require('../../assets/favs/⚾.png')
-    },
-    {
-        id: 8,
-        title: 'Tenis Ball',
-        image: require('../../assets/favs/🎾.png')
-    },
-    {
-        id: 9,
-        title: 'Soccer Ball',
-        image: require('../../assets/favs/⚽.png')
-    },
-    {
-        id: 1,
-        title: 'Vollyball',
-        image: require('../../assets/favs/🏐.png')
-    },
-    {
-        id: 2,
-        title: 'Football 2',
-        image: require('../../assets/favs/🏉.png')
-    },
-    {
-        id: 3,
-        title: 'Dumbel',
-        image: require('../../assets/favs/dumble.png')
-    },
-];
+const favoriteSports = getSportList();
 
 const FavoriteSportsScreen = ( { navigation, route } ) => {
     const { onSignUp } = useTogsContext();

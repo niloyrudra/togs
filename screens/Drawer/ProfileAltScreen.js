@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, useWindowDimensions, ScrollView } from 'react-native'
 import React from 'react'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { StatusBar } from 'expo-status-bar';
@@ -9,16 +9,16 @@ import { useTogsContext } from '../../providers/AppProvider'
 // Components
 import PostAltRoute from '../../components/Tabs/PostAltRoute';
 import EventAltRoute from '../../components/Tabs/EventAltRoute';
-import ButtonComponent from '../../components/ButtonComponent'
 import DefaultUserAvatarComponent from '../../components/DefaultUserAvatarComponent';
-
-// Modal
-// import ProfileEditModal from '../Profile/ProfileEditModal';
 
 // Constants
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 import fonts from '../../constants/fonts'
+
+// Utilities
+import { getSportList } from '../../utils/utils';
+
 
 const renderTabBar = props => (
   <TabBar
@@ -41,6 +41,14 @@ const renderTabBar = props => (
 //   events: () => (<EventRoute />),
 // });
 
+const showChosenSports = (chosenSportsIds) => {
+  if( chosenSportsIds?.length > 0 ) {
+    const favSports = getSportList()
+    const chosenSports = favSports.filter( item => chosenSportsIds.includes(item.id) ).map(item => item.title).join(', ')
+    return chosenSports ? chosenSports : 'No information yet!'
+  }
+  return 'No information yet!'
+ }
 
 const ProfileAltScreen = ( {navigation, route} ) => {
 
@@ -80,151 +88,181 @@ const ProfileAltScreen = ( {navigation, route} ) => {
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 
-      <StatusBar
-        animated={true}
-        style= "dark" //"auto"
-      />
+      {/* <ScrollView
+        nestedScrollEnabled={true}
+        scrollEnabled={true}
+
+        // style={{ flex: 1 }}
+        // listOptionProps={{
+        //   nestedScrollEnabled:true
+        // }}
+
+      > */}
+
+        <StatusBar
+          animated={true}
+          style= "dark" //"auto"
+        />
               
         <View
           style={styles.container}
         >
         
-          {/* Profile Info */}
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 20,
-              justifyContent:"space-between",
-              alignItems:"center",
-              marginVertical: 20
-            }}
-          >
-
-            {/* User's Profile Pic & Name */}
-            <View
-              style={{
-                // flexDirection: "row",
-                // gap: 20,
-                justifyContent:"center",
-                alignItems:"center",
-                // marginVertical: 20
-                width: 90
-              }}
-            >
-              {
-                user?.photoURL ?
-                  (
-                    <Image
-                      source={{ uri: user.photoURL }}
-                      style={{
-                        width: 72,
-                        height: 72,
-                        borderRadius: 36
-                      }}
-                    />
-                  )
-                  :
-                  (
-                    <DefaultUserAvatarComponent />
-                  )
-              }
-
+              {/* Profile Info */}
               <View
                 style={{
-                  marginTop: 12
+                  flexDirection: "row",
+                  gap: 20,
+                  justifyContent:"space-between",
+                  alignItems:"center",
+                  marginVertical: 20
                 }}
               >
-                <Text style={styles.userName}>{ user?.displayName ?? 'Anonymous'}</Text>
-              </View>
-            </View>
 
-            {/* User's Stats */}
-            <View
-              style={{
-                flex:1,
-                flexDirection: "row",
-                justifyContent: "space-around"
-              }}
-            >
-
-              <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>{user?.connections?.length ?? 0}</Text>
-                <Text style={styles.userStatLabel}>Connections</Text>
-              </View>
-
-              <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>{ownedEvents.length ?? '0'}</Text>
-                <Text style={styles.userStatLabel}>
-                  {/* { userRole == 'individual' ? 'Events joined' : 'No. of Events' } */}
-                  Events
-                </Text>
-              </View>
-
-              <View style={styles.userStat}>
+                {/* User's Profile Pic & Name */}
                 <View
                   style={{
-                    flexDirection: "row",
-                    gap: 4,
+                    // flexDirection: "row",
+                    // gap: 20,
+                    justifyContent:"center",
                     alignItems:"center",
-                    justifyContent:"center"
+                    // marginVertical: 20
+                    width: 90
                   }}
                 >
-                  <Text style={styles.userStatNum}>{user?.ratings ?? 0}</Text>
-                  <Image
-                    source={ require('../../assets/icons/star.png') }
-                    style={styles.star}
-                  />
+                  {
+                    user?.photoURL ?
+                      (
+                        <Image
+                          source={{ uri: user.photoURL }}
+                          style={{
+                            width: 72,
+                            height: 72,
+                            borderRadius: 36
+                          }}
+                        />
+                      )
+                      :
+                      (
+                        <DefaultUserAvatarComponent />
+                      )
+                  }
+
+                  <View
+                    style={{
+                      marginTop: 12
+                    }}
+                  >
+                    <Text style={styles.userName}>{ user?.displayName ?? 'Anonymous'}</Text>
+                  </View>
                 </View>
-                <Text style={styles.userStatLabel}>Ratings</Text>
+
+                {/* User's Stats */}
+                <View
+                  style={{
+                    flex:1,
+                    flexDirection: "row",
+                    justifyContent: "space-around"
+                  }}
+                >
+
+                  <View style={styles.userStat}>
+                    <Text style={styles.userStatNum}>{user?.connections?.length ?? 0}</Text>
+                    <Text style={styles.userStatLabel}>Connections</Text>
+                  </View>
+
+                  <View style={styles.userStat}>
+                    <Text style={styles.userStatNum}>{ownedEvents.length ?? '0'}</Text>
+                    <Text style={styles.userStatLabel}>
+                      {/* { userRole == 'individual' ? 'Events joined' : 'No. of Events' } */}
+                      Events
+                    </Text>
+                  </View>
+
+                  <View style={styles.userStat}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 4,
+                        alignItems:"center",
+                        justifyContent:"center"
+                      }}
+                    >
+                      <Text style={styles.userStatNum}>{user?.ratings ?? 0}</Text>
+                      <Image
+                        source={ require('../../assets/icons/star.png') }
+                        style={styles.star}
+                      />
+                    </View>
+                    <Text style={styles.userStatLabel}>Ratings</Text>
+                  </View>
+
+
+                </View>
+
               </View>
 
+              {/* User Interest */}
+              <View
+                style={{
+                  marginBottom: 10
+                }}
+              >
+                <Text style={{color:colors.primaryColor,fontFamily:fonts.bold,fontSize:sizes.label,marginBottom:5}}>Interest</Text>
+                <Text style={{color:colors.infoColor,fontFamily:fonts.regular,fontSize:sizes.fontText}}>{user?.interest ? user.interest : 'No information yet!'}</Text>
+              </View>
 
-            </View>
+              {/* User Favorites */}
+              <View
+                style={{
+                  marginBottom: 10
+                }}
+              >
+                <Text style={{color:colors.primaryColor,fontFamily:fonts.bold,fontSize:sizes.label,marginBottom:5}}>Favorites</Text>
+                <Text style={{color:colors.infoColor,fontFamily:fonts.regular,fontSize:sizes.fontText}}>{showChosenSports(user?.chosenSports)}</Text>
+              </View>
 
-          </View>
+              {/* User Bio */}
+              <View
+                style={{
+                  marginBottom: 20
+                }}
+              >
+                <Text style={{color:colors.primaryColor,fontFamily:fonts.bold,fontSize:sizes.label,marginBottom:5}}>Bio</Text>
+                
+                <ScrollView style={{
+                  maxHeight: 80
+                }}>
+                    <Text style={{color:colors.infoColor,fontFamily:fonts.regular,fontSize:sizes.fontText}}>{user?.bio ? user.bio : 'No information yet!'}</Text>
+                </ScrollView>
+              
+              </View>
 
-          {/* User Interest */}
-          <View
-            style={{
-              marginBottom: 10
-            }}
-          >
-            <Text style={{color:colors.primaryColor,fontFamily:fonts.bold,fontSize:sizes.label,marginBottom:10}}>Interest</Text>
-            <Text style={{color:colors.infoColor,fontFamily:fonts.regular,fontSize:sizes.fontText}}>{user?.interest ? user.interest : 'No information yet!'}</Text>
-          </View>
+              {/* Tab Scenes for Posts and Events */}
+              <TabView
+                navigationState={{ index, routes }}
+                // renderScene={renderScene}
 
-          {/* User Bio */}
-          <View
-            style={{
-              marginBottom: 30
-            }}
-          >
-            <Text style={{color:colors.primaryColor,fontFamily:fonts.bold,fontSize:sizes.label,marginBottom:10}}>Bio</Text>
-            <Text style={{color:colors.infoColor,fontFamily:fonts.regular,fontSize:sizes.fontText}}>{user?.bio ? user.bio : 'No information yet!'}</Text>
-          </View>
+                renderScene={
+                  SceneMap({
+                    posts: () => (<PostAltRoute numCols={3} userId={route?.params?.userId} />),
+                    events: () => (<EventAltRoute numCols={3} ownedEvents={ownedEvents} />),
+                  })
+                }
 
-          {/* Tab Scenes for Posts and Events */}
-          <TabView
-            navigationState={{ index, routes }}
-            // renderScene={renderScene}
+                renderTabBar={renderTabBar}
+                onIndexChange={setIndex}
+                initialLayout={{ width: layout.width }}
 
-            renderScene={
-              SceneMap({
-                posts: () => (<PostAltRoute numCols={3} userId={route?.params?.userId} />),
-                events: () => (<EventAltRoute numCols={3} ownedEvents={ownedEvents} />),
-              })
-            }
-
-            renderTabBar={renderTabBar}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
-
-            lazy={({ route }) => {
-              // console.log( route.title )
-            }}
-          />
+                lazy={({ route }) => {
+                  // console.log( route.title )
+                }}
+              />
             
         </View>
+
+      {/* </ScrollView> */}
+
     </SafeAreaView>
   )
 }

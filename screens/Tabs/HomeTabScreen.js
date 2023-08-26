@@ -16,8 +16,8 @@ import { useTogsContext } from '../../providers/AppProvider'
 import { StatusBar } from 'expo-status-bar'
 
 const HomeTabScreen = () => {
-  const { onFetchAllEvents, events, onFetchAllPosts } = useTogsContext();
-
+  const { onFetchAllEvents, events, onFetchAllPosts, updatedEventList } = useTogsContext();
+  const filterRef = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false)
   const [feeds, setFeeds] = React.useState(events)
 
@@ -32,10 +32,24 @@ const HomeTabScreen = () => {
       }
       unSubscriber();
     }, [])
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    if(filterRef.current != 'all' ) {
+      setFeeds( prevValue => prevValue = updatedEventList)
+      setIsLoading(false);
+    }
+    else {
+      setFeeds( prevValue => prevValue = events)
+      setIsLoading(false);
+    }
+  }, [filterRef?.current])
     
   React.useEffect(() => {
     setFeeds( prevValue => prevValue = events)
   }, [events?.length])
+
+  console.log(updatedEventList.length)
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
@@ -50,7 +64,7 @@ const HomeTabScreen = () => {
 
       {/* Category Section */}
       <View style={styles.catContainer}>
-        <CategoryListComponent />
+        <CategoryListComponent filterRef={filterRef} />
       </View>
 
       {/* Body Content */}

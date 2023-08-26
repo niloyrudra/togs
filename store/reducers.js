@@ -3,69 +3,9 @@ import ACTIONS from "./storeActions";
 export const initialState = {
     user: null,
     userRole: null,
-    // users: [
-    //     {
-    //       age: "",
-    //       bio: "",
-    //       chosenSports: [5],
-    //       connections: [],
-    //       createdAt: "June 12th 2023, 5:19:55 am",
-    //       displayName: "XYZ pqr",
-    //       email: "xyz@gmail.com",
-    //       firstName: "XYZ",
-    //       interest: "Soccer",
-    //       lastName: "pqr",
-    //       modifiedAt: null,
-    //       peopleYouMet: [],
-    //       phoneNumber: "",
-    //       photoURL: "",
-    //       rating: [],
-    //       userId: "btPSHBhhNtfDXm5ggStyskfokN73",
-    //       visitedEvents: []
-    //     },
-    //     {
-    //       age: "",
-    //       bio: "",
-    //       chosenSports: [9],
-    //       connections: [],
-    //       createdAt: "May 1st 2023, 12:17:15 am",
-    //       displayName: "Harry Handerson",
-    //       email: "abcd@gmail.com",
-    //       firstName: "Harry",
-    //       interest: "Soccer",
-    //       lastName: "Handerson",
-    //       modifiedAt: null,
-    //       peopleYouMet: [],
-    //       phoneNumber: "",
-    //       photoURL: "",
-    //       rating: [],
-    //       userId: "btW2PKGvIjWMHFvawPa1wNUfjVK2",
-    //       visitedEvents: []
-    //     },
-    //     {
-    //       address: "Middle Badda, Dhaka 1212, Bangladesh",
-    //       age: "34",
-    //       bio: "This is a bio....",
-    //       birthDate: "10/02/1989",
-    //       chosenSports: [8, 9, 5, 3],
-    //       connections: [],
-    //       createdAt: "June 5th 2023, 2:17:15 am",
-    //       displayName: "Niloy Rudra",
-    //       email: "nill@gmail.com",
-    //       firstName: "Niloy",
-    //       interest: "Chess",
-    //       lastName: "Rudra",
-    //       modifiedAt: "June 14th 2023, 4:33:56 am",
-    //       peopleYouMet: [],
-    //       phoneNumber: "111-222-333",
-    //       photoURL: "https://firebasestorage.googleapis.com/v0/b/togs-abcca.appspot.com/o/831000a6-b78f-471c-9977-deeb7896af7e.jpeg?alt=media&token=6c3563b6-b579-4d48-8743-f7949e13aec2",
-    //       rating: [],
-    //       userId: "1webeW8Bfbf3r9FsCOX2XghKbLx1",
-    //       visitedEvents: [ "5K7DxMOWV8ANxiqGU5e0", "KoV9otZJYh2SkGXS6lm9", "qPoLtqRhQjp8WdKS9Apb" ],
-    //     }
-    // ],
     users: [],
     events: [],
+    updatedEventList: [],
     posts: [],
     comments: [],
     signInError: ''
@@ -80,6 +20,9 @@ function updateOne(array, objId) {
       return item;
      }
    })
+}
+function getUpdatedEventList(eventArray, catId) {
+    return eventArray.filter((item) => item.activities == `${catId}`)
 }
 
 function updateEventOnJoining(array, objId, userId) {
@@ -255,6 +198,7 @@ const storeReducer = ( state=initialState, action ) => {
                 ...state,
                 comments: [...state.comments, payload]
             }
+
         case ACTIONS.INCREASE_COMMENT_COUNT :
             console.log( "INCREASE COMMENT COUNT" );
             return {
@@ -296,6 +240,14 @@ const storeReducer = ( state=initialState, action ) => {
             return {
                 ...state,
                 comments: [ ...state.comments.filter( item => item.eventId != payload.eventId ), { ...payload } ]
+            }
+
+        case ACTIONS.UPDATE_HOME_EVENT_LIST :
+            console.log( "UPDATE HOME EVENT LIST" );
+            // const { id, data } = payload
+            return {
+                ...state,
+                updatedEventList: getUpdatedEventList(state.events, payload) ?? []
             }
         
 
