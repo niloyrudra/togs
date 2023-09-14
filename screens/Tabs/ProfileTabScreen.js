@@ -44,12 +44,10 @@ const renderScene = SceneMap({
 
 const ProfileTabScreen = ( {navigation, route} ) => {
 
-  // const { user, events, userRole, getUserById } = useTogsContext();
-  const { user, events, getUserById } = useTogsContext();
+  const { user, events, userRole, getUserById } = useTogsContext();
   const editRef = React.useRef();
   const layout = useWindowDimensions();
 
-  const [userRole, setUserRole] = React.useState(user?.role)
   const [userAlt, setUserAlt] = React.useState(null)
   const [isUserAlt, setIsUserAlt] = React.useState(false)
 
@@ -122,16 +120,7 @@ const ProfileTabScreen = ( {navigation, route} ) => {
           >
 
             {/* User's Profile Pic & Name */}
-            <View
-              style={{
-                // flexDirection: "row",
-                // gap: 20,
-                justifyContent:"center",
-                alignItems:"center",
-                // marginVertical: 20
-                width: 90
-              }}
-            >
+            <View>
               {
                 isUserAlt
                 ?
@@ -194,8 +183,7 @@ const ProfileTabScreen = ( {navigation, route} ) => {
               <View style={styles.userStat}>
                 <Text style={styles.userStatNum}>{ownedEvents.length ?? '0'}</Text>
                 <Text style={styles.userStatLabel}>
-                  {/* { userRole == 'individual' ? 'Events joined' : 'No. of Events' } */}
-                  { userRole == 'individual' ? 'Events joined' : 'Events' }
+                  { userRole == 'individual' ? 'Events joined' : 'No. of Events' }
                 </Text>
               </View>
 

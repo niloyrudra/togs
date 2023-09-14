@@ -86,8 +86,7 @@ const styles = StyleSheet.create({
     },
     date: {
         fontFamily: fonts.regular,
-        color: colors.infoColor,
-        fontSize: 9
+        color: colors.infoColor
     },
     comment: {
         fontFamily: fonts.italic,

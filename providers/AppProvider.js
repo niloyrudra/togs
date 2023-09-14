@@ -26,7 +26,7 @@ export const AppProvider = ({ children = null }) => {
   // Handlers
   const onSignUp = async ( userData ) => {
     try{
-      const { name, chosenSports, interest, role } = userData
+      const { name, chosenSports, interest } = userData
       
       const newUser = await auth.createUserWithEmailAndPassword( userData.email, userData.password )
       const user = newUser?.user ? newUser.user : {}
@@ -41,7 +41,6 @@ export const AppProvider = ({ children = null }) => {
         photoURL: user?.photoURL ? user.photoURL : '',
         userId: user?.uid ? user.uid : '',
         email: user?.email ? user.email : '',
-        role: role ? 'service-provider' : 'individual',
         rating: [],
         interest: interest ? interest : '',
         chosenSports: chosenSports ? chosenSports : [],

@@ -49,7 +49,6 @@ const EventJoinButtonComponent = ({event}) => {
         <View
             style={{
                 flex:1,
-                width: '100%',
                 justifyContent:"center",
                 alignItems: "flex-end"
             }}
@@ -104,7 +103,7 @@ const EventJoinButtonComponent = ({event}) => {
                                 onPress={onSubmit}
                                 style={{
                                     // width:"100%"
-                                    paddingHorizontal: 20
+                                    paddingHorizontal: 30
                                 }}
                             />
                         )

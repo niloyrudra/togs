@@ -24,7 +24,7 @@ const FeedImageTitleComponent = ({title, img=null}) => {
                 />
             )
         }
-        <Text style={styles.title}>{title?.substr(0,11)}{title?.length > 12 ? '...' : ''}</Text>
+        <Text style={styles.title}>{title}</Text>
     </View>
   )
 }

@@ -675,7 +675,6 @@ const DrawerContent = ( {navigation} ) => {
                     onPress={()=> navigation.navigate("Home")}
                 />*/}
         
-                {/* Logout Button */}
                 <TouchableOpacity
                     style={{
                         justifyContent:"center",
@@ -777,4 +776,4 @@ const styles = StyleSheet.create({
       paddingRight:44,
       borderRadius:5
     },
-});
+  })

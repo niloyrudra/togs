@@ -88,7 +88,7 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
                     flex: 1,
                     paddingHorizontal: 20,
                     // paddingVertical: 30,
-                    // paddingBottom: 20,
+                    paddingBottom: 30,
                     // backgroundColor: 'blue'
                 }}
             >
@@ -146,7 +146,7 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
 
             <View style={styles.container}>
 
-                {/* <View
+                <View
                     style={{
                         justifyContent: "center",
                         alignItems: "center"
@@ -156,7 +156,7 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
                     <View>
                         <Text style={{fontFamily: fonts.bold, fontSize: sizes.fontTitle, color: colors.dark}}>Put your comment here!</Text>
                     </View>
-                </View> */}
+                </View>
 
                 <Text style={styles.label}>Your Comment</Text>
                 <Controller
@@ -178,7 +178,7 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
 
                 <View
                     style={{
-                        marginTop: 10
+                        marginTop: 20
                     }}
                 >
                 {
@@ -193,7 +193,7 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
                 }
                 </View>
                 
-                <View style={{height: 30}} />
+                <View style={{height: 50}} />
 
             </View>
             
@@ -207,9 +207,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent:"flex-end",
         paddingHorizontal: 20,
-        backgroundColor: colors.white,
-        borderTopColor: '#e5e5e5',
-        borderTopWidth: 1
+        backgroundColor: colors.white
     },
     commentHeading: {
         fontSize: sizes.fontTitle,
@@ -223,11 +221,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         paddingHorizontal: 20,
         justifyContent: 'flex-start',
-        alignItems: "flex-start",
-        height: 50
+        alignItems: "flex-start"
     },
     label: {
-        marginTop: 15,
+        marginTop: 20,
         marginBottom: 8,
         fontSize: sizes.fontText,
         fontWeight: '600',

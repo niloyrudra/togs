@@ -55,7 +55,7 @@ const EventRoute = () => {
                 justifyContent:"space-between",
                 alignItems: "center"
               }}
-              onPress={() => navigation.navigate("EventList", {events: visitedEvents} ) }
+              onPress={() => navigation.navigate("EventList" ) }
               disabled={ visitedEvents.length ? false : true }
             >
               <View
