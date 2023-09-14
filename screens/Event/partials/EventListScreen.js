@@ -14,8 +14,15 @@ import fonts from '../../../constants/fonts'
 import sizes from '../../../constants/sizes'
 
 
-const EventListScreen = ({events=[]}) => {
+const EventListScreen = ({route}) => {
   const navigation = useNavigation();
+
+  // console.log("Event List Screen >> ", route?.params?.events)
+  const [visitedEvents, setVisistedEvents] = React.useState(route?.params?.events)
+  
+  React.useEffect(() => {
+    setVisistedEvents(prevValue => prevValue = route?.params?.events)
+  }, [route?.params?.events.length])
 
   return (
     <View style={styles.container}>
@@ -37,13 +44,13 @@ const EventListScreen = ({events=[]}) => {
             marginBottom: 10
           }}
         >
-          Total number of event(s) - {events?.length}
+          Total number of event(s) - {visitedEvents?.length}
         </Text>
         {
-          events?.length ? 
+          visitedEvents?.length ? 
             (
               <FlatList
-                data={events}
+                data={visitedEvents}
                 keyExtraction= {item => item.id}
                 renderItem={({item, index}) => (
                   <TouchableOpacity
@@ -131,10 +138,7 @@ const styles = StyleSheet.create({
       paddingVertical: 30,
     },
     list: {
-      // flex:1,
       marginVertical: 5,
-      // borderWidth: 1,
-      // borderColor: colors.infoColor,
       borderRadius: 10,
       marginHorizontal: 4,
       padding: 6,

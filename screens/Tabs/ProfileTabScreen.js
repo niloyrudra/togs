@@ -81,26 +81,25 @@ const ProfileTabScreen = ( {navigation} ) => {
   useFocusEffect(
     React.useCallback(() => {
 
-      const userEvents = events?.length ? events?.filter( event => event?.creatorId == user?.userId ) : []
+      const userEvents = user?.userId ? events?.filter( event => event?.creatorId == user?.userId ) : []
       setOwnedEvents(previousValue => previousValue = userEvents)
 
-      const eventsVisited = events.filter( event => user.visitedEvents.includes(event.id))
+      const eventsVisited = user?.userId ? events.filter( event => user.visitedEvents.includes(event.id)) : []
       setVisitedEvents(previousValue = previousValue = eventsVisited)
 
-      // if( user?.role == 'individual' ) {
-        const userJoinedEvents = events.filter( event => event.joinedUsers.includes(user?.userId))
-        setJoinedEvents(previousValue = previousValue = userJoinedEvents)
-      // }
+      const userJoinedEvents = user?.userId ? events.filter( event => event.joinedUsers.includes(user?.userId)) : []
+      setJoinedEvents(previousValue = previousValue = userJoinedEvents)
 
       return () => {
         setOwnedEvents([])
         setJoinedEvents([])
         setVisitedEvents([])
       }
-    }, [user?.userId, events?.length])
+    }, [])
   );
 
-  console.log(ownedEvents);
+  // console.log("Joined Events >> ", joinedEvents);
+  // console.log("Visited Events >> ", visitedEvents);
 
 
   if( userRole && userRole == 'individual' ) {

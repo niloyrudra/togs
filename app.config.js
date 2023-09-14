@@ -42,7 +42,7 @@ export default {
     ],
     "extra": {
       "eas": {
-        "projectId": process.env.EAS_PROJECT_ID
+        "projectId": "c5adad08-b0b8-49cb-9560-34324d942939"
       },
       apiKey: process.env.API_KEY,
       authDomain: process.env.AUTH_DOMAIN,

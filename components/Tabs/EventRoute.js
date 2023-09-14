@@ -25,8 +25,9 @@ const EventRoute = ({ownedEvents=[]}) => {
   
     React.useEffect(() => {
       if( user?.userId ) {
-        const eventsVisited = ownedEvents?.length ? ownedEvents?.filter( event => user.visitedEvents.includes(event.id)) : []
-        setVisitedEvents(eventsVisited)
+        const eventsVisited = events?.length ? events?.filter( event => user.visitedEvents.includes(event.id)) : [];
+        // console.log("eventsVisited >> ", eventsVisited)
+        setVisitedEvents(previousValue => previousValue = eventsVisited)
 
         let peopleMetList = []
         // peopleMetList = ownedEvents?.length == 0 ? [] : ownedEvents?.reduce((currentObj, accObj) => {
@@ -36,13 +37,25 @@ const EventRoute = ({ownedEvents=[]}) => {
         //   }
         //   return accObj;
         // }, []);
+        if(ownedEvents?.length > 0 ) {
+          peopleMetList = ownedEvents?.reduce(( currentObj, accuObj ) => {
+            console.log("currentObj >> ", currentObj)
+
+            if( currentObj?.joinedUsers?.length > 0 ) accuObj = [ ...new Set( [...accuObj, ...currentObj?.joinedUsers] ) ];
+
+            console.log("accuObj >> ", accuObj)
+
+            return accuObj;
+
+          }, ['']);
+        }
 
         console.log("PEOPLE_MET >> ", peopleMetList)
 
         const peopleUserMet = peopleMetList?.length ? users?.filter( user => peopleMetList?.includes( user?.userId ) ) : []
         setPeopleMet(peopleUserMet)
       }
-    },[user?.userId])
+    },[user?.userId, ownedEvents?.length])
   
     return (
       <ScrollView>
