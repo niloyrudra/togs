@@ -24,10 +24,10 @@ const ProfileModal = ({ navigation, refEle, selectedUserId, isVisible, onClose }
 
     const modelAnimatedValue = React.useRef( new Animated.Value(0) ).current
 
-    const [ selectedUser, setSelectedUser ] = React.useState( users?.filter( user => user.userId == selectedUserId )[0] )
+    const [ selectedUser, setSelectedUser ] = React.useState( users?.filter( user => user?.userId == selectedUserId )[0] )
     const [ showModal, setShowModal ] = React.useState( isVisible )
-    const [ hasAlreadyRated, setHasAlreadyRated ] = React.useState( selectedUser?.rating?.length ? selectedUser?.rating?.filter( rateObj => rateObj.userId == user.userId ) : false )
-    const [ isConnected, setIsConnected ] = React.useState( user?.connections?.includes( selectedUser.userId ) )
+    const [ hasAlreadyRated, setHasAlreadyRated ] = React.useState( selectedUser?.rating?.length ? selectedUser?.rating?.filter( rateObj => rateObj?.userId == user?.userId ) : false )
+    const [ isConnected, setIsConnected ] = React.useState( user?.connections?.includes( selectedUser?.userId ) )
 
     const [ isLoading, setIsLoading ] = React.useState(false)
   
@@ -108,7 +108,7 @@ const ProfileModal = ({ navigation, refEle, selectedUserId, isVisible, onClose }
                         {/* Profile Pic */}
                         <View>
                             <Image
-                                source={selectedUser?.photoURL ? { uri: selectedUser.photoURL } : require("../../../assets/user/user-icon-3.png")}
+                                source={selectedUser?.photoURL ? { uri: selectedUser.photoURL } : require("../../../assets/user/avatar.png")}
                                 style={{
                                     width: 120,
                                     height: 120,

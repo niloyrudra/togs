@@ -112,12 +112,12 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                     <Text style={styles.label}>Upload Profile Photo</Text>
                     <Controller
                         name="photoURL"
-                        defaultValue={user.photoURL}
+                        defaultValue={user?.photoURL ?? ''}
                         control={control}
                         render={({ field: { onChange, value } }) => (
                             <ImageUploadComponent
                                 onUpload={onChange}
-                                image={value}
+                                image={value ?? ''}
                             />
                         )}
                     />

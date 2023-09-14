@@ -9,6 +9,7 @@ const CardWithoutImageComponent = ({image}) => {
         <View
             style={{
                 flexGrow:1,
+                
                 // shadow
                 elevation: 4,
                 shadowColor: colors.shadowColor,

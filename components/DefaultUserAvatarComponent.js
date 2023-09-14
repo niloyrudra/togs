@@ -5,7 +5,7 @@ const DefaultUserAvatarComponent = ({style=null}) => {
   return (
     <View>
       <Image
-        source={require('../assets/user/user-icon-3.png')}
+        source={require('../assets/user/avatar.png')}
         style={{
             width: 72,
             height: 72,

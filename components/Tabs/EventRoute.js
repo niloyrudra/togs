@@ -15,7 +15,7 @@ import { useTogsContext } from '../../providers/AppProvider';
 // Constants
 import colors from '../../constants/colors';
 
-const EventRoute = () => {
+const EventRoute = ({ownedEvents=[]}) => {
 
     const navigation = useNavigation();
     const { user, events, users } = useTogsContext();
@@ -25,12 +25,24 @@ const EventRoute = () => {
   
     React.useEffect(() => {
       if( user?.userId ) {
-        const eventsVisited = events.filter( event => user.visitedEvents.includes(event.id))
+        const eventsVisited = ownedEvents?.length ? ownedEvents?.filter( event => user.visitedEvents.includes(event.id)) : []
         setVisitedEvents(eventsVisited)
-        const peopleUserMet = users.filter( person => user.peopleYouMet.includes(person.userId))
+
+        let peopleMetList = []
+        // peopleMetList = ownedEvents?.length == 0 ? [] : ownedEvents?.reduce((currentObj, accObj) => {
+        //   if( currentObj?.joinedUsers?.length ) {
+        //     let newAccObj = [...accObj, ...currentObj?.joinedUsers]
+        //     accObj = [...new Set(newAccObj)];
+        //   }
+        //   return accObj;
+        // }, []);
+
+        console.log("PEOPLE_MET >> ", peopleMetList)
+
+        const peopleUserMet = peopleMetList?.length ? users?.filter( user => peopleMetList?.includes( user?.userId ) ) : []
         setPeopleMet(peopleUserMet)
       }
-    },[user?.userId, events.length])
+    },[user?.userId])
   
     return (
       <ScrollView>
@@ -55,8 +67,8 @@ const EventRoute = () => {
                 justifyContent:"space-between",
                 alignItems: "center"
               }}
-              onPress={() => navigation.navigate("EventList" ) }
-              disabled={ visitedEvents.length ? false : true }
+              onPress={() => navigation.navigate("EventList", {events: visitedEvents } ) }
+              disabled={ visitedEvents?.length ? false : true }
             >
               <View
                 style={{
@@ -64,8 +76,8 @@ const EventRoute = () => {
                 }}
               >
                 {
-                  visitedEvents.length > 0 ?
-                    visitedEvents.map( (item, index) => (
+                  visitedEvents?.length > 0 ?
+                    visitedEvents?.map( (item, index) => (
                       <Image
                         key={item.id}
                         source={{uri: item.image}}
@@ -117,7 +129,7 @@ const EventRoute = () => {
                 justifyContent:"space-between",
                 alignItems: "center"
               }}
-              onPress={() => navigation.navigate("UserList")}
+              onPress={() => navigation.navigate("UserList", {people: peopleUserMet})}
               disabled={ peopleMet.length ? false : true }
             >
               <View

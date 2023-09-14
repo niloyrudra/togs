@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { StatusBar } from 'expo-status-bar';
+import { useFocusEffect } from '@react-navigation/native';
 
 // Context API
 import { useTogsContext } from '../../providers/AppProvider'
@@ -19,6 +20,7 @@ import ProfileEditModal from '../Profile/ProfileEditModal';
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 import fonts from '../../constants/fonts'
+import FeedRoute from '../../components/Tabs/FeedRoute';
 
 const renderTabBar = props => (
   <TabBar
@@ -36,66 +38,183 @@ const renderTabBar = props => (
   />
 );
 
-const renderScene = SceneMap({
-  posts: () => (<PostRoute numCols={3} />),
-  events: () => (<EventRoute />),
-});
+// const renderScene = SceneMap({
+//   left: () => (<PostRoute numCols={3} />),
+//   right: () => (<EventRoute />),
+// });
 
 
-const ProfileTabScreen = ( {navigation, route} ) => {
+const ProfileTabScreen = ( {navigation} ) => {
 
-  const { user, events, userRole, getUserById } = useTogsContext();
+  const { user, events } = useTogsContext();
   const editRef = React.useRef();
   const layout = useWindowDimensions();
 
-  const [userAlt, setUserAlt] = React.useState(null)
-  const [isUserAlt, setIsUserAlt] = React.useState(false)
 
   const [ownedEvents, setOwnedEvents] = React.useState([]);
+  const [userRole, setUserRole] = React.useState(user?.role ?? 'individual');
+
   const [visitedEvents, setVisitedEvents] = React.useState([]);
+  const [joinedEvents, setJoinedEvents] = React.useState([]);
   
-  // const [profilePic, setProfilePic] = React.useState(user?.photoURL ?? '');
   const [index, setIndex] = React.useState(0);
 
   const [routes] = React.useState([
-    { key: 'posts', title: 'Posts' },
-    { key: 'events', title: 'Events' },
+    { key: 'left', title: (userRole == 'individual' ? 'Joined Events' : 'Posts') },
+    { key: 'right', title: (userRole == 'individual' ? 'Visited Events' : 'Events') },
   ]);
+
   const [showEditModal, setShowEditModal] = React.useState(false)
 
   React.useEffect(() => {
-
-    // if( route?.params?.userId && route?.params?.userId != user?.userId ) {
-
-    //   const altUserId = route?.params?.userId;
-    //   setIsUserAlt(prevValue => prevValue = true)
-
-    //   const attendAltUser = async () => {
-
-    //     const altUser = await getUserById(altUserId)
-
-    //     setUserAlt(prevValue => prevValue = altUser)
-    //   }
-    //   attendAltUser();
-
-    //   const userEvents = events.filter( event => event.creatorId == userAlt?.userId )
-    //   setOwnedEvents(userEvents)
-      
-    // }
-    
     if( user?.userId ) {
-      if( userRole == 'individual' ) {
-        setOwnedEvents([])
-        const eventsVisited = events.filter( event => user.visitedEvents.includes(event.id))
-        setVisitedEvents(eventsVisited)
-      }
-      if( userRole == 'service-provider' ) {
-        const userEvents = events.filter( event => event.creatorId == user?.userId )
-        setOwnedEvents(userEvents)
-      }
-    }
-  },[user?.userId, route?.params?.userId])
 
+      setUserRole( prevValue => prevValue = user?.role ?? 'individual')
+
+      // if( user?.role == 'service-provider' ) {
+      //   const userEvents = events?.length ? events?.filter( event => event.creatorId == user?.userId ) : []
+      //   setOwnedEvents(previousValue => previousValue = userEvents)
+      // }
+    }
+  },[user?.userId, events?.length])
+
+  useFocusEffect(
+    React.useCallback(() => {
+
+      const userEvents = events?.length ? events?.filter( event => event?.creatorId == user?.userId ) : []
+      setOwnedEvents(previousValue => previousValue = userEvents)
+
+      const eventsVisited = events.filter( event => user.visitedEvents.includes(event.id))
+      setVisitedEvents(previousValue = previousValue = eventsVisited)
+
+      // if( user?.role == 'individual' ) {
+        const userJoinedEvents = events.filter( event => event.joinedUsers.includes(user?.userId))
+        setJoinedEvents(previousValue = previousValue = userJoinedEvents)
+      // }
+
+      return () => {
+        setOwnedEvents([])
+        setJoinedEvents([])
+        setVisitedEvents([])
+      }
+    }, [user?.userId, events?.length])
+  );
+
+  console.log(ownedEvents);
+
+
+  if( userRole && userRole == 'individual' ) {
+    return (
+      <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
+
+        <StatusBar
+          animated={true}
+          style= "light" //"auto"
+        />
+                
+          <View
+            style={styles.container}
+          >
+          
+            {/* Profile Info */}
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 20,
+                justifyContent:"space-between",
+                alignItems:"center",
+                marginVertical: 20
+              }}
+            >
+
+              {/* User's Profile Pic & Name */}
+              <View>
+                {
+                  user?.photoURL ?
+                    (
+                      <Image
+                        source={{ uri: user.photoURL }}
+                        style={{
+                          width: 72,
+                          height: 72,
+                          borderRadius: 36
+                        }}
+                      />
+                    )
+                    :
+                    (
+                      <DefaultUserAvatarComponent />
+                    )
+                }
+
+                <View
+                  style={{
+                    marginTop: 12
+                  }}
+                >
+                  <Text style={styles.userName}>{user?.displayName ?? 'Anonymous'}</Text>
+                </View>
+              </View>
+
+              {/* User's Stats */}
+              <View
+                style={{
+                  flex:1,
+                  flexDirection: "row",
+                  justifyContent: "space-around"
+                }}
+              >
+
+                <View style={styles.userStat}>
+                  <Text style={styles.userStatNum}>{user?.connections?.length ?? '0'}</Text>
+                  <Text style={styles.userStatLabel}>Connections</Text>
+                </View>
+
+                <View style={styles.userStat}>
+                  <Text style={styles.userStatNum}>{joinedEvents?.length ?? '0'}</Text>
+                  <Text style={styles.userStatLabel}>Events joined</Text>
+                </View>
+
+
+              </View>
+
+            </View>
+
+            {/* Profile Edit Button */}
+            <ButtonComponent disabled={ user?.userId ? false : true } label="Edit Profile" onPress={() => setShowEditModal(true)} />
+
+            {/* Tab Scenes for Posts and Events */}
+            <TabView
+              navigationState={{ index, routes }}
+              renderScene={SceneMap({
+                left: () => (<FeedRoute eventsData={joinedEvents} />),
+                right: () => (<FeedRoute eventsData={visitedEvents} />),
+              })}
+              renderTabBar={renderTabBar}
+              onIndexChange={setIndex}
+              initialLayout={{ width: layout.width }}
+
+              lazy={({ route }) => {
+                // console.log( route.title )
+              }}
+            />
+
+            {
+              showEditModal &&
+                (
+                  <ProfileEditModal
+                    refEle={editRef}
+                    navigation={navigation}
+                    isVisible={showEditModal}
+                    onClose={() => setShowEditModal(false)}
+                  />
+                )
+            }
+
+          </View>
+      </SafeAreaView>
+    );
+}
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 
@@ -122,39 +241,21 @@ const ProfileTabScreen = ( {navigation, route} ) => {
             {/* User's Profile Pic & Name */}
             <View>
               {
-                isUserAlt
-                ?
-                  userAlt?.photoURL ?
-                    (
-                      <Image
-                        source={{ uri: userAlt.photoURL }}
-                        style={{
-                          width: 72,
-                          height: 72,
-                          borderRadius: 36
-                        }}
-                      />
-                    )
-                    :
-                    (
-                      <DefaultUserAvatarComponent />
-                    )
-                :
-                  user?.photoURL ?
-                    (
-                      <Image
-                        source={{ uri: user.photoURL }}
-                        style={{
-                          width: 72,
-                          height: 72,
-                          borderRadius: 36
-                        }}
-                      />
-                    )
-                    :
-                    (
-                      <DefaultUserAvatarComponent />
-                    )
+                user?.photoURL ?
+                  (
+                    <Image
+                      source={{ uri: user.photoURL }}
+                      style={{
+                        width: 72,
+                        height: 72,
+                        borderRadius: 36
+                      }}
+                    />
+                  )
+                  :
+                  (
+                    <DefaultUserAvatarComponent />
+                  )
               }
 
               <View
@@ -162,7 +263,7 @@ const ProfileTabScreen = ( {navigation, route} ) => {
                   marginTop: 12
                 }}
               >
-                <Text style={styles.userName}>{isUserAlt ? userAlt?.displayName ?? 'Anonymous' : user?.displayName ?? 'Anonymous'}</Text>
+                <Text style={styles.userName}>{user?.displayName ?? 'Anonymous'}</Text>
               </View>
             </View>
 
@@ -176,7 +277,7 @@ const ProfileTabScreen = ( {navigation, route} ) => {
             >
 
               <View style={styles.userStat}>
-                <Text style={styles.userStatNum}>{isUserAlt ? userAlt?.connections?.length ?? 0 : user?.connections?.length ?? '0'}</Text>
+                <Text style={styles.userStatNum}>{user?.connections?.length ?? '0'}</Text>
                 <Text style={styles.userStatLabel}>Connections</Text>
               </View>
 
@@ -187,150 +288,46 @@ const ProfileTabScreen = ( {navigation, route} ) => {
                 </Text>
               </View>
 
-              {
-                userRole == 'service-provider' && (
-                  <View style={styles.userStat}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        gap: 4,
-                        alignItems:"center",
-                        justifyContent:"center"
-                      }}
-                    >
-                      <Text style={styles.userStatNum}>{isUserAlt ? userAlt?.ratings ?? 0 : user?.ratings ?? 0}</Text>
-                      <Image
-                        source={ require('../../assets/icons/star.png') }
-                        style={styles.star}
-                      />
-                    </View>
-                    <Text style={styles.userStatLabel}>Ratings</Text>
-                  </View>
-                )
-              }
-
+              <View style={styles.userStat}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 4,
+                    alignItems:"center",
+                    justifyContent:"center"
+                  }}
+                >
+                  <Text style={styles.userStatNum}>{user?.ratings ?? 0}</Text>
+                  <Image
+                    source={ require('../../assets/icons/star.png') }
+                    style={styles.star}
+                  />
+                </View>
+                <Text style={styles.userStatLabel}>Ratings</Text>
+              </View>
+              
             </View>
 
           </View>
 
           {/* Profile Edit Button */}
-          {!isUserAlt && <ButtonComponent disabled={ user?.userId ? false : true } label="Edit Profile" onPress={() => setShowEditModal(true)} />}
+          <ButtonComponent disabled={ user?.userId ? false : true } label="Edit Profile" onPress={() => setShowEditModal(true)} />
 
           {/* Tab Scenes for Posts and Events */}
-          {
-            !isUserAlt && userRole == 'service-provider' && (
-              <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                renderTabBar={renderTabBar}
-                onIndexChange={setIndex}
-                initialLayout={{ width: layout.width }}
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={SceneMap({
+              left: () => (<PostRoute numCols={3} />),
+              right: () => (<EventRoute ownedEvents={ownedEvents} />),
+            })}
+            renderTabBar={renderTabBar}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
 
-                lazy={({ route }) => {
-                  // console.log( route.title )
-                }}
-              />
-            )
-          }
-
-          {
-            !isUserAlt && userRole == 'individual' && (
-              <View
-                style={{
-                  marginVertical: 20
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: fonts.bold,
-                    fontSize: sizes.fontSubTitle,
-                    color:colors.primaryColor,
-                  }}
-                >
-                  Events you visited
-                </Text>
-                {
-                  visitedEvents.length ? 
-                    (
-                      <FlatList
-                        data={visitedEvents}
-                        key={Math.random().toString()}
-                        ListHeaderComponent={
-                          <View style={{height:30}} />
-                        }
-                        renderItem={({item, index}) => (
-                          <TouchableOpacity
-                            style={{
-                              marginVertical: 5,
-                              borderWidth: 1,
-                              borderColor: colors.infoColor,
-                              borderRadius: 10,
-                              padding: 6
-                            }}
-                            onPress={() => navigation.navigate( 'EventScreen', {event: item, prevScreen: 'Profile'} )}
-                          >
-                            <View
-                              style={{
-                                flexDirection:"row",
-                                alignItems:"center"
-                              }}
-                            >
-                              {
-                                item?.image ?
-                                  (
-                                    <Image
-                                      source={{uri: item.image}}
-                                      style={{
-                                        width: 40,
-                                        height: 40,
-                                        borderRadius: 20,
-                                        marginRight: 20
-                                      }}
-                                    />
-                                  )
-                                  :
-                                  (
-                                    <View style={{width:40,height:40,borderRadius:20,marginRight:20,backgroundColor:colors.secondaryColor}}/>
-                                  )
-                              }
-                              <Text>{item?.title ?? item?.creator?.name}</Text>
-                            </View>
-                          </TouchableOpacity>
-                        )}
-                        ListFooterComponent={
-                          <View style={{height:50}} />
-                        }
-                      />
-                    )
-                    :
-                    (
-                      <View
-                        style={{
-                          marginVertical: 15,
-                          marginHorizontal: 15,
-                          gap: 20
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontFamily: fonts.regular,
-                            fontSize: sizes.fontText,
-                            color:colors.infoColor,
-                          }}
-                        >You haven't visited any event yet.</Text>
-                        <ButtonComponent
-                          label="Visit Events"
-                          onPress={() => navigation.navigate("Quicks")}
-                          
-                          bgColor={colors.dark}
-                        />
-                      </View>
-                    )
-                }
-              </View>
-
-            )
-          }
+            lazy={({ route }) => {
+              // console.log( route.title )
+            }}
+          />
 
           {
             showEditModal &&

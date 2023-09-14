@@ -14,7 +14,7 @@ import { getStorage, ref, uploadBytesResumable, uploadBytes, getDownloadURL } fr
 import  colors from '../constants/colors'
 
 
-const ImageUploadComponent = ({ onUpload, image }) => {
+const ImageUploadComponent = ({ onUpload, image='' }) => {
 
     // const [image, setImage] = React.useState(null)
     // const [imageList, setImageList] = React.useState([])
@@ -153,23 +153,13 @@ const ImageUploadComponent = ({ onUpload, image }) => {
         setUploading(false);
     }
 
-    // React.useEffect(() => {
-    //     console.log(image)
-    //     return () => {
-    //         // setImage(null)
-    //         setUploading(false)
-    //     }
-    // }, [setImage])
-
     return (
         <SafeAreaView style={styles.container}>
           <TouchableOpacity style={styles.selectButton} onPress={pickImage}>
             <Text style={styles.buttonText}>Pick an image</Text>
           </TouchableOpacity>
           <View style={styles.imageContainer}>
-            {image !== null || image !== '' ? (
-              <Image source={{ uri: image }} style={styles.imageBox} />
-            ) : null}
+            {image && (<Image source={{ uri: image }} style={styles.imageBox} />)}
             { uploading ? (
               <View style={styles.progressBarContainer}>
                 {/* <Progress.Bar progress={transferred} width={300} /> */}

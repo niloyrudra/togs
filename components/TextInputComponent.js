@@ -24,9 +24,8 @@ const TextInputComponent = ( props ) => {
 
                 multiline={ props.multiline ?? false }
                 secureTextEntry={isSecureText}
-                autoCapitalize={props.autoCapitalize ?? 'sentences'}
+                autoCapitalize={props.autoCapitalize ?? 'sentences'} // 'characters', 'words', 'sentences', 'none'
                 autoFocus={props.autoFocus ?? false}
-
                 // IOS
                 textContentType={ props.textContentType ?? 'none' } // 'none', 'URL', 'addressCity', 'addressCityAndState', 'addressState', 'countryName', 'creditCardNumber', 'emailAddress', 'familyName', 'fullStreetAddress', 'givenName', 'jobTitle', 'location', 'middleName', 'name', 'namePrefix', 'nameSuffix', 'nickname', 'organizationName', 'postalCode', 'streetAddressLine1', 'streetAddressLine2', 'sublocality', 'telephoneNumber', 'username', 'password'
 
@@ -46,8 +45,8 @@ const TextInputComponent = ( props ) => {
                         style={{
                             position:"absolute",
                             right: 2,
-                            top: 31,
-                            backgroundColor: colors.white,
+                            top: 33, //31,
+                            // backgroundColor: colors.white,
                             width: 45,
                             height: 45,
                             borderRadius: 45,

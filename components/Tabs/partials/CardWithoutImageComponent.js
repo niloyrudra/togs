@@ -15,10 +15,10 @@ const CardWithoutImageComponent = ({title}) => {
                 borderRadius: 15,
                 backgroundColor: colors.secondaryColor,
                 justifyContent:"center",
-                alignItems:"center"
+                alignItems:"center",
             }}
         >
-            <Text style={{color:colors.white,fontWeight:'800',fontFamily:fonts.bold}}>{title ?? 'Anonymous Post'}</Text>
+            <Text style={{color:colors.white,fontWeight:'800',fontFamily:fonts.bold}}>{title ?? 'Anonymous'}</Text>
         </View>
   )
 }

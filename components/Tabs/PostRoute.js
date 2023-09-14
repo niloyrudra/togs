@@ -28,7 +28,7 @@ const PostRoute = ( {numCols=3} ) => {
     React.useEffect(() => {
       if(user?.userId) {
         setIsLoading(true)
-        const userPosts = posts.filter( post => post.creatorId == user?.userId )
+        const userPosts = posts.filter( post => post?.creatorId == user?.userId )
         setOwnedPosts(userPosts)
         setIsLoading(false)
       }

@@ -26,7 +26,7 @@ export const AppProvider = ({ children = null }) => {
   // Handlers
   const onSignUp = async ( userData ) => {
     try{
-      const { name, chosenSports, interest } = userData
+      const { name, chosenSports, interest, role } = userData
       
       const newUser = await auth.createUserWithEmailAndPassword( userData.email, userData.password )
       const user = newUser?.user ? newUser.user : {}
@@ -37,6 +37,7 @@ export const AppProvider = ({ children = null }) => {
         lastName: ( name && name.split(' ') ) ? name.split(' ').at(1) : '',
         age: '',
         bio: '',
+        role: role ? role : 'individual',
         phoneNumber: user?.phoneNumber ? user.phoneNumber : '',
         photoURL: user?.photoURL ? user.photoURL : '',
         userId: user?.uid ? user.uid : '',
@@ -157,29 +158,30 @@ export const AppProvider = ({ children = null }) => {
     try{
       const { firstName, lastName, age, bio, birthDate, address, phoneNumber, interest, photoURL, chosenSports  } = userData
 
-      let displayName = oldUserData.displayName;
+      let displayName = oldUserData?.displayName ?? '';
       if(  firstName && lastName  ) displayName = `${firstName.trim()} ${lastName.trim()}`
       else if(  firstName == '' && lastName  ) displayName = `${oldUserData.firstName} ${lastName.trim()}`
       else if(  firstName && lastName == '' ) displayName = `${firstName.trim()} ${oldUserData.lastName}`
       const  updatedUserModel = {
         displayName:  displayName,
-        firstName: firstName ? firstName.trim() : oldUserData.firstName,
-        lastName: lastName ? lastName.trim() : oldUserData.lastName,
-        age: age ? age.trim() : oldUserData.age,
-        bio: bio ? bio.trim() : oldUserData.bio,
-        phoneNumber: phoneNumber ? phoneNumber.trim() : oldUserData.phoneNumber,
-        photoURL: photoURL ? photoURL : oldUserData.photoURL,
-        userId: oldUserData.userId,
-        email: oldUserData.email,
-        address: address ? address.trim() : oldUserData.address,
-        birthDate: birthDate ? birthDate : oldUserData.birthDate,
-        rating: oldUserData.rating,
-        interest: interest ? interest.trim() : oldUserData.interest,
-        chosenSports: chosenSports ? chosenSports : oldUserData.chosenSports,
-        connections: oldUserData.connections,
-        peopleYouMet: oldUserData.peopleYouMet,
-        visitedEvents: oldUserData.visitedEvents,
-        createdAt: oldUserData.createdAt,
+        firstName: firstName ? firstName.trim() : oldUserData?.firstName ?? '',
+        lastName: lastName ? lastName.trim() : oldUserData?.lastName ?? '',
+        age: age ? age.trim() : oldUserData?.age ?? '',
+        bio: bio ? bio.trim() : oldUserData?.bio ?? '',
+        phoneNumber: phoneNumber ? phoneNumber.trim() : oldUserData?.phoneNumber ?? '',
+        photoURL: photoURL ? photoURL : oldUserData?.photoURL ?? '',
+        userId: oldUserData?.userId ?? '',
+        email: oldUserData?.email ?? '',
+        address: address ? address.trim() : oldUserData?.address ?? '',
+        birthDate: birthDate ? birthDate : oldUserData?.birthDate ?? '',
+        rating: oldUserData?.rating ?? 0,
+        interest: interest ? interest.trim() : oldUserData?.interest ?? '',
+        chosenSports: chosenSports ? chosenSports : oldUserData?.chosenSports ?? [],
+        connections: oldUserData?.connections ?? [],
+        peopleYouMet: oldUserData?.peopleYouMet ?? [],
+        visitedEvents: oldUserData?.visitedEvents ?? [],
+        createdAt: oldUserData?.createdAt ?? '',
+        role: oldUserData?.role ?? 'individual',
         modifiedAt: getCurrentDate(),
       };
       
@@ -291,7 +293,7 @@ export const AppProvider = ({ children = null }) => {
         return docSet
     }
     catch(error) {
-      console.error( 'GET ALL USERS Error', error )
+      console.error( 'GET ALL USERS ERROR >> ', error )
     }
   }
 

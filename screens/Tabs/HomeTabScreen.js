@@ -16,7 +16,7 @@ import { useTogsContext } from '../../providers/AppProvider'
 import { StatusBar } from 'expo-status-bar'
 
 const HomeTabScreen = () => {
-  const { onFetchAllEvents, events, onFetchAllPosts, updatedEventList } = useTogsContext();
+  const { onFetchAllEvents, events, onFetchAllPosts, updatedEventList, user, onFetchAllUsers } = useTogsContext();
   const filterRef = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false)
   const [feeds, setFeeds] = React.useState(events)
@@ -26,7 +26,8 @@ const HomeTabScreen = () => {
         setIsLoading(true);
         await Promise.all([
           onFetchAllEvents(),
-          onFetchAllPosts()
+          onFetchAllPosts(),
+          onFetchAllUsers(user?.userId)
         ]);
         setIsLoading(false);
       }

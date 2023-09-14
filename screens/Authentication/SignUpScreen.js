@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Switch } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -26,8 +26,17 @@ const SignUpScreen = ( { navigation } ) => {
     const [emailError, setEmailError] = React.useState("")
     const [passwordError, setPasswordError] = React.useState("")
     const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [role, setRole] = React.useState('');
+    const [isEnabled, setIsEnabled] = React.useState(false);
     
     // Handlers
+    const toggleSwitch = (value) => {
+        // console.log(value)
+        setIsEnabled(previousState => !previousState)
+        if( value ) setRole(previousState => previousState = 'service-provider')
+        else setRole(previousState => previousState = 'individual')
+    };
+
     const validatorHandler = () => {
         setIsSubmitted(false)
         var nameValid = false;
@@ -90,14 +99,19 @@ const SignUpScreen = ( { navigation } ) => {
                     email,
                     password,
                     interest,
-                    name
+                    name,
+                    role
                 }
 
                 setName('')
                 setInterest('')
                 setEmail('')
                 setPassword('')
+                setIsEnabled(false)
+                setRole('')
                 setIsSubmitting(false)
+
+                // console.log(user)
 
                 navigation.navigate( 'FavoriteSports', { userData: user } )
 
@@ -106,6 +120,8 @@ const SignUpScreen = ( { navigation } ) => {
                 setInterest('')
                 setEmail('')
                 setPassword('')
+                setRole('')
+                setIsEnabled(false)
             }
             
         }
@@ -168,6 +184,7 @@ const SignUpScreen = ( { navigation } ) => {
                     <TextInputComponent
                         placeholder="abcd@gmail.com"
                         mode="email"
+                        autoCapitalize="none"
                         value={email}
                         onChange={setEmail}
                     />
@@ -182,6 +199,37 @@ const SignUpScreen = ( { navigation } ) => {
                         value={interest}
                         onChange={setInterest}
                     />
+                </View>
+
+                {/* Role */}
+                <View style={{ marginBottom: 20 }}>
+                    <TextInputLabelComponent label="Your Role" />
+
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems:"center"
+                        }}
+                    >
+                        <Switch
+                            trackColor={{ false: "#767577", true: colors.primaryColor }}
+                            thumbColor={isEnabled ? colors.primaryColor : "#f5f5f5"}
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
+                            // collapsable
+                            // style={{
+                            //     width:75
+                            // }}
+                        />
+
+                        <Text style={{
+                            color: colors.infoColor,
+                            marginLeft: 10
+                        }}>
+                            Will you be a Service Provider?
+                        </Text>
+                    </View>
                 </View>
 
                 {/* Password */}

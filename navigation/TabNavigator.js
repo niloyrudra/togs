@@ -59,32 +59,7 @@ const TabNavigator = () => {
                         }}
                     />
                 ),
-                headerLeft: () => (
-                    // <View
-                    //     style={{
-                    //         paddingLeft: 20
-                    //     }}
-                    // >
-                    //     {
-                    //         user?.photoURL ?
-                    //             (
-                    //                 <Image
-                    //                     source={{uri: user.photoURL}}
-                    //                     style={{
-                    //                         width:60,
-                    //                         height:60,
-                    //                         borderRadius: 30
-                    //                     }}
-                    //                 />
-                    //             )
-                    //             :
-                    //             (
-                    //                 <DefaultUserAvatarComponent />
-                    //             )
-                    //     }
-                    // </View>
-                    <View style={{flex:1}} />
-                ),
+                headerLeft: () => (<View style={{flex:1}} />),
                 headerTitle: () => (
                     <Image
                         source={require( '../assets/logo/logo-xl.png' )}
@@ -97,23 +72,9 @@ const TabNavigator = () => {
                 headerRight: () => (
                     <View
                         style={{
-                            // flexDirection: 'row',
-                            // gap: 16,
                             paddingRight: 20
                         }}
                     >
-                        {/* <TouchableOpacity
-                            // onPress={() => navigation.openDrawer() }
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity> */}
-
                         <TouchableOpacity
                             onPress={() => navigation.navigate( 'Notifications' )}
                         >
@@ -137,32 +98,7 @@ const TabNavigator = () => {
                         }}
                     />
                 ),
-                headerLeft: () => (
-                    // <View
-                    //     style={{
-                    //         paddingLeft: 20
-                    //     }}
-                    // >
-                    //     {
-                    //         user?.photoURL ?
-                    //             (
-                    //                 <Image
-                    //                     source={{uri: user.photoURL}}
-                    //                     style={{
-                    //                         width:60,
-                    //                         height:60,
-                    //                         borderRadius: 30
-                    //                     }}
-                    //                 />
-                    //             )
-                    //             :
-                    //             (
-                    //                 <DefaultUserAvatarComponent />
-                    //             )
-                    //     }
-                    // </View>
-                    <View style={{flex:1}} />
-                ),
+                headerLeft: () => (<View style={{flex:1}} />),
                 headerTitle: () => (
                     <Image
                         source={require( '../assets/logo/logo-xl.png' )}
@@ -175,23 +111,9 @@ const TabNavigator = () => {
                 headerRight: () => (
                     <View
                         style={{
-                            // flexDirection: 'row',
-                            // gap: 16,
                             paddingRight: 20
                         }}
                     >
-                        {/* <TouchableOpacity
-                            // onPress={() => navigation.openDrawer()}
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity> */}
-
                         <TouchableOpacity
                             onPress={() => navigation.navigate( 'Notifications' )}
                         >
@@ -216,31 +138,7 @@ const TabNavigator = () => {
                         }}
                     />
                 ),
-                headerLeft: () => (
-                    <View
-                        style={{
-                            paddingLeft: 20
-                        }}
-                    >
-                        {
-                            user?.photoURL ?
-                                (
-                                    <Image
-                                        source={{uri: user.photoURL}}
-                                        style={{
-                                            width:60,
-                                            height:60,
-                                            borderRadius: 30
-                                        }}
-                                    />
-                                )
-                                :
-                                (
-                                    <DefaultUserAvatarComponent />
-                                )
-                        }
-                    </View>
-                ),
+                headerLeft: () => (<View style={{flex:1}} />),
                 headerTitle: () => (
                     <Image
                         source={require( '../assets/logo/logo-xl.png' )}
