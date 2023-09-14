@@ -36,7 +36,6 @@ const EventJoinButtonComponent = ({event}) => {
     }
 
     React.useEffect(() => {
-        // console.log(event.id)
         if(event?.joinedUsers.includes(user?.userId)) setIsJoined(prevValue => prevValue = true)
         return () => {
             setIsJoined(false)
