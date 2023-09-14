@@ -80,12 +80,7 @@ const SignUpScreen = ( { navigation } ) => {
             setPasswordError("")
             passwordValid = true
         }        
-    
-        // if(emailValid && passwordValid){            
-        //     alert('Email: ' + email + '\nPassword: ' + password); 
-        //     setEmail("");
-        //     setPassword("");
-        // }        
+          
         return (nameValid && emailValid && passwordValid) ? true : false;
     }
 
@@ -110,9 +105,6 @@ const SignUpScreen = ( { navigation } ) => {
                 setIsEnabled(false)
                 setRole('')
                 setIsSubmitting(false)
-
-                // console.log(user)
-
                 navigation.navigate( 'FavoriteSports', { userData: user } )
 
             } catch (error) {
@@ -217,10 +209,6 @@ const SignUpScreen = ( { navigation } ) => {
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={toggleSwitch}
                             value={isEnabled}
-                            // collapsable
-                            // style={{
-                            //     width:75
-                            // }}
                         />
 
                         <Text style={{

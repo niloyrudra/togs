@@ -31,7 +31,7 @@ const FeedRoute = ( {eventsData=[]} ) => {
                     eventsData?.map((item) => (
                       <TouchableOpacity
                           style={{
-                              // margin: 4,
+                              margin: 4,
                               borderRadius: 15,
                               width: Dimensions.get("screen").width / 4,
                               height: Dimensions.get("screen").width / 4,

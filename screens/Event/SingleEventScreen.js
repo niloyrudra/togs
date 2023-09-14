@@ -200,10 +200,6 @@ const SingleEventScreen = ({ navigation, route}) => {
 
                 </View>
 
-
-                {/* <Text style={styles.eventMeta}>
-                    <Text>Created by: <Text style={styles.meta}>{creator?.displayName}</Text></Text>
-                </Text> */}
                 <TouchableOpacity
                     style={{
                         justifyContent: "flex-start",

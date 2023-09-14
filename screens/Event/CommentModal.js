@@ -1,7 +1,5 @@
 import { Text, View, Animated, TextInput, StyleSheet, Modal, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native'
 import React from 'react'
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
-// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {useForm, Controller} from 'react-hook-form';
 import { Ionicons } from '@expo/vector-icons';
 
