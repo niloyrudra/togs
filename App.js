@@ -22,9 +22,7 @@ import AppNavigator from './navigation/AppNavigator';
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
-  registerNNPushToken(process.env.NATIVE_NOTIFY_TOKEN_ID, process.env.NATIVE_NOTIFY_TOKEN);
-
-  console.log("TOKEN >> ", Constants.expoConfig.extra.nativeNotifyToken)
+  registerNNPushToken(Constants.expoConfig.extra.nativeNotifyTokenID, Constants.expoConfig.extra.nativeNotifyToken );
 
   let [ fontsLoaded ] = useFonts({
     'PJS-Bold': require( './fonts/PlusJakartaSans-Bold.ttf' ),
