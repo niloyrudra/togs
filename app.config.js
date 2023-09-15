@@ -52,6 +52,8 @@ export default {
       messagingSenderId: process.env.MESSAGING_SENDER_ID,
       appId: process.env.APP_ID,
       measurementId: process.env.MEASUREMENT_ID,
+      nativeNotifyTokenID: process.env.NATIVE_NOTIFY_TOKEN_ID,
+      nativeNotifyToken: process.env.NATIVE_NOTIFY_TOKEN,
     }
   }
 }
