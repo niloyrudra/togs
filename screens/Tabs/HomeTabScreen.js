@@ -50,8 +50,6 @@ const HomeTabScreen = () => {
     setFeeds( prevValue => prevValue = events)
   }, [events?.length])
 
-  console.log(updatedEventList.length)
-
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 

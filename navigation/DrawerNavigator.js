@@ -666,7 +666,6 @@ const DrawerContent = ( {navigation} ) => {
                         marginHorizontal: 20
                     }}
                     onPress={ async () => {
-                        // console.log("Sign Out")
                         await onSignOut();
                         navigation.dispatch( DrawerActions.closeDrawer() );
                     }}

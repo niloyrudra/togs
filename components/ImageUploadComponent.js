@@ -56,7 +56,7 @@ const ImageUploadComponent = ({ onUpload, image='' }) => {
           // allowsMultipleSelection: true
         });
     
-        console.log(assets[0].uri);
+        // console.log(assets[0].uri);
         // console.log(assets.length, assets);
     
         if (!canceled) {

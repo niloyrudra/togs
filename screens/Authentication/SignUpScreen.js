@@ -31,7 +31,6 @@ const SignUpScreen = ( { navigation } ) => {
     
     // Handlers
     const toggleSwitch = (value) => {
-        // console.log(value)
         setIsEnabled(previousState => !previousState)
         if( value ) setRole(previousState => previousState = 'service-provider')
         else setRole(previousState => previousState = 'individual')

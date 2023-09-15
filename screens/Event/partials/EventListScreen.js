@@ -17,7 +17,6 @@ import sizes from '../../../constants/sizes'
 const EventListScreen = ({route}) => {
   const navigation = useNavigation();
 
-  // console.log("Event List Screen >> ", route?.params?.events)
   const [visitedEvents, setVisistedEvents] = React.useState(route?.params?.events)
   
   React.useEffect(() => {

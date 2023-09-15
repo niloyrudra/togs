@@ -62,7 +62,6 @@ const PostRoute = ( {numCols=3} ) => {
                         key={Math.random().toString()}
                         numColumns={numCols}
                         renderItem={({item, index}) => {
-                        // console.log(item.image)
                         return (
                         <TouchableOpacity
                             style={{

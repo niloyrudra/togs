@@ -346,13 +346,6 @@ export const AppProvider = ({ children = null }) => {
           });
         });
 
-      // const event = await db
-      //   .collection("events")
-      //   .doc( eventId )
-      //   .get();
-
-      // console.log("Event - comment Section", event)
-
       await db
         .collection("events")
         .doc(eventId)
@@ -532,7 +525,6 @@ export const AppProvider = ({ children = null }) => {
         console.log('No user data found!')
       } else {
         let dataObj = doc.data();
-        // console.log(dataObj.displayName);
         return dataObj;
       }
     } catch (err){

@@ -29,7 +29,10 @@ const EventRoute = ({ownedEvents=[]}) => {
         // console.log("eventsVisited >> ", eventsVisited)
         setVisitedEvents(previousValue => previousValue = eventsVisited)
 
-        let peopleMetList = []
+        let peopleMetList = [];
+
+        // console.log("Owned Events >> ", ownedEvents)
+
         // peopleMetList = ownedEvents?.length == 0 ? [] : ownedEvents?.reduce((currentObj, accObj) => {
         //   if( currentObj?.joinedUsers?.length ) {
         //     let newAccObj = [...accObj, ...currentObj?.joinedUsers]
@@ -37,23 +40,33 @@ const EventRoute = ({ownedEvents=[]}) => {
         //   }
         //   return accObj;
         // }, []);
-        if(ownedEvents?.length > 0 ) {
-          peopleMetList = ownedEvents?.reduce(( currentObj, accuObj ) => {
-            console.log("currentObj >> ", currentObj)
+        // if(ownedEvents?.length > 0 ) {
+        //   peopleMetList = ownedEvents?.reduce(( currentObj, accuObj ) => {
+        //     console.log("currentObj >> ", currentObj)
 
-            if( currentObj?.joinedUsers?.length > 0 ) accuObj = [ ...new Set( [...accuObj, ...currentObj?.joinedUsers] ) ];
+        //     if( currentObj?.joinedUsers?.length > 0 ) accuObj = [ ...new Set( [...accuObj, ...currentObj?.joinedUsers] ) ];
 
-            console.log("accuObj >> ", accuObj)
+        //     console.log("accuObj >> ", accuObj)
 
-            return accuObj;
+        //     return accuObj;
 
-          }, ['']);
-        }
+        //   }, ['']);
+        // }
 
-        console.log("PEOPLE_MET >> ", peopleMetList)
+        // console.log("PEOPLE_MET >> ", peopleMetList)
 
-        const peopleUserMet = peopleMetList?.length ? users?.filter( user => peopleMetList?.includes( user?.userId ) ) : []
-        setPeopleMet(peopleUserMet)
+        // const peopleUserMet = peopleMetList?.length ? users?.filter( user => peopleMetList?.includes( user?.userId ) ) : []
+        // setPeopleMet(peopleUserMet)
+
+        let data = [];
+        console.log(ownedEvents?.length);
+        data = ownedEvents?.reduce((curr, acc) => {
+          acc[curr?.id] = curr?.joinedUsers
+
+          return acc;
+        }, []);
+        console.log(data);
+
       }
     },[user?.userId, ownedEvents?.length])
   

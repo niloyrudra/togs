@@ -1,4 +1,4 @@
-package com.togsapp;
+package com.ashwinsuvarna043.togsapp;
 
 import android.app.Application;
 import android.content.res.Configuration;

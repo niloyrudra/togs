@@ -42,19 +42,6 @@ const AuthStackNavigator = () => {
                 shadowColor: 'transparent',
             },
             headerBackTitleVisible: true,
-            // headerRight: () => {
-            //    return(
-            //         <TouchableOpacity
-            //             style={{
-            //                 // width:24,
-            //                 // height:24
-            //             }}
-            //             onPress={() => console.log('SKIP')}
-            //         >
-            //             <Text style={{fontSize:sizes.fontText, color: colors.primaryColor }}>SKIP</Text>
-            //         </TouchableOpacity>
-            //     );
-            // }
         })}
     >
         <AuthStack.Screen name="SignIn" component={SignInScreen} options={{ title: "Login", hideShadow: true }} />

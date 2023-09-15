@@ -98,9 +98,6 @@ const ProfileTabScreen = ( {navigation} ) => {
     }, [])
   );
 
-  // console.log("Joined Events >> ", joinedEvents);
-  // console.log("Visited Events >> ", visitedEvents);
-
 
   if( userRole && userRole == 'individual' ) {
     return (

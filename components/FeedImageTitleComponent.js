@@ -6,7 +6,6 @@ import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 
 const FeedImageTitleComponent = ({title, img=null}) => {
-    // console.log(img)
   return (
     <View style={styles.content}>
         {img ?
