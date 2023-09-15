@@ -26,47 +26,25 @@ const EventRoute = ({ownedEvents=[]}) => {
     React.useEffect(() => {
       if( user?.userId ) {
         const eventsVisited = events?.length ? events?.filter( event => user.visitedEvents.includes(event.id)) : [];
-        // console.log("eventsVisited >> ", eventsVisited)
+
         setVisitedEvents(previousValue => previousValue = eventsVisited)
 
         let peopleMetList = [];
 
-        // console.log("Owned Events >> ", ownedEvents)
-
-        // peopleMetList = ownedEvents?.length == 0 ? [] : ownedEvents?.reduce((currentObj, accObj) => {
-        //   if( currentObj?.joinedUsers?.length ) {
-        //     let newAccObj = [...accObj, ...currentObj?.joinedUsers]
-        //     accObj = [...new Set(newAccObj)];
-        //   }
-        //   return accObj;
-        // }, []);
-        // if(ownedEvents?.length > 0 ) {
-        //   peopleMetList = ownedEvents?.reduce(( currentObj, accuObj ) => {
-        //     console.log("currentObj >> ", currentObj)
-
-        //     if( currentObj?.joinedUsers?.length > 0 ) accuObj = [ ...new Set( [...accuObj, ...currentObj?.joinedUsers] ) ];
-
-        //     console.log("accuObj >> ", accuObj)
-
-        //     return accuObj;
-
-        //   }, ['']);
-        // }
-
-        // console.log("PEOPLE_MET >> ", peopleMetList)
-
-        // const peopleUserMet = peopleMetList?.length ? users?.filter( user => peopleMetList?.includes( user?.userId ) ) : []
-        // setPeopleMet(peopleUserMet)
-
         let data = [];
-        console.log(ownedEvents?.length);
-        data = ownedEvents?.reduce((curr, acc) => {
-          acc[curr?.id] = curr?.joinedUsers
-
+        // console.log(ownedEvents?.length);
+        data = ownedEvents?.reduce((acc, curr) => {
+          if( curr?.joinedUsers?.length ) {
+            let newAcc = [...acc, ...curr?.joinedUsers]
+            acc = [...new Set(newAcc)];
+          }
           return acc;
         }, []);
-        console.log(data);
-
+        // console.log(data, data?.length);
+        if( data?.length ) {
+          const peopleMetList = users?.length ? users.filter( user => data?.includes( user?.userId ) ) : [];
+          setPeopleMet( previousValue => previousValue = peopleMetList );
+        }
       }
     },[user?.userId, ownedEvents?.length])
   
@@ -155,7 +133,7 @@ const EventRoute = ({ownedEvents=[]}) => {
                 justifyContent:"space-between",
                 alignItems: "center"
               }}
-              onPress={() => navigation.navigate("UserList", {people: peopleUserMet})}
+              onPress={() => navigation.navigate("UserList", {people: peopleMet})}
               disabled={ peopleMet.length ? false : true }
             >
               <View
@@ -167,7 +145,8 @@ const EventRoute = ({ownedEvents=[]}) => {
                   peopleMet.length > 0
                     ?
                       peopleMet.map( (item, index) => (
-                        <Image
+                        item.photoURL ?
+                          (<Image
                           key={item.userId}
                           source={{uri: item.photoURL}}
                           style={{
@@ -176,7 +155,21 @@ const EventRoute = ({ownedEvents=[]}) => {
                             borderRadius: 18,
                             marginRight: -20
                           }}
+                        />)
+                        : (
+                          <Image
+                          key={item.userId}
+                          source={require("../../assets/user/avatar.png")}
+                          style={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: 18,
+                            marginRight: -20
+                          }}
                         />
+                        )
+                        
+                        
                       ))
                     :
                       (
