@@ -14,12 +14,7 @@ import colors from '../../../constants/colors'
 import fonts from '../../../constants/fonts'
 import sizes from '../../../constants/sizes'
 
-// Context
-import { useTogsContext } from '../../../providers/AppProvider'
-
 const UserListScreen = ({navigation, route}) => {
-  const {user, onFetchAllUsers} = useTogsContext()
-
   const profileRef = React.useRef();
   const [ selectedUserId, setSelectedUserId ] = React.useState(null)
   const [ people, setPeople ] = React.useState([])
@@ -27,24 +22,10 @@ const UserListScreen = ({navigation, route}) => {
   const [ isLoading, setIsLoading ] = React.useState(false)
 
   React.useEffect(() => {
-    // const updateUserList = async () => {
-    //   try {
-    //     setIsLoading(true)
-    //     const usersList = await onFetchAllUsers( user.userId )
-    //     setPeople( prevValue => prevValue = usersList )
-    //     setIsLoading(false)
-    //   }
-    //   catch(error) {
-    //     console.error(error)
-    //     setIsLoading(false)
-    //   }
-    // }
-    // updateUserList()
     setIsLoading(true)
     if( route?.params?.people?.length ) setPeople( prevValue => prevValue = route?.params?.people )
     else setPeople( prevValue => prevValue = [] )
     setIsLoading(false)
-
   }, [route?.params?.people?.length])
 
   if( isLoading ) return (
@@ -82,7 +63,7 @@ const UserListScreen = ({navigation, route}) => {
           Total number of people - {people.length}
         </Text>
         {
-          people.length ? 
+          people?.length ? 
             (
               <FlatList
                 data={people}
