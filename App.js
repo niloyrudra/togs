@@ -33,7 +33,7 @@ Notifications.setNotificationHandler({
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
-  registerNNPushToken(12157, 'DqP6T4qpTFV12fiBAMNLsL');
+  registerNNPushToken(<NATIVE-NOTIFY-TOKEN-ID>, <NATIVE-NOTIFY-TOKEN>);
   
   let [ fontsLoaded ] = useFonts({
     'PJS-Bold': require( './fonts/PlusJakartaSans-Bold.ttf' ),
