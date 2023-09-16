@@ -30,20 +30,17 @@ const EventRoute = ({ownedEvents=[]}) => {
         setVisitedEvents(previousValue => previousValue = eventsVisited)
 
         let peopleMetList = [];
-
-        let data = [];
-        // console.log(ownedEvents?.length);
-        data = ownedEvents?.reduce((acc, curr) => {
+        peopleMetList = ownedEvents?.reduce((acc, curr) => {
           if( curr?.joinedUsers?.length ) {
             let newAcc = [...acc, ...curr?.joinedUsers]
             acc = [...new Set(newAcc)];
           }
           return acc;
         }, []);
-        // console.log(data, data?.length);
-        if( data?.length ) {
-          const peopleMetList = users?.length ? users.filter( user => data?.includes( user?.userId ) ) : [];
-          setPeopleMet( previousValue => previousValue = peopleMetList );
+
+        if( peopleMetList?.length ) {
+          const peopleMetArr = users?.length ? users.filter( user => peopleMetList?.includes( user?.userId ) ) : [];
+          setPeopleMet( previousValue => previousValue = peopleMetArr );
         }
       }
     },[user?.userId, ownedEvents?.length])

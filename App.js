@@ -4,7 +4,9 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
-import Constants from 'expo-constants';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from "expo-constants";
 
 // Native Notify
 import registerNNPushToken from 'native-notify';
@@ -18,12 +20,21 @@ import { useFonts } from 'expo-font';
 // Navigator
 import AppNavigator from './navigation/AppNavigator';
 
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
-  registerNNPushToken(Constants.expoConfig.extra.nativeNotifyTokenID, Constants.expoConfig.extra.nativeNotifyToken );
-
+  registerNNPushToken(12157, 'DqP6T4qpTFV12fiBAMNLsL');
+  
   let [ fontsLoaded ] = useFonts({
     'PJS-Bold': require( './fonts/PlusJakartaSans-Bold.ttf' ),
     'PJS-BoldItalic': require( './fonts/PlusJakartaSans-BoldItalic.ttf' ),

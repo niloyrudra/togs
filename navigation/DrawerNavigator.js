@@ -1,13 +1,9 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-
 import { createDrawerNavigator, DrawerItemList, DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer'
 import { DrawerActions } from '@react-navigation/native';
 // Icons
 import { AntDesign, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
-
-// Contants
-import colors from '../constants/colors';
 
 // Screens
 import CountryListScreen from '../screens/Drawer/CountryListScreen';
@@ -28,12 +24,18 @@ import EventListScreen from '../screens/Event/partials/EventListScreen';
 // Components
 import SectionLabel from '../components/SectionLabel';
 import DefaultUserAvatarComponent from '../components/DefaultUserAvatarComponent'
+import ProfileAltScreen from '../screens/Drawer/ProfileAltScreen';
+import LogoXLComponent from '../components/LogoXLComponent';
+import DrawerMenuButtonComponent from '../components/DrawerMenuButtonComponent';
+import DrawerBackButtonComponent from '../components/DrawerBackButtonComponent';
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
+
+// Contants
+import colors from '../constants/colors';
 import sizes from '../constants/sizes';
 import fonts from '../constants/fonts';
-import ProfileAltScreen from '../screens/Drawer/ProfileAltScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -48,47 +50,31 @@ const DrawerNavigator = () => {
                 width: '100%',
                 backgroundColor: colors.bgColorDefault
             },
-            headerLeft: () => (
-                <View style={{flex:1}} />
-            ),
-            headerTitle: () => (
-                <View
-                    style={{
-                        paddingLeft: 20
-                    }}
-                >
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                </View>
-            ),            
-            headerRight: () => (
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        gap: 16,
-                        paddingRight: 20
-                    }}
-                >
-                    <TouchableOpacity
-                        onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-                    >
-                        <Image
-                            source={require( '../assets/icons/setting.png' )}
-                            style={{
-                                width: 20,
-                                height: 20
-                            }}
-                        />
-                    </TouchableOpacity>
+            headerLeft: () => (<View style={{flex:1}} />),
+            headerTitle: () => (<LogoXLComponent />),
+            headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />)       
+            // headerRight: () => (
+            //     <View
+            //         style={{
+            //             flexDirection: 'row',
+            //             gap: 16,
+            //             paddingRight: 20
+            //         }}
+            //     >
+            //         <TouchableOpacity
+            //             onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
+            //         >
+            //             <Image
+            //                 source={require( '../assets/icons/setting.png' )}
+            //                 style={{
+            //                     width: 20,
+            //                     height: 20
+            //                 }}
+            //             />
+            //         </TouchableOpacity>
 
-                </View>
-            ),
-            
+            //     </View>
+            // ),
         })}
         initialRouteName="Welcome" //'HomeTab'
     >
@@ -97,22 +83,12 @@ const DrawerNavigator = () => {
         <Drawer.Screen name='HomeTab' component={TabNavigator} options={{ headerShown: false }} />
 
         <Drawer.Screen name="ProfileAlt" component={ProfileAltScreen} options={({navigation, route}) => {
-
             return ({
                 // headerTitle: {currentUserName},
                 headerTitle: 'Profile',
                 headerTitleAlign: "center",
                 headerShadowVisible: false,
-                headerLeft: () => (
-                    <TouchableOpacity
-                        style={{
-                            marginLeft: 10
-                        }}
-                        onPress={() => navigation.navigate("Quicks")}
-                    >
-                        <Ionicons name="chevron-back" size={26} color="black" />
-                    </TouchableOpacity>
-                )
+                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate('Quicks')} />)
             })
         }} />
 
@@ -123,16 +99,7 @@ const DrawerNavigator = () => {
             headerTitleStyle: {
                 fontWeight: '800'
             },
-            headerLeft: () => (
-                <TouchableOpacity
-                    style={{
-                        marginLeft: 10
-                    }}
-                    onPress={() => navigation.navigate("Profile")}
-                >
-                    <Ionicons name="chevron-back" size={26} color="black" />
-                </TouchableOpacity>
-            )
+            headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate('Profile')} />)
         })} />
 
         <Drawer.Screen name="UserList" component={UserListScreen} options={({navigation, route}) => {
@@ -145,16 +112,7 @@ const DrawerNavigator = () => {
                 headerTitleStyle: {
                     fontWeight: '800'
                 },
-                headerLeft: () => (
-                    <TouchableOpacity
-                        style={{
-                            marginLeft: 10
-                        }}
-                        onPress={() => navigation.navigate( prevScreen )}
-                    >
-                        <Ionicons name="chevron-back" size={26} color="black" />
-                    </TouchableOpacity>
-                )
+                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
@@ -168,16 +126,7 @@ const DrawerNavigator = () => {
                 headerTitleStyle: {
                     fontWeight: '800'
                 },
-                headerLeft: () => (
-                    <TouchableOpacity
-                        style={{
-                            marginLeft: 10
-                        }}
-                        onPress={() => navigation.navigate( prevScreen )}
-                    >
-                        <Ionicons name="chevron-back" size={26} color="black" />
-                    </TouchableOpacity>
-                )
+                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
@@ -191,16 +140,7 @@ const DrawerNavigator = () => {
                 headerTitleStyle: {
                     fontWeight: '800'
                 },
-                headerLeft: () => (
-                    <TouchableOpacity
-                        style={{
-                            marginLeft: 10
-                        }}
-                        onPress={() => navigation.navigate( prevScreen )}
-                    >
-                        <Ionicons name="chevron-back" size={26} color="black" />
-                    </TouchableOpacity>
-                )
+                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
@@ -214,16 +154,7 @@ const DrawerNavigator = () => {
                 headerTitleStyle: {
                     fontWeight: '800'
                 },
-                headerLeft: () => (
-                    <TouchableOpacity
-                        style={{
-                            marginLeft: 10
-                        }}
-                        onPress={() => navigation.navigate(prevScreen)}
-                    >
-                        <Ionicons name="chevron-back" size={26} color="black" />
-                    </TouchableOpacity>
-                )
+                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
@@ -234,16 +165,7 @@ const DrawerNavigator = () => {
             headerTitleStyle: {
             fontWeight: '800'
             },
-            headerLeft: () => (
-                <TouchableOpacity
-                    style={{
-                        marginLeft: 10
-                    }}
-                    onPress={() => navigation.navigate("Profile")}
-                >
-                    <Ionicons name="chevron-back" size={26} color="black" />
-                </TouchableOpacity>
-            )
+            headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate('Profile')} />)
         })} />
         
         <Drawer.Screen name='Notifications' component={NotificationsScreen} options={({navigation, route}) => ({
@@ -256,34 +178,8 @@ const DrawerNavigator = () => {
                     color: colors.white
                 },
                 headerTitleAlign: "center",
-                headerLeft: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
-                headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                ),
+                headerLeft: () => (<LogoXLComponent />),
+                headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />),
             })}
         />
 
@@ -297,34 +193,8 @@ const DrawerNavigator = () => {
                     color: colors.white
                 },
                 headerTitleAlign: "center",
-                headerLeft: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
-                headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                ),
+                headerLeft: () => (<LogoXLComponent />),
+                headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />),
             })}
         />
         <Drawer.Screen name='Language' component={LanguagesScreen} options={({navigation, route}) => ({
@@ -337,34 +207,8 @@ const DrawerNavigator = () => {
                     color: colors.white
                 },
                 headerTitleAlign: "center",
-                headerLeft: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
-                headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                ),
+                headerLeft: () => (<LogoXLComponent />),
+                headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />),
             })}
         />
         <Drawer.Screen name='Help' component={HelpScreen} options={({navigation, route}) => ({
@@ -377,76 +221,10 @@ const DrawerNavigator = () => {
                     color: colors.white
                 },
                 headerTitleAlign: "center",
-                headerLeft: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
-                headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                ),
+                headerLeft: () => (<LogoXLComponent />),
+                headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />),
             })}
         />
-        {/* <Drawer.Screen name='Preferences' component={PreferencesScreen} options={({navigation, route}) => ({
-                headerTitle: "Preferences",
-                headerStyle: {
-                    backgroundColor: colors.dark
-                },
-                headerTitleStyle: {
-                    fontWeight: '800',
-                    color: colors.white
-                },
-                headerTitleAlign: "center",
-                headerLeft: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
-                headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                ),
-            })}
-        /> */}
         <Drawer.Screen name='PrivacyPolicy' component={PrivacyPolicyScreen} options={({navigation, route}) => ({
                 headerTitle: "Privacy Policy",
                 headerStyle: {
@@ -457,34 +235,8 @@ const DrawerNavigator = () => {
                     color: colors.white
                 },
                 headerTitleAlign: "center",
-                headerLeft: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
-                headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                ),
+                headerLeft: () => (<LogoXLComponent />),
+                headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />),
             })}
         />
     </Drawer.Navigator>
@@ -556,14 +308,6 @@ const DrawerContent = ( {navigation} ) => {
             >
 
                 {/* User's Profile Pic & Name */}
-                {/* <Image
-                    source={ user?.photoURL ? { uri: user.photoURL } : require('../assets/user/user.png')}
-                    style={{
-                        width: 72,
-                        height: 72,
-                        borderRadius: 36
-                    }}
-                /> */}
                 {
                     user?.photoURL ?
                         (

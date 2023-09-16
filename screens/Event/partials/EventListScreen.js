@@ -4,8 +4,8 @@ import { StatusBar } from 'expo-status-bar'
 import { useNavigation } from '@react-navigation/native'
 
 // Components
-import ButtonComponent from "../../../components/ButtonComponent"
-import DefaultUserAvatarComponent from '../../../components/DefaultUserAvatarComponent'
+import EventRectagularCardComponent from '../../../components/EventRectagularCardComponent'
+import BackHomeButtonComponent from '../../../components/BackHomeButtonComponent'
 
 
 // Constants
@@ -26,25 +26,14 @@ const EventListScreen = ({route}) => {
   return (
     <View style={styles.container}>
       <StatusBar
+        animated={true}
         style="dark"
       />
 
-      <View
-        style={{
-          flex:1,
-          width:"100%"
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: fonts.bold,
-            fontSize: sizes.fontSubTitle,
-            color: colors.infoColor,
-            marginBottom: 10
-          }}
-        >
-          Total number of event(s) - {visitedEvents?.length}
-        </Text>
+      <View style={styles.content}>
+
+        <Text style={styles.title}>Total number of event(s) - {visitedEvents?.length}</Text>
+
         {
           visitedEvents?.length ? 
             (
@@ -52,43 +41,7 @@ const EventListScreen = ({route}) => {
                 data={visitedEvents}
                 keyExtraction= {item => item.id}
                 renderItem={({item, index}) => (
-                  <TouchableOpacity
-                    style={styles.list}
-                    onPress={() => {
-                        navigation.navigate("EventScreen", {event: item, prevScreen: 'EventList'})
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection:"row",
-                        alignItems:"center",
-                        justifyContent:"flex-start"
-                      }}
-                    >
-                      {
-                        item?.image ?
-                          (
-                            <Image
-                              source={{uri: item.image}}
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                marginRight: 20
-                              }}
-                            />
-                          )
-                          :
-                          (
-                            <DefaultUserAvatarComponent style={{width:40,height:40,marginRight:20}} />
-                          )
-                      }
-                      <View>
-                        <Text style={styles.services}>{item?.title ?? 'Anonymous'}</Text>
-                        <Text style={styles.activities}>{item?.activities}</Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
+                  <EventRectagularCardComponent item={item} />
                 )}
                 ListFooterComponent={
                   <View style={{height:50}} />
@@ -97,27 +50,7 @@ const EventListScreen = ({route}) => {
             )
             :
             (
-              <View
-                style={{
-                  marginVertical: 15,
-                  marginHorizontal: 15,
-                  gap: 20
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: fonts.regular,
-                    fontSize: sizes.fontText,
-                    color:colors.infoColor,
-                  }}
-                >No event available yet.</Text>
-                <ButtonComponent
-                  label="Go Back"
-                  onPress={() => navigation.navigate("Profile")}
-                  
-                  bgColor={colors.dark}
-                />
-              </View>
+              <BackHomeButtonComponent />
             )
         }
       </View>
@@ -129,40 +62,22 @@ const EventListScreen = ({route}) => {
 export default EventListScreen
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent:"center",
-      alignItems:"center",
-      paddingHorizontal: 20,
-      paddingVertical: 30,
-    },
-    list: {
-      marginVertical: 5,
-      borderRadius: 10,
-      marginHorizontal: 4,
-      padding: 6,
-      backgroundColor: colors.white,
-       
-      shadowColor: colors.shadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.15,
-      shadowRadius: 3.84,
-
-      elevation: 3,
-    },
-    services: {
-      fontFamily: fonts.bold,
-      fontSize: sizes.fontSubTitle,
-      fontWeight: '800',
-      color: colors.secondaryColor
-    },
-    activities: {
-      fontFamily: fonts.italic,
-      fontSize: sizes.fontText,
-      fontWeight: '600',
-      color: colors.infoColor
-    }
+  container: {
+    flex: 1,
+    justifyContent:"center",
+    alignItems:"center",
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+  },
+  content: {
+    flex:1,
+    width:"100%"
+  },
+  title: {
+    fontFamily: fonts.bold,
+    fontSize: sizes.fontSubTitle,
+    color: colors.infoColor,
+    marginBottom: 10
+  }
+    
 })

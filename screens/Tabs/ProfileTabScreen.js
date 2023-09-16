@@ -66,17 +66,7 @@ const ProfileTabScreen = ( {navigation} ) => {
 
   const [showEditModal, setShowEditModal] = React.useState(false)
 
-  React.useEffect(() => {
-    if( user?.userId ) {
-
-      setUserRole( prevValue => prevValue = user?.role ?? 'individual')
-
-      // if( user?.role == 'service-provider' ) {
-      //   const userEvents = events?.length ? events?.filter( event => event.creatorId == user?.userId ) : []
-      //   setOwnedEvents(previousValue => previousValue = userEvents)
-      // }
-    }
-  },[user?.userId, events?.length])
+  React.useEffect(() => user?.userId && setUserRole( prevValue => prevValue = user?.role ?? 'individual'),[user?.userId, events?.length])
 
   useFocusEffect(
     React.useCallback(() => {
@@ -346,13 +336,11 @@ export default ProfileTabScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
-    // justifyContent: 'center',
-  },
+    flex: 1
+   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    // justifyContent: 'center',
+    paddingHorizontal: 20
   },
   eventTitle: {
     fontSize: 16,
@@ -387,8 +375,8 @@ const styles = StyleSheet.create({
     color: colors.dark
   },
   star: {
-    width: 16, // 18,
-    height: 16 // 18
+    width: 16,
+    height: 16
   },
   tabTitle: {
     fontSize: fonts.fontTitle,

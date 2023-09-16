@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ActivityIndicator, } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 
 // Components
 import ButtonComponent from "../../../components/ButtonComponent"
 import DefaultUserAvatarComponent from '../../../components/DefaultUserAvatarComponent'
+import BackHomeButtonComponent from '../../../components/BackHomeButtonComponent'
+import ActivityIndicatorComponent from '../../../components/ActivityIndicatorComponent'
 
 // Modal
 import ProfileModal from './ProfileModal'
@@ -13,6 +15,7 @@ import ProfileModal from './ProfileModal'
 import colors from '../../../constants/colors'
 import fonts from '../../../constants/fonts'
 import sizes from '../../../constants/sizes'
+import PeopleMetRectangularCardComponent from '../../../components/PeopleMetRectangularCardComponent'
 
 const UserListScreen = ({navigation, route}) => {
   const profileRef = React.useRef();
@@ -28,40 +31,21 @@ const UserListScreen = ({navigation, route}) => {
     setIsLoading(false)
   }, [route?.params?.people?.length])
 
-  if( isLoading ) return (
-    <View
-      style={{
-        flex:1,
-        justifyContent: 'center',
-        alignItems: "center"
-      }}
-    >
-      <ActivityIndicator size={sizes.xxlLoader} color={colors.primaryColor} />
-    </View>
-  );
+  // Initial Loading Stage
+  if( isLoading ) return (<ActivityIndicatorComponent />);
 
+  // Content
   return (
     <View style={styles.container}>
       <StatusBar
+        animated={true}
         style="dark"
       />
 
-      <View
-        style={{
-          flex:1,
-          width:"100%"
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: fonts.bold,
-            fontSize: sizes.fontSubTitle,
-            color: colors.infoColor,
-            marginBottom: 10
-          }}
-        >
-          Total number of people - {people.length}
-        </Text>
+      <View style={styles.content}>
+
+        <Text style={styles.title}>Total number of people - {people.length}</Text>
+
         {
           people?.length ? 
             (
@@ -69,51 +53,13 @@ const UserListScreen = ({navigation, route}) => {
                 data={people}
                 keyExtraction= {item => item.userId}
                 renderItem={({item, index}) => (
-                  <TouchableOpacity
-                    style={styles.list}
+                  <PeopleMetRectangularCardComponent
+                    item={item}
                     onPress={() => {
                       setSelectedUserId( prevValue => prevValue = item.userId )
                       setShowModal( prevValue => prevValue = true )
                     }}
-                  >
-                    <View
-                      style={{
-                        flexDirection:"row",
-                        alignItems:"center",
-                        justifyContent:"flex-start"
-                      }}
-                    >
-                      {
-                        item?.photoURL ?
-                          (
-                            <Image
-                              source={{uri: item.photoURL}}
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                marginRight: 20
-                              }}
-                            />
-                          )
-                          :
-                          (
-                            <DefaultUserAvatarComponent
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                marginRight: 20
-                              }}
-                            />
-                          )
-                      }
-                      <View>
-                        <Text style={styles.userName}>{item?.displayName ?? 'Anonymous'}</Text>
-                        <Text style={styles.email}>{item?.email}</Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
+                  />
                 )}
                 ListFooterComponent={
                   <View style={{height:50}} />
@@ -122,27 +68,7 @@ const UserListScreen = ({navigation, route}) => {
             )
             :
             (
-              <View
-                style={{
-                  marginVertical: 15,
-                  marginHorizontal: 15,
-                  gap: 20
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: fonts.regular,
-                    fontSize: sizes.fontText,
-                    color:colors.infoColor,
-                  }}
-                >No people available yet.</Text>
-                <ButtonComponent
-                  label="Go Back"
-                  onPress={() => navigation.navigate("Profile")}
-                  
-                  bgColor={colors.dark}
-                />
-              </View>
+              <BackHomeButtonComponent />
             )
         }
       </View>
@@ -174,33 +100,14 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingVertical: 30,
     },
-    list: {
-      marginVertical: 5,
-      borderRadius: 10,
-      marginHorizontal: 4,
-      padding: 6,
-      backgroundColor: colors.white,
-       
-      shadowColor: colors.shadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.15,
-      shadowRadius: 3.84,
-
-      elevation: 3,
+    content: {
+      flex:1,
+      width:"100%"
     },
-    userName: {
+    title: {
       fontFamily: fonts.bold,
       fontSize: sizes.fontSubTitle,
-      fontWeight: '800',
-      color: colors.secondaryColor
-    },
-    email: {
-      fontFamily: fonts.italic,
-      fontSize: sizes.fontText,
-      fontWeight: '600',
-      color: colors.infoColor
+      color: colors.infoColor,
+      marginBottom: 10
     }
   });
