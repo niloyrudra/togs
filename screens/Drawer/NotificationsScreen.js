@@ -24,7 +24,7 @@ const NotificationsScreen = ({navigation}) => {
   //   const getNotifications = async () => {
   //     try {
   //       setIsLoading(true)
-  //       let notifications = await getNotificationInbox(12157, 'DqP6T4qpTFV12fiBAMNLsL');
+  //       let notifications = await getNotificationInbox(<NATIVE-NOTIFY-TOKEN-ID>, <NATIVE-NOTIFY-TOKEN>);
   //       console.log("notifications: ", notifications);
   //       setData(prevValue => prevValue = notifications ?? []);
   //       setIsLoading(false)
