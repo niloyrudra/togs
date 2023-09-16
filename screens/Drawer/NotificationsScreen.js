@@ -20,28 +20,12 @@ const NotificationsScreen = ({navigation}) => {
   const [data, setData] = React.useState([]);
   const [ isLoading, setIsLoading ] = React.useState(false)
 
-  // React.useEffect(() => {
-  //   const getNotifications = async () => {
-  //     try {
-  //       setIsLoading(true)
-  //       let notifications = await getNotificationInbox(<NATIVE-NOTIFY-TOKEN-ID>, <NATIVE-NOTIFY-TOKEN>);
-  //       console.log("notifications: ", notifications);
-  //       setData(prevValue => prevValue = notifications ?? []);
-  //       setIsLoading(false)
-  //     }
-  //     catch(e) {
-  //       console.log("Error: ", e)
-  //     }
-  //   }
-  //   getNotifications();
-  // }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       const getNotifications = async () => {
         try {
           setIsLoading(true)
-          let notifications = await getNotificationInbox(12157, 'DqP6T4qpTFV12fiBAMNLsL');
+          let notifications = await getNotificationInbox(<NATIVE-NOTIFY-TOKEN-ID>, <NATIVE-NOTIFY-TOKEN>);
           // console.log("notifications: ", notifications);
           setData(prevValue => prevValue = notifications ?? []);
           setIsLoading(false)
