@@ -1,13 +1,12 @@
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar';
-
 import { useFocusEffect } from '@react-navigation/native';
 
 // Components
 import NotificationsListCardComponent from '../../components/NotificationListCardComponent';
 import BackHomeButtonComponent from '../../components/BackHomeButtonComponent';
+import ActivityIndicatorComponent from '../../components/ActivityIndicatorComponent';
 
 // Constants
 import fonts from '../../constants/fonts';
@@ -21,29 +20,12 @@ const NotificationsScreen = ({navigation}) => {
   const [data, setData] = React.useState([]);
   const [ isLoading, setIsLoading ] = React.useState(false)
 
-  // React.useEffect(() => {
-  //   const getNotifications = async () => {
-  //     try {
-  //       setIsLoading(true)
-  //       let notifications = await getNotificationInbox(12157, 'DqP6T4qpTFV12fiBAMNLsL');
-  //       console.log("notifications: ", notifications);
-  //       setData(prevValue => prevValue = notifications ?? []);
-  //       setIsLoading(false)
-  //     }
-  //     catch(e) {
-  //       console.log("Error: ", e)
-  //     }
-  //   }
-  //   getNotifications();
-  // }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       const getNotifications = async () => {
         try {
           setIsLoading(true)
           let notifications = await getNotificationInbox(12157, 'DqP6T4qpTFV12fiBAMNLsL');
-          // console.log("notifications: ", notifications);
           setData(prevValue => prevValue = notifications ?? []);
           setIsLoading(false)
         }
@@ -60,17 +42,7 @@ const NotificationsScreen = ({navigation}) => {
     }, [getNotificationInbox])
   );
 
-  if( isLoading ) return (
-    <View
-      style={{
-        flex:1,
-        justifyContent: 'center',
-        alignItems: "center"
-      }}
-    >
-      <ActivityIndicator size={sizes.xxlLoader} color={colors.primaryColor} />
-    </View>
-  );
+  if( isLoading ) return (<ActivityIndicatorComponent />);
 
   return (
     <View style={styles.container}>

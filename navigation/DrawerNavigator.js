@@ -52,29 +52,7 @@ const DrawerNavigator = () => {
             },
             headerLeft: () => (<View style={{flex:1}} />),
             headerTitle: () => (<LogoXLComponent />),
-            headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />)       
-            // headerRight: () => (
-            //     <View
-            //         style={{
-            //             flexDirection: 'row',
-            //             gap: 16,
-            //             paddingRight: 20
-            //         }}
-            //     >
-            //         <TouchableOpacity
-            //             onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-            //         >
-            //             <Image
-            //                 source={require( '../assets/icons/setting.png' )}
-            //                 style={{
-            //                     width: 20,
-            //                     height: 20
-            //                 }}
-            //             />
-            //         </TouchableOpacity>
-
-            //     </View>
-            // ),
+            headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />)
         })}
         initialRouteName="Welcome" //'HomeTab'
     >

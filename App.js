@@ -4,8 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+// import * as Device from 'expo-device';
+// import * as Notifications from 'expo-notifications';
 import Constants from "expo-constants";
 
 // Native Notify

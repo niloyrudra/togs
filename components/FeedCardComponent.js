@@ -14,7 +14,8 @@ import { useTogsContext } from '../providers/AppProvider'
 
 const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
     const { user } = useTogsContext()
-    const [eventCommentsCount, setEventCommentsCount] = React.useState( commentCount != null ? commentCount : 0)
+    const [eventCommentsCount, setEventCommentsCount] = React.useState( commentCount != null ? commentCount : 0);
+    const galleryArr = [1,2,3]
     
   return (
     <TouchableOpacity
@@ -72,43 +73,10 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
         {/* Gallery */}
         <View style={styles.content}>
             {
-                item?.image && (
-                    <>
-                        <Image
-                            key={Math.random().toString()}
-                            source={item?.image ? {uri: item.image} : require('../assets/temp/events/event-1.png') }
-                            style={{
-                                width: '32.5%', // 106,
-                                height: 106,
-                                borderRadius: 7
-                            }}
-                        />
-                        <Image
-                            key={Math.random().toString()}
-                            source={item?.image ? {uri: item.image} : require('../assets/temp/events/event-1.png') }
-                            style={{
-                                width: '32.5%', // 106,
-                                height: 106,
-                                borderRadius: 7
-                            }}
-                        />
-                        <Image
-                            key={Math.random().toString()}
-                            source={item?.image ? {uri: item.image} : require('../assets/temp/events/event-1.png') }
-                            style={{
-                                width: '32.5%', // 106,
-                                height: 106,
-                                borderRadius: 7
-                            }}
-                        />
-                    </>
-                )
-            }
-            {/* {
-                item.gallery.map( (item, index) => (
+                item?.image && galleryArr.map((itemIdx) => (
                     <Image
-                        key={index}
-                        source={item}
+                        key={itemIdx}
+                        source={item?.image ? {uri: item.image} : require('../assets/temp/events/event-1.png') }
                         style={{
                             width: '32.5%', // 106,
                             height: 106,
@@ -116,7 +84,9 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
                         }}
                     />
                 ))
-            } */}
+                
+            }
+
         </View>
 
         {/* Footer */}
