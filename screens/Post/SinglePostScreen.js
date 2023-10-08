@@ -1,40 +1,59 @@
 import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 import React from 'react'
+import { StatusBar } from 'expo-status-bar'
+import { BackHandler } from 'react-native'
 
 // Components
 import StatWidgetComponent from '../../components/StatWidgetComponent'
+import BannerPlaceholderComponent from '../../components/BannerPlaceholderComponent'
+import DefaultBannerPlaceholderComponent from '../../components/DefaultBannerPlaceholderComponent'
 
 // Constants
 import colors from '../../constants/colors'
 import fonts from '../../constants/fonts'
 import sizes from '../../constants/sizes'
-import { StatusBar } from 'expo-status-bar'
 
-const SinglePostScreen = ({route}) => {
+const WIDTH = Dimensions.get('screen').width - 40;
+
+const SinglePostScreen = ({navigation, route}) => {
     const [post, setPost] = React.useState( route?.params?.post ?? {} )
 
+    const handleBackButtonClick = () => {
+        navigation.jumpTo("HomeTab");
+        return true;
+    }
+
     React.useEffect(() => setPost( prevVal => prevVal = route?.params?.post ), [ route?.params?.post?.id ])
+      
+    React.useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+        return () => {
+          BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+        };
+    }, []);
 
   return (
     <View style={styles.container}>
         <StatusBar
-            style="dark"
+            animated={true}
+            style="light"
         />
-        {
-            post?.image ?
-                (
-                    <Image
-                        source={{uri: post.image}}
-                        style={styles.banner}
-                    />
-                )
-                :
-                (
-                    <View
-                        style={{...styles.banner,backgroundColor: colors.secondaryColor}}
-                    />
-                )
-        }
+        
+        <View
+            style={{
+                marginBottom: 10,
+                elevation: 4,
+                backgroundColor: colors.infoColor,
+                borderRadius: 10
+            }}
+        >
+            {
+                post?.image && !post?.image.includes("file://") ?
+                    (<BannerPlaceholderComponent source={post.image} style={styles.banner} />)
+                    :
+                    (<DefaultBannerPlaceholderComponent style={styles.banner} />)
+            }
+        </View>
 
         <View
             style={{
@@ -111,8 +130,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     banner: {
-        width: '100%',
-        height: Dimensions.get('screen').width * 0.6,
+        width: WIDTH, // '100%',
+        height: WIDTH * 0.6,
         borderRadius: 10,
     },
     postTitle: {

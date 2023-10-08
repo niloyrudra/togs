@@ -23,7 +23,7 @@ const RatingComponent = ({ hasAlreadyRated=null, currentUser }) => {
   const onRatingHandler = async () => {
     try {
       setIsLoading(true)
-      await onRatingUser( user.userId, currentUser, starRating )
+      await onRatingUser( user?.userId, currentUser, starRating )
       setIsLoading(false)
     }
     catch( error ) {

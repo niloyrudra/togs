@@ -143,19 +143,19 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
                 }}
                 iconName="heart"
                 disabled={true}
-                onPress={() => console.log("LIKE")}
+                // onPress={() => console.log("LIKE")}
             />
             <StatWidgetComponent
                 count={eventCommentsCount} // {item.comments}
                 iconName="message"
                 disabled={true}
-                onPress={() => console.log("MESSAGES")}
+                // onPress={() => console.log("MESSAGES")}
             />
             <StatWidgetComponent
                 count={item?.shares?.length ?? 0} // {item.share}
                 iconName="export"
                 disabled={true}
-                onPress={() => console.log("SHARE")}
+                // onPress={() => console.log("SHARE")}
             />
         </View>
 

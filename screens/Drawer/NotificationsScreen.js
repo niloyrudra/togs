@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 // Components
 import NotificationsListCardComponent from '../../components/NotificationListCardComponent';
 import BackHomeButtonComponent from '../../components/BackHomeButtonComponent';
+import ActivityIndicatorComponent from '../../components/ActivityIndicatorComponent'
 
 // Constants
 import fonts from '../../constants/fonts';
@@ -43,17 +44,7 @@ const NotificationsScreen = ({navigation}) => {
     }, [getNotificationInbox])
   );
 
-  if( isLoading ) return (
-    <View
-      style={{
-        flex:1,
-        justifyContent: 'center',
-        alignItems: "center"
-      }}
-    >
-      <ActivityIndicator size={sizes.xxlLoader} color={colors.primaryColor} />
-    </View>
-  );
+  if( isLoading ) return (<ActivityIndicatorComponent />);
 
   return (
     <View style={styles.container}>
@@ -65,7 +56,7 @@ const NotificationsScreen = ({navigation}) => {
       <View
         style={styles.content}
       >
-        <Text style={styles.title}>Total notifications - {data.length}</Text>
+        <Text style={styles.title}>Notifications</Text>
         {
           data?.length ? 
             (
@@ -107,8 +98,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fonts.bold,
-    fontSize: sizes.fontSubTitle,
-    color: colors.infoColor,
+    fontSize: sizes.fontTitle,
+    color: colors.primaryColor,
     marginBottom: 10
   }
 });

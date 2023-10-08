@@ -2,13 +2,11 @@ import { StyleSheet, Image, View, ActivityIndicator, FlatList, TouchableOpacity 
 import React from 'react'
 // Navigation
 import { useNavigation } from '@react-navigation/native';
-// Icons
-import { Ionicons } from '@expo/vector-icons';
 
 // Components
-import { FloatingAction } from 'react-native-floating-action';
 import CardWithoutImageComponent from './partials/CardWithoutImageComponent';
 import CardWithImageComponent from './partials/CardWithImageComponent';
+import AddFloatingButtonComponent from "../AddFloatingButtonComponent"
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
@@ -50,6 +48,7 @@ const PostRoute = ( {numCols=3} ) => {
       style={{
         flex: 1,
         paddingTop: 20,
+        position: "relative"
       }}
     >
         {
@@ -72,32 +71,25 @@ const PostRoute = ( {numCols=3} ) => {
                         >
                             {
                               (item.image && !item.image.includes('file:')) ?
-                                (
-                                  <CardWithImageComponent image={item?.image} />
-                                )
+                                (<CardWithImageComponent image={item?.image} />)
                                 :
-                                (
-                                 <CardWithoutImageComponent title={item?.title ?? ''} />
-                                )
+                                (<CardWithoutImageComponent title={item?.title ?? ''} />)
                             }
                             
                         </TouchableOpacity>
                         )}}
                         ListFooterComponent={(
-                        <View style={{marginTop: 100}}/>
+                          <View style={{marginTop: 100}}/>
                         )}
                     />
                 )
                 :
-                (
-                    <NoDataNoticeComponent message="No posts available now. Please Try Later!" />
-                )
+                (<NoDataNoticeComponent message="No posts available now. Please Try Later!" />)
         }
-      <FloatingAction
-        floatingIcon={<Ionicons name="add-outline" style={{marginTop:0}} size={50} color={colors.white} />}
-        onPressMain={() => navigation.navigate('PostEdit')}
-        position='right'
-      />
+
+        {/* Add Event Button */}
+        <AddFloatingButtonComponent size={50} color={colors.white} position="right" style={{marginTop:0}} onTap={() => navigation.navigate('PostEdit')} />
+
     </View>
   )
 };

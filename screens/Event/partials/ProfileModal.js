@@ -70,9 +70,9 @@ const ProfileModal = ({ navigation, refEle, selectedUserId, isVisible, onClose }
     });
 
     React.useEffect( () => {
-        setSelectedUser( prevValue => prevValue = users?.filter( user => user.userId == selectedUserId )[0] );
+        setSelectedUser( prevValue => prevValue = users?.filter( user => user?.userId == selectedUserId )[0] );
 
-        setHasAlreadyRated( selectedUser?.rating?.length ? selectedUser?.rating?.filter( rateObj => rateObj.userId == user.userId ) : false )
+        setHasAlreadyRated( selectedUser?.rating?.length ? selectedUser?.rating?.filter( rateObj => rateObj?.userId == user?.userId ) : false )
         setIsConnected( user?.connections?.includes( selectedUser?.userId ) )
     }, [ selectedUserId ] );
 
@@ -107,15 +107,33 @@ const ProfileModal = ({ navigation, refEle, selectedUserId, isVisible, onClose }
 
                         {/* Profile Pic */}
                         <View>
-                            <Image
-                                source={selectedUser?.photoURL ? { uri: selectedUser.photoURL } : require("../../../assets/user/avatar.png")}
-                                style={{
-                                    width: 120,
-                                    height: 120,
-                                    borderRadius: 60,
-                                    marginVertical: 20
-                                }}
-                            />
+                            {
+                                selectedUser?.photoURL
+                                ?
+                                    (
+                                        <Image
+                                            source={{ uri: selectedUser.photoURL }}
+                                            style={{
+                                                width: 120,
+                                                height: 120,
+                                                borderRadius: 60,
+                                                marginVertical: 20
+                                            }}
+                                        />
+                                    )
+                                :
+                                (
+                                    <DefaultUserAvatartComponent
+                                        style={{
+                                            width: 120,
+                                            height: 120,
+                                            borderRadius: 60,
+                                            marginVertical: 20
+                                        }}
+                                    />
+                                )
+                            }
+                            
                         </View>
 
                         <View>

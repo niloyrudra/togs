@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
 
 // Components
-import ButtonComponent from "./ButtonComponent"
 import DefaultUserAvatarComponent from './DefaultUserAvatarComponent';
 
 // Constants
@@ -15,37 +14,12 @@ const PeopleMetRectangularCardComponent = ({item, onPress}) => (
         style={styles.list}
         onPress={onPress}
     >
-        <View
-            style={{
-                flexDirection:"row",
-                alignItems:"center",
-                justifyContent:"flex-start"
-            }}
-        >
+        <View style={styles.cardContainer}>
             {
                 item?.photoURL ?
-                    (
-                        <Image
-                            source={{uri: item.photoURL}}
-                            style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                marginRight: 20
-                            }}
-                        />
-                    )
+                    (<Image source={{uri: item.photoURL}} style={styles.thumb} />)
                     :
-                    (
-                        <DefaultUserAvatarComponent
-                            style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                marginRight: 20
-                            }}
-                        />
-                    )
+                    (<DefaultUserAvatarComponent style={styles.thumb} />)
             }
             <View>
                 <Text style={styles.userName}>{item?.displayName ?? 'Anonymous'}</Text>
@@ -75,6 +49,17 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
 
         elevation: 3,
+    },
+    cardContainer: {
+        flexDirection:"row",
+        alignItems:"center",
+        justifyContent:"flex-start"
+    },
+    thumb: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginRight: 20
     },
     userName: {
         fontFamily: fonts.bold,

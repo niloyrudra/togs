@@ -187,7 +187,7 @@ export const AppProvider = ({ children = null }) => {
       
       await db
         .collection("users")
-        .doc(oldUserData.userId)
+        .doc(oldUserData?.userId)
         .update(
           {...updatedUserModel}
         )
@@ -307,7 +307,7 @@ export const AppProvider = ({ children = null }) => {
 
         await db
           .collection("users")
-          .doc(user.userId)
+          .doc(user?.userId)
           .update(
             {...user, visitedEvents: [ ...user.visitedEvents, eventId ]}
           )
@@ -432,7 +432,7 @@ export const AppProvider = ({ children = null }) => {
       }
       await db
         .collection("users")
-        .doc(user.userId)
+        .doc(user?.userId)
         .update(
           {...updatedUser}
         )
@@ -477,10 +477,10 @@ export const AppProvider = ({ children = null }) => {
 
   const onRatingUser = async ( userId, currentUser, rating ) => {
     try{
-      const ratingArr = currentUser.rating?.filter( rateObj => rateObj.userId == userId )
+      const ratingArr = currentUser.rating?.filter( rateObj => rateObj?.userId == userId )
       ?
         [
-          ...currentUser.rating.filter( rateObj => rateObj.userId != userId ),
+          ...currentUser.rating.filter( rateObj => rateObj?.userId != userId ),
           {userId, rating}
         ]
       :
@@ -495,7 +495,7 @@ export const AppProvider = ({ children = null }) => {
       }
       await db
         .collection("users")
-        .doc(currentUser.userId)
+        .doc(currentUser?.userId)
         .update(
           {...updatedUser}
         )

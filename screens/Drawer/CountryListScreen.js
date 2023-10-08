@@ -36,6 +36,7 @@ const CountryListScreen = () => {
       <View style={styles.container}>
 
         <StatusBar
+          animated={true}
           style="light"
         />
 

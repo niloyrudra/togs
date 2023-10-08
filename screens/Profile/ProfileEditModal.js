@@ -90,14 +90,7 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
 
                 <View style={styles.container}>
 
-                    <View
-                        style={{
-                            height: 60,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center"
-                        }}
-                    >
+                    <View style={styles.content}>
                         
                         <View>
                             <Text style={{fontFamily: fonts.bold, fontSize: sizes.fontTitle, color: colors.dark}}>Edit Your Information</Text>
@@ -279,6 +272,12 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 20,
         // zIndex:1111111
+    },
+    content: {
+        height: 60,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
     },
     input: {
         borderStyle: "solid",

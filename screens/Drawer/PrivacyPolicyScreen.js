@@ -14,8 +14,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PrivacyPolicyScreen = ({navigation}) => {
   return (
-    <SafeAreaView>
+    <SafeAreaView  style={styles.container}>
       <StatusBar
+        animated={true}
         style='light'
       />
       <ScrollView
@@ -23,10 +24,11 @@ const PrivacyPolicyScreen = ({navigation}) => {
           flex:1
         }}
       >
-        <View style={styles.container}>
+        <View style={{}}>
 
           <View
             style={{
+              flex:1,
               width: '100%'
             }}
           >
@@ -51,7 +53,7 @@ const PrivacyPolicyScreen = ({navigation}) => {
 
             <View style={styles.content}>
               <ButtonComponent
-                label="I’ve agree with this"
+                label="I’ve agreed with this"
                 onPress={() => navigation.navigate('Home')}
               />
             </View>
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     lineHeight: 22,
     fontWeight: '400',
-    fontFamily: fonts.regular
+    fontFamily: fonts.regular,
+    color: colors.infoColor
   }
 })

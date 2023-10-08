@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { createDrawerNavigator, DrawerItemList, DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer'
 import { DrawerActions } from '@react-navigation/native';
+
 // Icons
 import { AntDesign, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
@@ -41,6 +42,7 @@ const Drawer = createDrawerNavigator();
 
 
 const DrawerNavigator = () => {
+
   return (
     <Drawer.Navigator
         drawerContent={ props => <DrawerContent { ...props } /> }
@@ -52,29 +54,7 @@ const DrawerNavigator = () => {
             },
             headerLeft: () => (<View style={{flex:1}} />),
             headerTitle: () => (<LogoXLComponent />),
-            headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />)       
-            // headerRight: () => (
-            //     <View
-            //         style={{
-            //             flexDirection: 'row',
-            //             gap: 16,
-            //             paddingRight: 20
-            //         }}
-            //     >
-            //         <TouchableOpacity
-            //             onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() ) }
-            //         >
-            //             <Image
-            //                 source={require( '../assets/icons/setting.png' )}
-            //                 style={{
-            //                     width: 20,
-            //                     height: 20
-            //                 }}
-            //             />
-            //         </TouchableOpacity>
-
-            //     </View>
-            // ),
+            headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />)
         })}
         initialRouteName="Welcome" //'HomeTab'
     >
@@ -88,31 +68,44 @@ const DrawerNavigator = () => {
                 headerTitle: 'Profile',
                 headerTitleAlign: "center",
                 headerShadowVisible: false,
-                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate('Quicks')} />)
+                headerStyle: {
+                    backgroundColor: colors.dark
+                },
+                headerTitleStyle: {
+                    fontWeight: '800',
+                    color: colors.white
+                },
+                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate('Quicks')} />)
             })
         }} />
 
         <Drawer.Screen name="EventEdit" component={EventFormScreen} options={({navigation, route}) => ({
             headerTitle: 'Host Event',
-            headerTitleAlign: "center",
-            headerShadowVisible: false,
-            headerTitleStyle: {
-                fontWeight: '800'
+            headerStyle: {
+                backgroundColor: colors.dark
             },
-            headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate('Profile')} />)
+            headerTitleStyle: {
+                fontWeight: '800',
+                color: colors.white
+            },
+            headerTitleAlign: "center",
+            headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate('Profile')} />)
         })} />
 
         <Drawer.Screen name="UserList" component={UserListScreen} options={({navigation, route}) => {
             const title = route?.params?.title ?? "People you know!"
             const prevScreen = route?.params?.prevScreen ?? "Profile"
             return ({
-                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
-                headerTitleAlign: "center",
-                headerShadowVisible: false,
-                headerTitleStyle: {
-                    fontWeight: '800'
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle, textTransform: 'capitalize', color:colors.white,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
+                headerStyle: {
+                    backgroundColor: colors.dark
                 },
-                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
+                headerTitleStyle: {
+                    fontWeight: '800',
+                    color: colors.white
+                },
+                headerTitleAlign: "center",
+                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
@@ -120,13 +113,16 @@ const DrawerNavigator = () => {
             const title = route?.params?.title ?? "All Events!"
             const prevScreen = route?.params?.prevScreen ?? "Profile"
             return ({
-                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
-                headerTitleAlign: "center",
-                headerShadowVisible: false,
-                headerTitleStyle: {
-                    fontWeight: '800'
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,textTransform: 'capitalize', fontWeight:'800',color:colors.white,fontFamily:fonts.bold}}>{title}</Text>),
+                headerStyle: {
+                    backgroundColor: colors.dark
                 },
-                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
+                headerTitleStyle: {
+                    fontWeight: '800',
+                    color: colors.white
+                },
+                headerTitleAlign: "center",
+                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
@@ -134,13 +130,17 @@ const DrawerNavigator = () => {
             const title = route?.params?.event?.services ?? "Event"
             const prevScreen = route?.params?.prevScreen ?? "Home"
             return ({
-                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,textTransform: 'capitalize', fontWeight:'800',color:colors.white,fontFamily:fonts.bold,color: colors.white}}>{title}</Text>),
                 headerTitleAlign: "center",
                 headerShadowVisible: false,
-                headerTitleStyle: {
-                    fontWeight: '800'
+                headerStyle: {
+                    backgroundColor: colors.dark
                 },
-                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
+                headerTitleStyle: {
+                    fontWeight: '800',
+                    color: colors.white
+                },
+                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
@@ -148,24 +148,31 @@ const DrawerNavigator = () => {
             const title = route?.params?.post?.title ?? "Post"
             const prevScreen = route?.params?.prevScreen ?? "Quicks"
             return ({
-                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,fontWeight:'800',fontFamily:fonts.bold}}>{title}</Text>),
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,textTransform: 'capitalize', fontWeight:'800',color:colors.white,fontFamily:fonts.bold}}>{title}</Text>),
                 headerTitleAlign: "center",
                 headerShadowVisible: false,
-                headerTitleStyle: {
-                    fontWeight: '800'
+                headerStyle: {
+                    backgroundColor: colors.dark
                 },
-                headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate(prevScreen)} />)
+                headerTitleStyle: {
+                    fontWeight: '800',
+                    color: colors.white
+                },
+                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate(prevScreen)} />)
             }
         )}} />
 
         <Drawer.Screen name="PostEdit" component={PostFormScreen} options={({navigation, route}) => ({
             headerTitle: "Add Post",
-            headerTitleAlign: "center",
-            headerShadowVisible: false,
-            headerTitleStyle: {
-            fontWeight: '800'
+            headerStyle: {
+                backgroundColor: colors.dark
             },
-            headerLeft: () => (<DrawerBackButtonComponent onPress={() => navigation.navigate('Profile')} />)
+            headerTitleStyle: {
+                fontWeight: '800',
+                color: colors.white
+            },
+            headerTitleAlign: "center",
+            headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate('Profile')} />)
         })} />
         
         <Drawer.Screen name='Notifications' component={NotificationsScreen} options={({navigation, route}) => ({
@@ -367,8 +374,6 @@ const DrawerContent = ( {navigation} ) => {
                     style={{
                         backgroundColor: colors.white,
                         borderRadius: 8,
-                        // height: 15,
-                        // width: 67
                         paddingHorizontal: 20,
                         paddingVertical: 10
                     }}
@@ -388,7 +393,7 @@ const DrawerContent = ( {navigation} ) => {
                 <CustomDrawerItem label="Notifications" iconName={require( `../assets/drawer-icons/notification.png`)} onPress={() => navigation.navigate( "Notifications" )} />
                 <CustomDrawerItem label="Country" iconName={require( `../assets/drawer-icons/global.png`)} onPress={() => navigation.navigate( "Country" )} />
                 <CustomDrawerItem label="Language" iconName={require( `../assets/drawer-icons/flag.png`)} onPress={() => navigation.navigate( "Language" )} />
-                <CustomDrawerItem label="Preferences" iconName={require( `../assets/drawer-icons/candle-2.png`)} onPress={() => navigation.navigate( "Preferences" )} />
+                {/* <CustomDrawerItem label="Preferences" iconName={require( `../assets/drawer-icons/candle-2.png`)} onPress={() => navigation.navigate( "Preferences" )} /> */}
                 <CustomDrawerItem label="Help" iconName={require( `../assets/drawer-icons/message-question.png`)} onPress={() => navigation.navigate( "Help" )} />
                 <CustomDrawerItem label="Privacy Policy" iconName={require( `../assets/drawer-icons/document-text.png`)} onPress={() => navigation.navigate( "PrivacyPolicy" )} />
         

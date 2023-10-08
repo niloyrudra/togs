@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 
 // Components
 import FeedImageTitleComponent from './FeedImageTitleComponent';
 import MetaWidgetComponent from './MetaWidgetComponent';
+import DefaultBannerPlaceholderComponent from "./DefaultBannerPlaceholderComponent"
+import BannerPlaceholderComponent from './BannerPlaceholderComponent';
 
 // Constants
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
-import { useNavigation } from '@react-navigation/native';
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
@@ -55,25 +57,9 @@ const HomeFeedCardComponent = ({item, style=null}) => {
     >
         {
             item.image ?
-                (
-                    <Image
-                        source={{uri: item.image}}
-                        style={{
-                        width: '100%',
-                        height: 128
-                        }}
-                    />
-                )
+                (<BannerPlaceholderComponent source={item.image} style={{width:'100%', height:128}} />)
                 :
-                (
-                    <View
-                        style={{
-                            width: '100%',
-                            height: 128,
-                            backgroundColor: colors.secondaryColor
-                        }}
-                    />
-                )
+                (<DefaultBannerPlaceholderComponent style={{width:'100%', height:128}} />)
         }
 
 

@@ -84,7 +84,7 @@ const ProfileAltScreen = ( {navigation, route} ) => {
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
       <StatusBar
         animated={true}
-        style= "dark" //"auto"
+        style= "light" //"auto"
       />
             
       <View

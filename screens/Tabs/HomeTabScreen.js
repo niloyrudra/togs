@@ -1,11 +1,13 @@
 import { StyleSheet, View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native'
 import React from 'react'
+// import { useFocusEffect } from '@react-navigation/native'
 
 // Components
 import SearchComponent from '../../components/SearchComponent'
 import CategoryListComponent from '../../components/CategoryListComponent'
 import EventListComponent from '../../components/EventListComponent'
 import ElementListComponent from '../../components/ElementListComponent'
+import ActivityIndicatorComponent from '../../components/ActivityIndicatorComponent'
 
 // Constants
 import colors from '../../constants/colors'
@@ -16,20 +18,34 @@ import { useTogsContext } from '../../providers/AppProvider'
 import { StatusBar } from 'expo-status-bar'
 
 const HomeTabScreen = () => {
-  const { onFetchAllEvents, events, onFetchAllPosts, updatedEventList, user, onFetchAllUsers } = useTogsContext();
+  const { onFetchAllEvents, events, updatedEventList, user, onFetchAllUsers } = useTogsContext();
   const filterRef = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false)
   const [feeds, setFeeds] = React.useState(events)
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     // StatusBar.setBarStyle('light-content'); // 'light-content' 'dark-content'
+  //     // StatusBar.setBackgroundColor('black'); //add color code
+  //     // StatusBar.setTranslucent(true);
+  //     console.log("StatusBar Action")
+  //   }, []),
+  // );
 
   React.useEffect(() => {
     const unSubscriber = async () => {
-        setIsLoading(true);
-        await Promise.all([
-          onFetchAllEvents(),
-          onFetchAllPosts(),
-          onFetchAllUsers(user?.userId)
-        ]);
-        setIsLoading(false);
+        try {
+          setIsLoading( prevValue => prevValue = true);
+          await Promise.all([
+            onFetchAllEvents(),
+            // onFetchAllPosts(),
+            onFetchAllUsers(user?.userId)
+          ]);
+          setIsLoading( prevValue => prevValue = false);
+        }
+        catch(e) {
+          console.log(e)
+          setIsLoading( prevValue => prevValue = false);
+        }
       }
       unSubscriber();
     }, [])
@@ -55,6 +71,7 @@ const HomeTabScreen = () => {
 
       {/* Status Bar */}
       <StatusBar
+        animated={true}
         style="light"
       />
 
@@ -69,31 +86,68 @@ const HomeTabScreen = () => {
       {/* Body Content */}
       <ScrollView style={styles.container}>
 
-        {/* Popular Events */}
-        <EventListComponent label="Popular Events" dataType={{type:'popular-event'}}>
+        {/* Tournaments */}
+        <EventListComponent label="Tournaments">
           {
             isLoading ?
-              (
-                <View
-                  style={{
-                    height: 100,
-                    width: '100%',
-                    justifyContent:"center",
-                    alignItems:"center"
-                  }}
-                >
-                  <ActivityIndicator size="large" color={colors.primaryColor} />
-                </View>
-              )
+              (<ActivityIndicatorComponent style={{height: 100}} />)
               :
               (
-                <ElementListComponent data={feeds} />
+                <ElementListComponent data={ feeds.filter(item => item.services == 'tournament') } />
+              )
+          }
+        </EventListComponent>
+
+        {/* Venues */}
+        <EventListComponent label="Venues">
+          {
+            isLoading ?
+              (<ActivityIndicatorComponent style={{height: 100}} />)
+              :
+              (
+                <ElementListComponent data={ feeds.filter(item => item.services == 'venue') } />
+              )
+          }
+        </EventListComponent>
+
+        {/* Memberships */}
+        <EventListComponent label="Memberships">
+          {
+            isLoading ?
+              (<ActivityIndicatorComponent style={{height: 100}} />)
+              :
+              (
+                <ElementListComponent data={ feeds.filter(item => item.services == 'membership') } />
+              )
+          }
+        </EventListComponent>
+
+        {/* Workshops */}
+        <EventListComponent label="Workshops">
+          {
+            isLoading ?
+              (<ActivityIndicatorComponent style={{height: 100}} />)
+              :
+              (
+                <ElementListComponent data={ feeds.filter(item => item.services == 'workshop') } />
+              )
+          }
+        </EventListComponent>
+
+        {/* Solo Events */}
+        <EventListComponent label="Solo Events">
+          {
+            isLoading ?
+              (<ActivityIndicatorComponent style={{height: 100}} />)
+              :
+              (
+                <ElementListComponent data={ feeds.filter(item => item.services == 'solo-events') } />
               )
           }
         </EventListComponent>
 
         {/* Nearby Events */}
-        <EventListComponent label="Nearby Events" dataType={{type:'nearby-event'}}>
+        {/* <EventListComponent label="Nearby Events" dataType={{type:'nearby-event'}}>
           {
             isLoading ?
               (
@@ -114,7 +168,7 @@ const HomeTabScreen = () => {
               )
           }
           
-        </EventListComponent>
+        </EventListComponent> */}
 
       </ScrollView>
 

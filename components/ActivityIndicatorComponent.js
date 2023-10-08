@@ -5,12 +5,13 @@ import { View, ActivityIndicator } from 'react-native'
 import colors from '../constants/colors'
 import sizes from '../constants/sizes'
 
-const ActivityIndicatorComponent = ({customColor=null, customSize=null}) => (
+const ActivityIndicatorComponent = ({customColor=null, customSize=null, style=null}) => (
     <View
       style={{
         flex:1,
         justifyContent: 'center',
-        alignItems: "center"
+        alignItems: "center",
+        ...style
       }}
     >
       <ActivityIndicator size={customSize ?? sizes.xxlLoader} color={customColor ?? colors.primaryColor} />

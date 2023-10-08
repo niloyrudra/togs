@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, Text, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
 // Navigation
 import { useNavigation } from '@react-navigation/native';
@@ -7,13 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 import NoDataNoticeComponent from '../NoDataNoticeComponent';
 import CardWithoutImageComponent from './partials/CardWithoutImageComponent'
 import CardWithImageComponent from './partials/CardWithImageComponent';
+import ActivityIndicatorComponent from "../../components/ActivityIndicatorComponent"
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
-
-// Constants
-import colors from '../../constants/colors';
-import sizes from '../../constants/sizes';
 
 const PostAltRoute = ( {numCols=3, userId=null} ) => {
     const navigation = useNavigation()
@@ -31,17 +28,8 @@ const PostAltRoute = ( {numCols=3, userId=null} ) => {
       }
     },[userId, posts.length])
   
-    if(isLoading) return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent:"center",
-          alignItems:"center"
-        }}
-      >
-        <ActivityIndicator size={sizes.xlLoader} color={colors.primaryColor} />
-      </View>
-    );
+    if(isLoading) return (<ActivityIndicatorComponent />);
+
     return (
     <View
       style={{
@@ -74,18 +62,18 @@ const PostAltRoute = ( {numCols=3, userId=null} ) => {
                       {
                         (item.image && !item.image.includes('file:')) ?
                           (
-                            <CardWithImageComponent image={item?.image} />
+                            <CardWithImageComponent image={item.image} />
                           )
                           :
                           (
-                            <CardWithoutImageComponent title={item?.title ?? ''} />
+                            <CardWithoutImageComponent />
                           )
                       }
                       
                     </TouchableOpacity>
                   )}}
                   ListFooterComponent={(
-                  <View style={{marginTop: 100}}/>
+                    <View style={{marginTop: 100}}/>
                   )}
               />
           )

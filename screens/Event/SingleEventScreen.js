@@ -1,14 +1,19 @@
 import { StyleSheet, Text, View, Dimensions, Image, Share, Alert, ScrollView } from 'react-native'
 import React from 'react'
+import { BackHandler } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 
 // Constants
 import colors from '../../constants/colors'
 import fonts from '../../constants/fonts'
 import sizes from '../../constants/sizes'
-import { StatusBar } from 'expo-status-bar'
+
+const WIDTH = Dimensions.get('screen').width - 40;
 
 // Components
 import StatWidgetComponent from '../../components/StatWidgetComponent'
+import BannerPlaceholderComponent from '../../components/BannerPlaceholderComponent'
+import DefaultBannerPlaceholderComponent from '../../components/DefaultBannerPlaceholderComponent'
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider'
@@ -16,7 +21,7 @@ import CommentModal from './CommentModal'
 // import CommentListItemComponent from '../../components/CommentListItemComponent'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import moment from 'moment'
-import ButtonComponent from '../../components/ButtonComponent'
+// import ButtonComponent from '../../components/ButtonComponent'
 import { TouchableOpacity } from 'react-native'
 import EventJoinButtonComponent from '../../components/EventJoinButtonComponent'
 
@@ -32,16 +37,28 @@ const SingleEventScreen = ({ navigation, route}) => {
     const [ shared, setShared ] = React.useState( route?.params?.event?.shares?.length )
     const [ showCommentModal, setShowCommentModal ] = React.useState(false)
     
+    function handleBackButtonClick() {
+        navigation.jumpTo("HomeTab");
+        return true;
+    }
+      
+    React.useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+        return () => {
+          BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+        };
+    }, []);
+
     // Like Action Handler
     const toggleLikesEventHandler = async () => {
         try {
             setIsLiked(prevVal => prevVal = !prevVal)
-            await onToggleLikeEvent( event, user.userId )
-            if( event.likes.includes( user.userId ) ) {
+            await onToggleLikeEvent( event, user?.userId )
+            if( event.likes.includes( user?.userId ) ) {
                 setEvent( prevValue => prevValue = {
                     ...prevValue,
                     likes: [
-                        ...prevValue.likes.filter( uId => uId != user.userId )
+                        ...prevValue.likes.filter( uId => uId != user?.userId )
                     ]
                 } )
             }
@@ -51,7 +68,7 @@ const SingleEventScreen = ({ navigation, route}) => {
                     ...prevValue,
                     likes: [
                         ...prevValue.likes,
-                        user.userId
+                        user?.userId
                     ]
                 } )
             }
@@ -112,37 +129,38 @@ const SingleEventScreen = ({ navigation, route}) => {
         <ScrollView
             style={{
                 flex:1,
-                // position:"relative"
             }}
         >
             {/* Status Bar */}
             <StatusBar
-                style="dark"
+                animated={true}
+                style="light"
             />
+
             <View
                 style={{
                     flex:1,
-                    // position:"relative",
-                    width: Dimensions.get("screen").width - 40,
+                    width: WIDTH,
                 }}
             >
 
                 {/* Banner */}
-                {
-                    event?.image ?
-                        (
-                            <Image
-                                source={{uri: event.image}}
-                                style={styles.banner}
-                            />
-                        )
-                        :
-                        (
-                            <View
-                                style={{...styles.banner,backgroundColor: colors.secondaryColor}}
-                            />
-                        )
-                }
+                <View
+                    style={{
+                        marginHorizontal: 5,
+                        marginBottom: 10,
+                        elevation: 4,
+                        backgroundColor: colors.infoColor,
+                        borderRadius: 10
+                    }}
+                >
+                    {
+                        event?.image && !event?.image.includes("file://") ?
+                            (<BannerPlaceholderComponent source={event.image} style={styles.banner} />)
+                            :
+                            (<DefaultBannerPlaceholderComponent style={styles.banner} />)
+                    }
+                </View>
 
                 <View
                     style={{
@@ -280,8 +298,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     banner: {
-        width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').width * 0.6,
+        width: WIDTH - 10,
+        height: (WIDTH - 10) * 0.6,
         borderRadius: 10,
     },
     eventTitle: {

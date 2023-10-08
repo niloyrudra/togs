@@ -12,11 +12,11 @@ import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 
 // Context
-import { useTogsContext } from '../../providers/AppProvider';
+// import { useTogsContext } from '../../providers/AppProvider';
 
 const WelcomeScreen = ( { navigation } ) => {
 
-  const { onChangeUserRole } = useTogsContext();
+  // const { onChangeUserRole } = useTogsContext();
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
@@ -76,46 +76,12 @@ const WelcomeScreen = ( { navigation } ) => {
           <View>
 
             <ButtonComponent
-              label="SKIP"
-              // bgColor={colors.accentColor}
-              onPress={() => {
-                onChangeUserRole( 'service-provider' );
-                navigation.navigate("HomeTab")
-              }}
-              style={{
-                backgroundColor: "transparent"
-              }}
-            />
-
-            {/* <ButtonComponent
-              label="Service Provider"
+              label="Next"
               bgColor={colors.accentColor}
               onPress={() => {
-                onChangeUserRole( 'service-provider' );
-                navigation.navigate("HomeTab")}}
-            /> */}
-            {/* <ButtonComponent
-              label="Individual"
-              bgColor={colors.secondaryColor}
-              onPress={() => {
-
-                onChangeUserRole( 'individual' );
-
-                navigation.dispatch(
-                  // StackActions.replace('HomeTab', {user: 'user'})
-                  DrawerActions.jumpTo('HomeTab', {user: 'user'})
-                )
-                // navigation.reset({
-                //   index: 0,
-                //   key: 'Home-60OyxbQY8RmHoMJAEFP-j', // null,
-                //   // actions: [
-                //   //   navigation.navigate({
-                //   //     routeName: 'Home'
-                //   //   })
-                //   // ]
-                // })
+                navigation.navigate("HomeTab")
               }}
-            /> */}
+            />
 
           </View>
 
@@ -141,7 +107,8 @@ export default WelcomeScreen
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: colors.dark
   },
   carouselContainer: {
     flex:1,

@@ -74,10 +74,10 @@ const ProfileTabScreen = ( {navigation} ) => {
       const userEvents = user?.userId ? events?.filter( event => event?.creatorId == user?.userId ) : []
       setOwnedEvents(previousValue => previousValue = userEvents)
 
-      const eventsVisited = user?.userId ? events.filter( event => user.visitedEvents.includes(event.id)) : []
+      const eventsVisited = user?.userId ? events?.filter( event => user?.visitedEvents?.includes(event?.id)) : []
       setVisitedEvents(previousValue = previousValue = eventsVisited)
 
-      const userJoinedEvents = user?.userId ? events.filter( event => event.joinedUsers.includes(user?.userId)) : []
+      const userJoinedEvents = user?.userId ? events?.filter( event => event?.joinedUsers?.includes(user?.userId)) : []
       setJoinedEvents(previousValue = previousValue = userJoinedEvents)
 
       return () => {

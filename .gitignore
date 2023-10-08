@@ -33,6 +33,8 @@ yarn-error.*
 
 .env
 eas.*
+/eas.*
+eas.*/
 
 # typescript
 *.tsbuildinfo

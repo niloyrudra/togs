@@ -39,7 +39,7 @@ const UserListScreen = ({navigation, route}) => {
     <View style={styles.container}>
       <StatusBar
         animated={true}
-        style="dark"
+        style="light"
       />
 
       <View style={styles.content}>
@@ -51,12 +51,12 @@ const UserListScreen = ({navigation, route}) => {
             (
               <FlatList
                 data={people}
-                keyExtraction= {item => item.userId}
+                keyExtraction= {item => item?.userId}
                 renderItem={({item, index}) => (
                   <PeopleMetRectangularCardComponent
                     item={item}
                     onPress={() => {
-                      setSelectedUserId( prevValue => prevValue = item.userId )
+                      setSelectedUserId( prevValue => prevValue = item?.userId )
                       setShowModal( prevValue => prevValue = true )
                     }}
                   />

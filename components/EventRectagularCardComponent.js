@@ -1,54 +1,57 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 
 // Components
-import ButtonComponent from "./ButtonComponent"
+import DefaultUserAvatarComponent from './DefaultUserAvatarComponent'
 
 // Constants
 import fonts from '../constants/fonts';
 import colors from '../constants/colors'
 import sizes from '../constants/sizes'
 
-const EventRectagularCardComponent = ({item}) => (
-    <TouchableOpacity
-        style={styles.list}
-        onPress={() => {
-            navigation.navigate("EventScreen", {event: item, prevScreen: 'EventList'})
-        }}
-        >
-        <View
-            style={{
-                flexDirection:"row",
-                alignItems:"center",
-                justifyContent:"flex-start"
+const EventRectagularCardComponent = ({item}) => {
+    const navigation = useNavigation()
+    return (
+        <TouchableOpacity
+            style={styles.list}
+            onPress={() => {
+                navigation.navigate("EventScreen", {event: item, prevScreen: 'EventList'})
             }}
-        >
-            {
-                item?.image ?
-                    (
-                        <Image
-                            source={{uri: item.image}}
-                            style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 20,
-                            marginRight: 20
-                            }}
-                        />
-                    )
-                    :
-                    (
-                        <DefaultUserAvatarComponent style={{width:40,height:40,marginRight:20}} />
-                    )
-            }
-            <View>
-                <Text style={styles.services}>{item?.title ?? 'Anonymous'}</Text>
-                <Text style={styles.activities}>{item?.activities}</Text>
+            >
+            <View
+                style={{
+                    flexDirection:"row",
+                    alignItems:"center",
+                    justifyContent:"flex-start"
+                }}
+            >
+                {
+                    item?.image ?
+                        (
+                            <Image
+                                source={{uri: item.image}}
+                                style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                marginRight: 20
+                                }}
+                            />
+                        )
+                        :
+                        (
+                            <DefaultUserAvatarComponent style={{width:40,height:40,marginRight:20}} />
+                        )
+                }
+                <View>
+                    <Text style={styles.services}>{item?.title ?? 'Anonymous'}</Text>
+                    <Text style={styles.activities}>{item?.activities}</Text>
+                </View>
             </View>
-        </View>
-    </TouchableOpacity>
-);
-
+        </TouchableOpacity>
+    );
+}
 
 export default EventRectagularCardComponent;
 

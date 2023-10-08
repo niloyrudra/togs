@@ -1,12 +1,10 @@
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, } from 'react-native'
+import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { useNavigation } from '@react-navigation/native'
 
 // Components
 import EventRectagularCardComponent from '../../../components/EventRectagularCardComponent'
 import BackHomeButtonComponent from '../../../components/BackHomeButtonComponent'
-
 
 // Constants
 import colors from '../../../constants/colors'
@@ -15,30 +13,26 @@ import sizes from '../../../constants/sizes'
 
 
 const EventListScreen = ({route}) => {
-  const navigation = useNavigation();
 
-  const [visitedEvents, setVisistedEvents] = React.useState(route?.params?.events)
+  const [eventList, setEventList] = React.useState(route?.params?.events)
   
   React.useEffect(() => {
-    setVisistedEvents(prevValue => prevValue = route?.params?.events)
+    setEventList(prevValue => prevValue = route?.params?.events)
   }, [route?.params?.events.length])
 
   return (
     <View style={styles.container}>
       <StatusBar
         animated={true}
-        style="dark"
+        style="light"
       />
-
       <View style={styles.content}>
-
-        <Text style={styles.title}>Total number of event(s) - {visitedEvents?.length}</Text>
-
+        <Text style={styles.title}>Total number of event(s) - {eventList?.length}</Text>
         {
-          visitedEvents?.length ? 
+          eventList?.length ? 
             (
               <FlatList
-                data={visitedEvents}
+                data={eventList}
                 keyExtraction= {item => item.id}
                 renderItem={({item, index}) => (
                   <EventRectagularCardComponent item={item} />
@@ -49,9 +43,7 @@ const EventListScreen = ({route}) => {
               />
             )
             :
-            (
-              <BackHomeButtonComponent />
-            )
+            (<BackHomeButtonComponent />)
         }
       </View>
 

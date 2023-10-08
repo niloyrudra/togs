@@ -9,10 +9,9 @@ const FeedImageTitleComponent = ({title="Anonymous", img=null}) => {
   return (
     <View style={styles.content}>
         <Image
-            source={img ? { uri: img} : require('../assets/user/avatar.png')}
+            source={img ? { uri: img} : require('../assets/user/avatar-alt.jpg')}
             style={styles.image}
         />
-        
         <Text style={styles.title}>{title}</Text>
     </View>
   )

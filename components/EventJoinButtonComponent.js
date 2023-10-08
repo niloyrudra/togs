@@ -22,9 +22,9 @@ const EventJoinButtonComponent = ({event}) => {
         try {
             setIsLoading(prevValue => prevValue = true)
 
-            await onJoinEvent( event, user.userId );
+            await onJoinEvent( event, user?.userId );
 
-            event.joinedUsers = [...event.joinedUsers, user.userId];
+            event.joinedUsers = [...event.joinedUsers, user?.userId];
 
             setDisabled(prevValue => prevValue = true)
             setIsLoading(prevValue => prevValue = false)
@@ -43,7 +43,7 @@ const EventJoinButtonComponent = ({event}) => {
     }, [event?.id]);
     
     
-    if( event?.creatorId == user.userId ) return ( <View style={{flex:1}} /> );
+    if( event?.creatorId == user?.userId ) return ( <View style={{flex:1}} /> );
 
     return (
         <View

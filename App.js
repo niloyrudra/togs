@@ -1,6 +1,5 @@
 // import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-gesture-handler';
-import { BackHandler } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -46,8 +45,6 @@ const App = () => {
   if (!fontsLoaded) {
     return null;
   }
-
-  // BackHandler.addEventListener( "hardwareBackPress", navigation.navigate("Home") )
 
   return (
     <AppProvider>

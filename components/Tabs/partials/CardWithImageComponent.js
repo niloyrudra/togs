@@ -4,37 +4,39 @@ import React from 'react'
 // Constants
 import colors from '../../../constants/colors'
 
-const CardWithoutImageComponent = ({image}) => {
+const CardWithImageComponent = ({image}) => {
   return (
         <View
             style={{
                 flexGrow:1,
                 
                 // shadow
-                elevation: 4,
+                elevation: 5,
                 shadowColor: colors.shadowColor,
                 shadowOffset: {width: -2, height: 4},
                 shadowOpacity: 0.5,
                 shadowRadius: 3,
 
-                margin:2
+                margin: 3,
+                backgroundColor: colors.shadowColor,
+                borderRadius:8
             }}
         >
             <Image
-            source={{uri:image}}
-            style={{
-                flexGrow:1,
-                width: '100%',
-                height: '100%',
-                maxWidth: 120,
-                maxHeight: 120,
-                borderRadius: 8,
-            }}
+                source={{uri:image}}
+                style={{
+                    flexGrow:1,
+                    width: '100%',
+                    height: '100%',
+                    maxWidth: 120,
+                    maxHeight: 120,
+                    borderRadius: 8,
+                }}
             />
         </View>
   )
 }
 
-export default CardWithoutImageComponent
+export default CardWithImageComponent
 
 const styles = StyleSheet.create({})

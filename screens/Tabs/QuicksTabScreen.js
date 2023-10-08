@@ -3,41 +3,63 @@ import React from 'react'
 import { ActivityIndicator } from 'react-native'
 
 // Components
-import SearchComponent from '../../components/SearchComponent'
+// import SearchComponent from '../../components/SearchComponent'
 import FeedCardComponent from '../../components/FeedCardComponent'
 import NoDataNoticeComponent from '../../components/NoDataNoticeComponent'
+import ActivityIndicatorComponent from '../../components/ActivityIndicatorComponent'
 
 // Constants
-import colors from '../../constants/colors'
-import sizes from '../../constants/sizes'
+// import colors from '../../constants/colors'
+// import sizes from '../../constants/sizes'
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider'
+import { StatusBar } from 'expo-status-bar'
 
 
 const QuicksTabScreen = ( {navigation} ) => {
-  const { events, posts } = useTogsContext();
+  // const { events, posts } = useTogsContext();
+  const { posts, onFetchAllPosts } = useTogsContext();
 
-  const [feeds, setFeeds] = React.useState( events != "undefined" && posts != "undefined" ? [...events, ...posts] : [] );
+  // const [feeds, setFeeds] = React.useState( events != "undefined" && posts != "undefined" ? [...events, ...posts] : [] );
+  const [feeds, setFeeds] = React.useState( posts != "undefined" ? posts : [] );
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setIsLoading(true);
-    setFeeds( prevValue => prevValue =  (events != "undefined" && posts != "undefined") ? [...events, ...posts] : []  );
-    setIsLoading(false);
-  }, [events?.length, posts?.length]);
+    const unSubscriber = async () => {
+        try {
+          await onFetchAllPosts();
+        }
+        catch(e) {
+          console.log(e)
+        }
+      }
+      unSubscriber();
+  }, [])
 
-  if( isLoading ) return (
-    <View style={styles.container}>
-      <ActivityIndicator size={sizes.xxlLoader} color={colors.primaryColor} />
-    </View>
-  );
+  // React.useEffect(() => {
+  //   setIsLoading(true);
+  //   // setFeeds( prevValue => prevValue =  (events != "undefined" && posts != "undefined") ? [...events, ...posts] : []  );
+  //   setFeeds( prevValue => prevValue =  ( posts != "undefined") ? posts : []  );
+  //   setIsLoading(false);
+  // // }, [events?.length, posts?.length]);
+  // }, [posts?.length]);
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    setFeeds( prevValue => prevValue = posts)
+    setIsLoading(false);
+  }, [posts?.length])
+
+  if( isLoading ) return (<ActivityIndicatorComponent />);
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 
-      {/* Search Bar */}
-      {/* <SearchComponent onChangeFeeds={setFeeds} data={feeds} /> */}
+      <StatusBar
+        animated={true}
+        style='light'
+      />
 
       <View style={styles.container}>
         {
@@ -52,8 +74,6 @@ const QuicksTabScreen = ( {navigation} ) => {
                   <FeedCardComponent
                     item={item}
                     commentCount={item?.commentCount ?? 0}
-                    // onPress={() => item?.services ? navigation.navigate( 'EventScreen', {event: item, prevScreen: 'Quicks'} ) : navigation.navigate('PostScreen', {post: item, prevScreen: 'Quicks'}) }
-                    // onPress={() => navigation.navigate( 'Profile', {userId: item?.creatorId} ) }
                     onPress={() => navigation.navigate( 'ProfileAlt', {userId: item?.creatorId} ) }
                   />
                 )}}
@@ -63,9 +83,7 @@ const QuicksTabScreen = ( {navigation} ) => {
               />
             )
             :
-            (
-              <NoDataNoticeComponent label="feeds" />
-            )
+            (<NoDataNoticeComponent label="feeds" />)
         }
       </View>
 

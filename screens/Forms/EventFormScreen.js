@@ -6,6 +6,7 @@ import {
   Text,
   ActivityIndicator
 } from "react-native";
+import { BackHandler } from 'react-native'
 import DropDownPicker from "react-native-dropdown-picker";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -38,12 +39,6 @@ const serviceList = [
 ];
 const activityList = getActivityList();
 
-// const activityList = [
-//     { label: "Soccer", value: "soccer" },
-//     { label: "Cricket", value: "cricket" },
-//     { label: "Judo", value: "judo" },
-//     { label: "Yoga", value: "yoga" },
-// ];
 const tenureList = [
     { label: "2 Days", value: "2d" },
     { label: "7 Days", value: "7d" },
@@ -57,7 +52,7 @@ const tenureList = [
 ];
 
 
-const EventFormScreen = () => {
+const EventFormScreen = ({navigation}) => {
 
     const { user, onAddEvent } = useTogsContext();
     const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -74,13 +69,15 @@ const EventFormScreen = () => {
     const [tenureListOpen, setTenureListOpen] = React.useState(false);
     const [tenures, setTenureList] = React.useState( tenureList );
 
-    const [loading, setLoading] = React.useState(false);
-
     const [isTimePickerVisible, setTimePickerVisibility] = React.useState(false);
     const [isStartDatePickerVisible, setStartDatePickerVisibility] = React.useState(false);
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = React.useState(false);
 
     // Handlers
+    const handleBackButtonClick = () => {
+        navigation.jumpTo("HomeTab");
+        return true;
+    }
     const showTimePicker = () => {
       setTimePickerVisibility(true);
     };
@@ -134,11 +131,7 @@ const EventFormScreen = () => {
             data.likes = [];
             data.shares = [];
             data.joinedUsers = [];
-            data.creatorId = user.userId
-            // data.creator = {
-            //     name: user.displayName,
-            //     photoURL: user.photoURL
-            // }
+            data.creatorId = user?.userId
             data.commentCount = 0
             await onAddEvent( data )
             resetField();
@@ -151,11 +144,19 @@ const EventFormScreen = () => {
         }
     };
 
+    React.useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+        return () => {
+          BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+        };
+    }, []);
+
   return (
     
     <SafeAreaProvider>
         <StatusBar
-            style="dark"
+            animated={true}
+            style="light"
         />
         <KeyboardAwareScrollView
             enableAutomaticScroll={true}
@@ -503,6 +504,7 @@ const EventFormScreen = () => {
                         <ImageUploadComponent
                             onUpload={onChange}
                             image={value ? value : null}
+                            isBanner={true}
                         />
                     )}
                 />
@@ -530,18 +532,18 @@ const EventFormScreen = () => {
                         marginVertical: 20
                     }}
                 >
-                <View style={{ marginVertical: 20 }}>
-                    {
-                        isSubmitting ?
-                            (
-                                <ActivityIndicator size='large' color={colors.primaryColor} />
-                            )
-                            :
-                            (
-                                <ButtonComponent label="Submit" onPress={handleSubmit(onSubmit)} />
-                            )
-                    }
-                </View>
+                    <View style={{ marginVertical: 20 }}>
+                        {
+                            isSubmitting ?
+                                (
+                                    <ActivityIndicator size='large' color={colors.primaryColor} />
+                                )
+                                :
+                                (
+                                    <ButtonComponent label="Submit" onPress={handleSubmit(onSubmit)} />
+                                )
+                        }
+                    </View>
                 </View>
 
             </View>

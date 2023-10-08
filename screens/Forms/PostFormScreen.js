@@ -10,6 +10,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { StatusBar } from "expo-status-bar";
+import { BackHandler } from 'react-native'
 
 // Components
 import ImageUploadComponent from "../../components/ImageUploadComponent";
@@ -26,22 +27,22 @@ import { useTogsContext } from "../../providers/AppProvider";
 // Utilities
 import { getCurrentDate } from "../../utils/utils";
 
-const PostFormScreen = () => {
+const PostFormScreen = ({navigation}) => {
 
     const { user, onAddPost } = useTogsContext()
     const [isSubmitting, setIsSubmitting] = React.useState(false);
 
+    const handleBackButtonClick = () => {
+        navigation.jumpTo("HomeTab");
+        return true;
+    }
     // Form Submit Handler
     const { handleSubmit, control, reset, resetField } = useForm();
     const onSubmit = async (data) => {
         try {
             setIsSubmitting(true)
             data.createdAt = getCurrentDate() // June 10th 2023, 2:48:48 am
-            data.creatorId = user.userId
-            data.creator = {
-                name: user.displayName,
-                photoURL: user.photoURL
-            }
+            data.creatorId = user?.userId
             data.commentCount = 0
             await onAddPost( data )
             resetField();
@@ -53,11 +54,19 @@ const PostFormScreen = () => {
             setIsSubmitting(false)
         }
     };
-  return (
 
+    React.useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+        return () => {
+          BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+        };
+    }, []);
+
+  return (
     <SafeAreaProvider>
         <StatusBar
-            style="dark"
+            animated={true}
+            style="light"
         />
         <KeyboardAwareScrollView>
 
@@ -88,6 +97,7 @@ const PostFormScreen = () => {
                         <ImageUploadComponent
                             onUpload={onChange}
                             image={value ? value : null}
+                            isBanner={true}
                         />
                     )}
                 />
