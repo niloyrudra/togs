@@ -6,12 +6,12 @@ export default {
     "slug": "togs-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo/logo.png",
+    "icon": "./assets/logo/TOGS-Logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo/splash-screen.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "image": "./assets/logo/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#28282B"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,8 +21,8 @@ export default {
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/logo.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/logo/TOGS-Logo.png",
+        "backgroundColor": "#28282B"
       },
       "permissions": [
         "android.permission.RECORD_AUDIO"
@@ -30,7 +30,7 @@ export default {
       "package": "com.ashwinsuvarna043.togs"
     },
     "web": {
-      "favicon": "./assets/logo/logo.png",
+      "favicon": "./assets/logo/TOGS-Logo.png",
       "bundler": "metro"
     },
     "plugins": [

@@ -1,4 +1,4 @@
-import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
+import { View, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
 // Navigation
 import { useNavigation } from '@react-navigation/native';
@@ -47,7 +47,7 @@ const PostAltRoute = ( {numCols=3, userId=null} ) => {
                   // keyExtractor={item => item.id}
                   // scrollEnabled={false}
                   // listOptionProps={{nestedScrollEnabled: true}}
-                    nestedScrollEnabled={true}
+                  nestedScrollEnabled={true}
                   key={Math.random().toString()}
                   numColumns={numCols}
                   renderItem={({item, index}) => {
@@ -61,13 +61,9 @@ const PostAltRoute = ( {numCols=3, userId=null} ) => {
                     >
                       {
                         (item.image && !item.image.includes('file:')) ?
-                          (
-                            <CardWithImageComponent image={item.image} />
-                          )
+                          (<CardWithImageComponent image={item.image} />)
                           :
-                          (
-                            <CardWithoutImageComponent />
-                          )
+                          (<CardWithoutImageComponent />)
                       }
                       
                     </TouchableOpacity>
@@ -78,15 +74,10 @@ const PostAltRoute = ( {numCols=3, userId=null} ) => {
               />
           )
           :
-          (
-            <NoDataNoticeComponent message="No posts available now. Please Try Later!" />
-          )
+          (<NoDataNoticeComponent message="No posts available now. Please Try Later!" />)
       }
-
     </View>
   )
 };
 
 export default PostAltRoute
-
-const styles = StyleSheet.create({})

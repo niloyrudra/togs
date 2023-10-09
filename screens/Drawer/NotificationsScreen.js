@@ -26,8 +26,7 @@ const NotificationsScreen = ({navigation}) => {
       const getNotifications = async () => {
         try {
           setIsLoading(true)
-          let notifications = await getNotificationInbox('12157', 'DqP6T4qpTFV12fiBAMNLsL');
-          // console.log("notifications: ", notifications);
+          let notifications = await getNotificationInbox('<TOKEN_ID>', '<TOKEN>');
           setData(prevValue => prevValue = notifications ?? []);
           setIsLoading(false)
         }
@@ -56,7 +55,7 @@ const NotificationsScreen = ({navigation}) => {
       <View
         style={styles.content}
       >
-        <Text style={styles.title}>Notifications</Text>
+        {/* <Text style={styles.title}>Notifications</Text> */}
         {
           data?.length ? 
             (
@@ -72,9 +71,7 @@ const NotificationsScreen = ({navigation}) => {
               />
             )
             :
-            (
-              <BackHomeButtonComponent />
-            )
+            (<BackHomeButtonComponent />)
         }
       </View>
 

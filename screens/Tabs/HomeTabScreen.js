@@ -18,7 +18,7 @@ import { useTogsContext } from '../../providers/AppProvider'
 import { StatusBar } from 'expo-status-bar'
 
 const HomeTabScreen = () => {
-  const { onFetchAllEvents, events, updatedEventList, user, onFetchAllUsers } = useTogsContext();
+  const { onFetchAllEvents, events, onFetchAllPosts, updatedEventList, user, onFetchAllUsers } = useTogsContext();
   const filterRef = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false)
   const [feeds, setFeeds] = React.useState(events)
@@ -37,7 +37,7 @@ const HomeTabScreen = () => {
           setIsLoading( prevValue => prevValue = true);
           await Promise.all([
             onFetchAllEvents(),
-            // onFetchAllPosts(),
+            onFetchAllPosts(),
             onFetchAllUsers(user?.userId)
           ]);
           setIsLoading( prevValue => prevValue = false);
@@ -92,9 +92,7 @@ const HomeTabScreen = () => {
             isLoading ?
               (<ActivityIndicatorComponent style={{height: 100}} />)
               :
-              (
-                <ElementListComponent data={ feeds.filter(item => item.services == 'tournament') } />
-              )
+              (<ElementListComponent data={ feeds.filter(item => item.services == 'tournament') } />)
           }
         </EventListComponent>
 
@@ -104,9 +102,7 @@ const HomeTabScreen = () => {
             isLoading ?
               (<ActivityIndicatorComponent style={{height: 100}} />)
               :
-              (
-                <ElementListComponent data={ feeds.filter(item => item.services == 'venue') } />
-              )
+              (<ElementListComponent data={ feeds.filter(item => item.services == 'venue') } />)
           }
         </EventListComponent>
 
@@ -116,9 +112,7 @@ const HomeTabScreen = () => {
             isLoading ?
               (<ActivityIndicatorComponent style={{height: 100}} />)
               :
-              (
-                <ElementListComponent data={ feeds.filter(item => item.services == 'membership') } />
-              )
+              (<ElementListComponent data={ feeds.filter(item => item.services == 'membership') } />)
           }
         </EventListComponent>
 
@@ -128,9 +122,7 @@ const HomeTabScreen = () => {
             isLoading ?
               (<ActivityIndicatorComponent style={{height: 100}} />)
               :
-              (
-                <ElementListComponent data={ feeds.filter(item => item.services == 'workshop') } />
-              )
+              (<ElementListComponent data={ feeds.filter(item => item.services == 'workshop') } />)
           }
         </EventListComponent>
 
@@ -140,35 +132,9 @@ const HomeTabScreen = () => {
             isLoading ?
               (<ActivityIndicatorComponent style={{height: 100}} />)
               :
-              (
-                <ElementListComponent data={ feeds.filter(item => item.services == 'solo-events') } />
-              )
+              (<ElementListComponent data={ feeds.filter(item => item.services == 'solo-events') } />)
           }
         </EventListComponent>
-
-        {/* Nearby Events */}
-        {/* <EventListComponent label="Nearby Events" dataType={{type:'nearby-event'}}>
-          {
-            isLoading ?
-              (
-                <View
-                  style={{
-                    height: 100,
-                    width: '100%',
-                    justifyContent:"center",
-                    alignItems:"center"
-                  }}
-                >
-                  <ActivityIndicator size="large" color={colors.primaryColor} />
-                </View>
-              )
-              :
-              (
-                <ElementListComponent data={feeds} style={{transform: [{scale: 0.9}], marginHorizontal: -4, marginTop: -4 }} />
-              )
-          }
-          
-        </EventListComponent> */}
 
       </ScrollView>
 
@@ -185,7 +151,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // justifyContent: 'flex-start',
     paddingVertical: 10,
     paddingHorizontal: 20
   },

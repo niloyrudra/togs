@@ -57,8 +57,8 @@ const PostRoute = ( {numCols=3} ) => {
                 (
                     <FlatList
                         data={ownedPosts}
-                        // keyExtractor={item => item.id}
-                        key={Math.random().toString()}
+                        keyExtractor={item => item.id}
+                        // key={Math.random().toString()}
                         numColumns={numCols}
                         renderItem={({item, index}) => {
                         return (
@@ -73,7 +73,7 @@ const PostRoute = ( {numCols=3} ) => {
                               (item.image && !item.image.includes('file:')) ?
                                 (<CardWithImageComponent image={item?.image} />)
                                 :
-                                (<CardWithoutImageComponent title={item?.title ?? ''} />)
+                                (<CardWithoutImageComponent />)
                             }
                             
                         </TouchableOpacity>

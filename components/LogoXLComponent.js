@@ -9,12 +9,14 @@ const LogoXLComponent = () => {
             onPress={() => navigation.navigate("Home")}
         >
             <Image
-                source={require( '../assets/logo/logo-xl.png' )}
+                source={require( '../assets/logo/TOGS-logo-xl.png' )} // logo-xl
                 style={{
                     width: 95,
-                    height: 36,
-                    marginHorizontal: 20
+                    // height: 36,
+                    marginHorizontal: 20,
+                    resizeMode: 'contain'
                 }}
+                fadeDuration={300}
             />
         </TouchableOpacity>
     );

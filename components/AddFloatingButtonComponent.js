@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { FloatingAction } from 'react-native-floating-action'
 
@@ -22,6 +21,4 @@ const AddFloatingButtonComponent = ({size, color, onTap, position, style=null}) 
   )
 }
 
-export default AddFloatingButtonComponent
-
-const styles = StyleSheet.create({})
+export default AddFloatingButtonComponent;

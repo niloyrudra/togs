@@ -25,31 +25,31 @@ const QuicksTabScreen = ( {navigation} ) => {
   const [feeds, setFeeds] = React.useState( posts != "undefined" ? posts : [] );
   const [isLoading, setIsLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    const unSubscriber = async () => {
-        try {
-          await onFetchAllPosts();
-        }
-        catch(e) {
-          console.log(e)
-        }
-      }
-      unSubscriber();
-  }, [])
-
   // React.useEffect(() => {
-  //   setIsLoading(true);
-  //   // setFeeds( prevValue => prevValue =  (events != "undefined" && posts != "undefined") ? [...events, ...posts] : []  );
-  //   setFeeds( prevValue => prevValue =  ( posts != "undefined") ? posts : []  );
-  //   setIsLoading(false);
-  // // }, [events?.length, posts?.length]);
-  // }, [posts?.length]);
+  //   const unSubscriber = async () => {
+  //       try {
+  //         await onFetchAllPosts();
+  //       }
+  //       catch(e) {
+  //         console.log(e)
+  //       }
+  //     }
+  //     unSubscriber();
+  // }, [])
 
   React.useEffect(() => {
     setIsLoading(true);
-    setFeeds( prevValue => prevValue = posts)
+    // setFeeds( prevValue => prevValue =  (events != "undefined" && posts != "undefined") ? [...events, ...posts] : []  );
+    setFeeds( prevValue => prevValue =  ( posts != "undefined") ? posts : []  );
     setIsLoading(false);
-  }, [posts?.length])
+  // }, [events?.length, posts?.length]);
+  }, [posts?.length]);
+
+  // React.useEffect(() => {
+  //   setIsLoading(true);
+  //   setFeeds( prevValue => prevValue = posts)
+  //   setIsLoading(false);
+  // }, [posts?.length])
 
   if( isLoading ) return (<ActivityIndicatorComponent />);
 
@@ -69,14 +69,16 @@ const QuicksTabScreen = ( {navigation} ) => {
                 data={feeds}
                 key={Math.random().toString()}
                 showsVerticalScrollIndicator={false}
-                renderItem={({item}) => {
-                  return (
+                // ListHeaderComponentStyle={(
+                //   <View style={{height: 20}} />
+                // )}
+                renderItem={({item}) => (
                   <FeedCardComponent
                     item={item}
                     commentCount={item?.commentCount ?? 0}
                     onPress={() => navigation.navigate( 'ProfileAlt', {userId: item?.creatorId} ) }
                   />
-                )}}
+                )}
                 ListFooterComponent={(
                   <View style={{height: 50}} />
                 )}
@@ -99,7 +101,8 @@ const styles = StyleSheet.create({
   },
   container:{
     flex: 1,
-    paddingVertical: 30,
+    // paddingVertical: 30,
+    // MarginVertical: 10,
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center'

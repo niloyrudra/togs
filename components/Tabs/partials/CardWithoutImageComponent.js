@@ -4,10 +4,10 @@ import React from 'react'
 // Constants
 import colors from '../../../constants/colors'
 
-const CardWithoutImageComponent = () => {
+const CardWithoutImageComponent = ({ style=null }) => {
   return (
     <View
-        style={{
+        style={style ? {...style} : {
             flexGrow:1,
             // shadow
             elevation: 5,

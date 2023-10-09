@@ -77,7 +77,10 @@ const WelcomeScreen = ( { navigation } ) => {
 
             <ButtonComponent
               label="Next"
-              bgColor={colors.accentColor}
+              // bgColor={colors.accentColor}
+              bgColor={colors.white}
+              color={colors.dark}
+              enableShadow={true}
               onPress={() => {
                 navigation.navigate("HomeTab")
               }}

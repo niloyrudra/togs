@@ -4,9 +4,7 @@ import { Image, TouchableOpacity } from 'react-native'
 const DrawerMenuButtonComponent = ({onPress}) => {
     return (
         <TouchableOpacity
-            style={{
-                paddingRight: 20
-            }}
+            style={{paddingRight: 20}}
             onPress={onPress}
         >
             <Image

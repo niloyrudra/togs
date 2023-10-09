@@ -6,11 +6,10 @@ const DefaultUserAvatarComponent = ({style=null, key=null}) => {
     <View key={key}>
       <Image
         source={require('../assets/user/avatar-alt.jpg')}
-        style={{
+        style={ style ? {...style} : {
             width: 72,
             height: 72,
-            borderRadius: 36,
-            ...style
+            borderRadius: 36
         }}
       />
     </View>

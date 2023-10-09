@@ -11,6 +11,7 @@ import { useTogsContext } from '../../providers/AppProvider'
 import PostRoute from '../../components/Tabs/PostRoute';
 import EventRoute from '../../components/Tabs/EventRoute';
 import ButtonComponent from '../../components/ButtonComponent'
+import UserAvatarComponent from '../../components/UserAvatarComponent';
 import DefaultUserAvatarComponent from '../../components/DefaultUserAvatarComponent';
 
 // Modal
@@ -21,6 +22,9 @@ import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 import fonts from '../../constants/fonts'
 import FeedRoute from '../../components/Tabs/FeedRoute';
+
+// Utilities
+import { getUserRating } from '../../utils/utils';
 
 const renderTabBar = props => (
   <TabBar
@@ -57,6 +61,8 @@ const ProfileTabScreen = ( {navigation} ) => {
   const [visitedEvents, setVisitedEvents] = React.useState([]);
   const [joinedEvents, setJoinedEvents] = React.useState([]);
   
+  const [userRating, setUserRating] = React.useState(0);
+
   const [index, setIndex] = React.useState(0);
 
   const [routes] = React.useState([
@@ -80,6 +86,8 @@ const ProfileTabScreen = ( {navigation} ) => {
       const userJoinedEvents = user?.userId ? events?.filter( event => event?.joinedUsers?.includes(user?.userId)) : []
       setJoinedEvents(previousValue = previousValue = userJoinedEvents)
 
+      setUserRating( prevValue => prevValue = getUserRating( user?.rating ) );
+
       return () => {
         setOwnedEvents([])
         setJoinedEvents([])
@@ -88,6 +96,7 @@ const ProfileTabScreen = ( {navigation} ) => {
     }, [])
   );
 
+  // console.log("rating", getUserRating(user?.rating));
 
   if( userRole && userRole == 'individual' ) {
     return (
@@ -117,20 +126,9 @@ const ProfileTabScreen = ( {navigation} ) => {
               <View>
                 {
                   user?.photoURL ?
-                    (
-                      <Image
-                        source={{ uri: user.photoURL }}
-                        style={{
-                          width: 72,
-                          height: 72,
-                          borderRadius: 36
-                        }}
-                      />
-                    )
+                    (<UserAvatarComponent source={{ uri: user.photoURL }} />)
                     :
-                    (
-                      <DefaultUserAvatarComponent />
-                    )
+                    (<DefaultUserAvatarComponent />)
                 }
 
                 <View
@@ -200,7 +198,8 @@ const ProfileTabScreen = ( {navigation} ) => {
           </View>
       </SafeAreaView>
     );
-}
+  }
+
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 
@@ -229,14 +228,7 @@ const ProfileTabScreen = ( {navigation} ) => {
               {
                 user?.photoURL ?
                   (
-                    <Image
-                      source={{ uri: user.photoURL }}
-                      style={{
-                        width: 72,
-                        height: 72,
-                        borderRadius: 36
-                      }}
-                    />
+                    <UserAvatarComponent source={{uri:user.photoURL}} />
                   )
                   :
                   (
@@ -283,7 +275,7 @@ const ProfileTabScreen = ( {navigation} ) => {
                     justifyContent:"center"
                   }}
                 >
-                  <Text style={styles.userStatNum}>{user?.ratings ?? 0}</Text>
+                  <Text style={styles.userStatNum}>{userRating}</Text>
                   <Image
                     source={ require('../../assets/icons/star.png') }
                     style={styles.star}

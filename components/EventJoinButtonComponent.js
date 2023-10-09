@@ -1,11 +1,14 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 // Components
 import ButtonComponent from './ButtonComponent';
+import ActivityIndicatorComponent from './ActivityIndicatorComponent'
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
+
+// Constants
 import sizes from '../constants/sizes';
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
@@ -83,18 +86,7 @@ const EventJoinButtonComponent = ({event}) => {
                 </Text>
                 {
                     isLoading ?
-                        (
-                            <View
-                                style={{
-                                    flex:1,
-                                    justifyContent:"center",
-                                    alignItems:"center"
-                                }}
-                            >
-                                <ActivityIndicator size={sizes.xxlLoader} color={colors.primaryColor} />
-                            </View>
-                                
-                        )
+                        (<ActivityIndicatorComponent />)
                         :
                         (
                             <ButtonComponent
@@ -102,7 +94,6 @@ const EventJoinButtonComponent = ({event}) => {
                                 label={( isJoined || disabled) ? "Joined" : "Click To Join"}
                                 onPress={onSubmit}
                                 style={{
-                                    // width:"100%"
                                     paddingHorizontal: 30
                                 }}
                             />

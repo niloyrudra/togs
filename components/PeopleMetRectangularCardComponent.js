@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
 
 // Components
 import DefaultUserAvatarComponent from './DefaultUserAvatarComponent';
+import UserAvatarComponent from './UserAvatarComponent';
 
 // Constants
 import fonts from '../constants/fonts';
@@ -17,7 +18,7 @@ const PeopleMetRectangularCardComponent = ({item, onPress}) => (
         <View style={styles.cardContainer}>
             {
                 item?.photoURL ?
-                    (<Image source={{uri: item.photoURL}} style={styles.thumb} />)
+                    (<UserAvatarComponent source={{uri: item.photoURL}} style={styles.thumb} />)
                     :
                     (<DefaultUserAvatarComponent style={styles.thumb} />)
             }

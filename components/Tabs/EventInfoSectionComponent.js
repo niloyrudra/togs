@@ -8,9 +8,12 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 // Components
 import DefaultUserAvatarComponent from '../DefaultUserAvatarComponent'
 import NoDataNoticeComponent from '../NoDataNoticeComponent'
+import UserAvatarComponent from '../UserAvatarComponent'
 
 // Constants
 import colors from '../../constants/colors'
+import CardWithoutImageComponent from './partials/CardWithoutImageComponent'
+import CardWithImageComponent from './partials/CardWithImageComponent'
 
 const EventInfoSectionComponent = ({title, sectionData=[], noDataMsg, isPeopleMet=null}) => {
     const navigation = useNavigation()
@@ -35,16 +38,21 @@ const EventInfoSectionComponent = ({title, sectionData=[], noDataMsg, isPeopleMe
                             sectionData.map( (item, index) => (
                                 item?.photoURL
                                 ?
-                                    (<Image
-                                        key={item?.userId}
-                                        source={{uri: item.photoURL}}
-                                        style={{
-                                            width: 50,
-                                            height: 50,
-                                            borderRadius: 25,
-                                            marginRight: -20
-                                        }}
-                                    />)
+                                    (
+                                        <View
+                                            key={item?.userId}
+                                        >
+                                            <UserAvatarComponent
+                                                source={{uri: item.photoURL}}
+                                                style={{
+                                                    width: 50,
+                                                    height: 50,
+                                                    borderRadius: 25,
+                                                    marginRight: -20
+                                                }}
+                                            />
+                                        </View>
+                                    )
                                 : 
                                     (<DefaultUserAvatarComponent
                                         key={item?.userId}
@@ -57,11 +65,13 @@ const EventInfoSectionComponent = ({title, sectionData=[], noDataMsg, isPeopleMe
                                     />)
                                                                 
                             ))
-                              
-                          
+
                         :
                             sectionData?.map( (item, index) => {
-                                return item.image != "" ? (<Image key={item.id} source={{uri: item.image}} style={styles.eventThumb} />) : <View key={item.id} style={{...styles.eventThumb, backgroundColor: colors.secondaryColor}} />
+                                return item.image != "" ?
+                                    (<CardWithImageComponent key={item.id} image={item.image} style={styles.eventThumb} />)
+                                    :
+                                    (<CardWithoutImageComponent key={item.id} style={styles.eventThumb} />)
                             })
                     :
                         (<NoDataNoticeComponent message={noDataMsg} />)

@@ -10,21 +10,17 @@ const ElementListComponent = ({data=[], style=null}) => {
     <>
       {
         data.length > 0 ?
-          (
-            <FlatList
-              data={data}
-              keyExtractor={item => item.id}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => (
-                <HomeFeedCardComponent item={item} style={{...style}} />
-              )}
-            />
-          )
+          (<FlatList
+            data={data}
+            keyExtractor={item => item.id}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => (
+              <HomeFeedCardComponent item={item} style={{...style}} />
+            )}
+          />)
           :
-          (
-            <NoDataNoticeComponent label="events" />
-          )
+          (<NoDataNoticeComponent label="events" />)
       }
     </>
   )

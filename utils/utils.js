@@ -93,3 +93,15 @@ export const getActivityList = () => [
     {label:"Volleyball", value: "volleyball"},
     {label:"Yoga", value: "yoga"},
 ];
+
+export const getUserRating = ( ratingArr=[] ) => {
+    if( ratingArr.length < 1 ) return 0;
+    if( ratingArr.length == 1 ) return ratingArr[0].rating;
+
+    let rating = ratingArr.reduce(( acc, curreData ) => {
+        acc += parseInt( curreData?.rating );
+        return acc;
+    }, 0);
+    rating = rating / ratingArr.length;
+    return rating;
+}

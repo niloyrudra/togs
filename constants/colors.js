@@ -1,8 +1,8 @@
 export default {
-    primaryColor: '#060450',
-    primaryColorTrans: '#06045067',
+    primaryColor: '#191970', // '#060450',
+    primaryColorTrans: '#19197067',
     white: '#fff',
-    dark: '#000',
+    dark: '#28282B', // '#000',
     textDark: '#252525',
     statColor: '#6C6C70',
     secondaryColor: '#007D7F',
@@ -21,5 +21,6 @@ export default {
     shadowColor: '#171717',
     tabActiveTint: '#060450',
     tabInactiveTint: '#696868',
-    textGreen: '#34C759'
+    textGreen: '#34C759',
+    gold: '#ffd700'
 }

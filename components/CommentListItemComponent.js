@@ -2,31 +2,13 @@ import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import fonts from '../constants/fonts'
 import colors from '../constants/colors'
+import DefaultUserAvatarComponent from './DefaultUserAvatarComponent'
 
 const CommentListItemComponent = ({comment}) => {
   return (
-    <View
-        style={{
-            justifyContent:"center",
-            marginBottom: 10,
-            paddingVertical: 8,
-            paddingHorizontal: 12,
-            borderWidth: 1,
-            borderColor: '#e5e5e5',
-            borderTopLeftRadius: 0,
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
-            borderTopRightRadius: 10
-        }}
-    >
+    <View style={styles.container}>
         <View
-            style={{
-                flexDirection:"row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                borderBottomWidth: 1,
-                borderBottomColor: '#e5e5e5',
-            }}
+            style={styles.content}
         >
             <View
                 style={{
@@ -50,8 +32,7 @@ const CommentListItemComponent = ({comment}) => {
                     )
                     :
                     (
-                        <Image
-                            source={require('../assets/user/user-icon-3.png')}
+                        <DefaultUserAvatarComponent
                             style={{
                                 width: 30,
                                 height: 30,
@@ -79,6 +60,25 @@ const CommentListItemComponent = ({comment}) => {
 export default CommentListItemComponent
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent:"center",
+        marginBottom: 10,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderWidth: 1,
+        borderColor: '#e5e5e5',
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderTopRightRadius: 10
+    },
+    content: {
+        flexDirection:"row",
+        alignItems:"center",
+        justifyContent:"space-between",
+        borderBottomWidth: 1,
+        borderBottomColor: '#e5e5e5',
+    },
     userName: {
         fontFamily: fonts.bold,
         fontWeight: '800',

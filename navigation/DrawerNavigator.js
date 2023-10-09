@@ -4,7 +4,7 @@ import { createDrawerNavigator, DrawerItemList, DrawerItem, DrawerContentScrollV
 import { DrawerActions } from '@react-navigation/native';
 
 // Icons
-import { AntDesign, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
+import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 
 // Screens
 import CountryListScreen from '../screens/Drawer/CountryListScreen';
@@ -24,11 +24,13 @@ import EventListScreen from '../screens/Event/partials/EventListScreen';
 
 // Components
 import SectionLabel from '../components/SectionLabel';
+import UserAvatarComponent from '../components/UserAvatarComponent';
 import DefaultUserAvatarComponent from '../components/DefaultUserAvatarComponent'
 import ProfileAltScreen from '../screens/Drawer/ProfileAltScreen';
 import LogoXLComponent from '../components/LogoXLComponent';
 import DrawerMenuButtonComponent from '../components/DrawerMenuButtonComponent';
 import DrawerBackButtonComponent from '../components/DrawerBackButtonComponent';
+import AppBarRightSectionComponent from '../components/AppBarRightSectionComponent';
 
 // Context
 import { useTogsContext } from '../providers/AppProvider';
@@ -39,7 +41,6 @@ import sizes from '../constants/sizes';
 import fonts from '../constants/fonts';
 
 const Drawer = createDrawerNavigator();
-
 
 const DrawerNavigator = () => {
 
@@ -270,32 +271,16 @@ const DrawerContent = ( {navigation} ) => {
                     backgroundColor: colors.dark,
                 }}
             >
-                <View>
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                </View>
+                <LogoXLComponent />
 
-                <TouchableOpacity
+                <AppBarRightSectionComponent
+                    onMenu={() => navigation.dispatch( DrawerActions.openDrawer() )}
                     style={{
                         position:"absolute",
                         right: 20,
                         top: 65
                     }}
-                    onPress={() => navigation.dispatch( DrawerActions.closeDrawer() )}
-                >
-                    <Image
-                        source={require( '../assets/icons/setting.png' )}
-                        style={{
-                            width: 20,
-                            height: 20
-                        }}
-                    />
-                </TouchableOpacity>
+                />
 
             </View>
 
@@ -317,26 +302,9 @@ const DrawerContent = ( {navigation} ) => {
                 {/* User's Profile Pic & Name */}
                 {
                     user?.photoURL ?
-                        (
-                            <Image
-                                source={{uri: user.photoURL}}
-                                style={{
-                                    width: 72,
-                                    height: 72,
-                                    borderRadius: 36
-                                }}
-                            />
-                        )
+                        (<UserAvatarComponent source={{uri: user.photoURL}} />)
                         :
-                        (
-                            <DefaultUserAvatarComponent
-                                style={{
-                                    width: 72,
-                                    height: 72,
-                                    borderRadius: 36
-                                }}
-                            />
-                        )
+                        (<DefaultUserAvatarComponent />)
                 }
 
                 {/* User Info */}
@@ -433,7 +401,6 @@ const DrawerContent = ( {navigation} ) => {
 
             </DrawerContentScrollView>
         
-        
         </View>
     )
 }
@@ -475,8 +442,6 @@ const CustomDrawerItem = (props) => {
                 }}
             >{props.label}</Text>
         </View>
-
-
         <SimpleLineIcons name="arrow-right" size={20} color="#D1D5DB" />
       </TouchableOpacity>
     );
@@ -503,4 +468,4 @@ const styles = StyleSheet.create({
       paddingRight:44,
       borderRadius:5
     },
-  })
+});

@@ -4,10 +4,10 @@ import React from 'react'
 // Constants
 import colors from '../../../constants/colors'
 
-const CardWithImageComponent = ({image}) => {
+const CardWithImageComponent = ({image, style=null}) => {
   return (
         <View
-            style={{
+            style={style ? {...style} : {
                 flexGrow:1,
                 
                 // shadow

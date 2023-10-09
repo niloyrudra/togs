@@ -1,12 +1,15 @@
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
 
 // Screens
 import HomeTabScreen from '../screens/Tabs/HomeTabScreen'
 import ProfileTabScreen from '../screens/Tabs/ProfileTabScreen'
 import QuicksTabScreen from '../screens/Tabs/QuicksTabScreen'
+
+// Components
+import TabLogoXLComponent from '../components/TabLogoXLComponent'
+import AppBarRightSectionComponent from '../components/AppBarRightSectionComponent';
 
 // Constants
 import colors from '../constants/colors';
@@ -30,7 +33,7 @@ const TabNavigator = () => {
                 },
                 headerStyle: {
                     backgroundColor: colors.dark,
-                    height: 110
+                    // height: 110
                 },
                 headerTintColor: colors.white,
                 headerTitleAlign: "center",
@@ -45,6 +48,7 @@ const TabNavigator = () => {
                 tabBarLabelStyle: {
                     fontWeight: "800"
                 },
+                headerShadowVisible: false,
                 tabBarIcon: ({color, size, focused}) => (
                     <Image
                         source={focused  ? require( '../assets/icons/tabs/home/home-active.png' ) : require( '../assets/icons/tabs/home/home-inactive.png' )}
@@ -55,27 +59,11 @@ const TabNavigator = () => {
                     />
                 ),
                 headerLeft: () => (<View style={{flex:1}} />),
-                headerTitle: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
+                headerTitle: () => (<TabLogoXLComponent />),
                 headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate( 'Notifications' )}
-                        >
-                            <Ionicons name="notifications-outline" size={20} color={colors.white} />
-                        </TouchableOpacity>
-                    </View>
+                    <AppBarRightSectionComponent
+                        onNavigation={() => navigation.navigate( 'Notifications' )}
+                    />
                 ),
             })} />
 
@@ -94,27 +82,12 @@ const TabNavigator = () => {
                     />
                 ),
                 headerLeft: () => (<View style={{flex:1}} />),
-                headerTitle: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
+                headerTitle: () => (<TabLogoXLComponent />),
                 headerRight: () => (
-                    <View
-                        style={{
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate( 'Notifications' )}
-                        >
-                            <Ionicons name="notifications-outline" size={20} color={colors.white} />
-                        </TouchableOpacity>
-                    </View>
+                    <AppBarRightSectionComponent
+                        // onMenu={() => navigation.dispatch( DrawerActions.openDrawer() )}
+                        onNavigation={() => navigation.navigate( 'Notifications' )}
+                    />
                 ),
             })} />
 
@@ -134,41 +107,12 @@ const TabNavigator = () => {
                     />
                 ),
                 headerLeft: () => (<View style={{flex:1}} />),
-                headerTitle: () => (
-                    <Image
-                        source={require( '../assets/logo/logo-xl.png' )}
-                        style={{
-                            width: 95,
-                            height: 36
-                        }}
-                    />
-                ),
+                headerTitle: () => (<TabLogoXLComponent />),
                 headerRight: () => (
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            gap: 16,
-                            paddingRight: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.dispatch( DrawerActions.openDrawer() )}
-                        >
-                            <Image
-                                source={require( '../assets/icons/setting.png' )}
-                                style={{
-                                    width: 20,
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate( 'Notifications' )}
-                        >
-                            <Ionicons name="notifications-outline" size={20} color={colors.white} />
-                        </TouchableOpacity>
-                    </View>
+                    <AppBarRightSectionComponent
+                        onMenu={() => navigation.dispatch( DrawerActions.openDrawer() )}
+                        onNavigation={() => navigation.navigate( 'Notifications' )}
+                    />
                 ),                
             })}} />
         </Tab.Navigator>

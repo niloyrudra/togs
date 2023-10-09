@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 // Components
 import DefaultUserAvatarComponent from './DefaultUserAvatarComponent'
+// import UserAvatarComponent from './UserAvatarComponent'
 
 // Constants
 import fonts from '../constants/fonts';
@@ -32,10 +33,10 @@ const EventRectagularCardComponent = ({item}) => {
                             <Image
                                 source={{uri: item.image}}
                                 style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                marginRight: 20
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: 20,
+                                    marginRight: 20
                                 }}
                             />
                         )

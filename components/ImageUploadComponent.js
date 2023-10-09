@@ -7,6 +7,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { getStorage, ref, uploadBytesResumable, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Components
+import UserAvatarComponent from './UserAvatarComponent';
 import DefaultUserAvatarComponent from './DefaultUserAvatarComponent'
 import DefaultEventBannerPlaceholderComponent from './DefaultEventBannerPlaceholderComponent';
 
@@ -100,9 +101,9 @@ const ImageUploadComponent = ({ onUpload, image='', isBanner=null }) => {
           <View style={styles.imageContainer}>
             {
               isBanner ?
-                image ? (<Image source={{ uri: image }} style={styles.imageBox} />) : (<DefaultEventBannerPlaceholderComponent style={styles.imageBox} />)
+                image ? (<UserAvatarComponent source={{ uri: image }} style={styles.imageBox} />) : (<DefaultEventBannerPlaceholderComponent style={styles.imageBox} />)
               :
-                image ? (<Image source={{ uri: image }} style={styles.imageBoxAlt} />) : (<DefaultUserAvatarComponent style={styles.imageBoxAlt} />)
+                image ? (<UserAvatarComponent source={{ uri: image }} style={styles.imageBoxAlt} />) : (<DefaultUserAvatarComponent style={styles.imageBoxAlt} />)
             }
             {
               isBanner ?
