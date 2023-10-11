@@ -1,22 +1,17 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, StatusBar } from 'react-native'
 import React from 'react'
-import { DrawerActions, StackActions } from '@react-navigation/native'
 
 // Components
 import CarouselComponent from '../../components/CarouselComponent'
 import OverlayComponent from '../../components/OverlayComponent'
+import LogoXLComponent from '../../components/LogoXLComponent'
 import ButtonComponent from '../../components/ButtonComponent'
 
 // Constants
 import colors from '../../constants/colors'
 import sizes from '../../constants/sizes'
 
-// Context
-// import { useTogsContext } from '../../providers/AppProvider';
-
 const WelcomeScreen = ( { navigation } ) => {
-
-  // const { onChangeUserRole } = useTogsContext();
 
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
@@ -36,13 +31,9 @@ const WelcomeScreen = ( { navigation } ) => {
         style={styles.container}
       >
 
-        <View
-          style={styles.logoContainer}
-        >
-          <Image
-            source={require('../../assets/logo/logo-xl.png')}
-            style={styles.logo}
-          />
+        {/* Logo */}
+        <View style={styles.logoContainer}>
+          <LogoXLComponent style={styles.logo} />
         </View>
 
         <View
@@ -54,9 +45,7 @@ const WelcomeScreen = ( { navigation } ) => {
               paddingBottom: 10
             }}
           >
-            <Text
-              style={styles.title}
-            >
+            <Text style={styles.title}>
               Welcome to TOGS
             </Text>
           </View>
@@ -133,8 +122,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logo: {
-    width: 131,
-    height: 50
+    width: 150,
+    // width: 131,
+    // height: 50
   },
   content: {
     paddingVertical: 20

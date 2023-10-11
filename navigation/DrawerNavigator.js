@@ -19,6 +19,7 @@ import PostFormScreen from '../screens/Forms/PostFormScreen';
 import EventFormScreen from '../screens/Forms/EventFormScreen';
 import SinglePostScreen from '../screens/Post/SinglePostScreen';
 import SingleEventScreen from '../screens/Event/SingleEventScreen'
+import AllEventsScreen from '../screens/Event/AllEventsScreen';
 import UserListScreen from '../screens/Event/partials/UserListScreen';
 import EventListScreen from '../screens/Event/partials/EventListScreen';
 
@@ -129,6 +130,24 @@ const DrawerNavigator = () => {
 
         <Drawer.Screen name="EventScreen" component={SingleEventScreen} options={({navigation, route}) => {
             const title = route?.params?.event?.services ?? "Event"
+            const prevScreen = route?.params?.prevScreen ?? "Home"
+            return ({
+                headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,textTransform: 'capitalize', fontWeight:'800',color:colors.white,fontFamily:fonts.bold,color: colors.white}}>{title}</Text>),
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
+                headerStyle: {
+                    backgroundColor: colors.dark
+                },
+                headerTitleStyle: {
+                    fontWeight: '800',
+                    color: colors.white
+                },
+                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate(prevScreen)} />)
+            }
+        )}} />
+
+        <Drawer.Screen name="AllEventsScreen" component={AllEventsScreen} options={({navigation, route}) => {
+            const title = "All Events"
             const prevScreen = route?.params?.prevScreen ?? "Home"
             return ({
                 headerTitle: () => (<Text style={{fontSize:sizes.fontTitle,textTransform: 'capitalize', fontWeight:'800',color:colors.white,fontFamily:fonts.bold,color: colors.white}}>{title}</Text>),

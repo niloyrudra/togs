@@ -267,7 +267,6 @@ const SingleEventScreen = ({ navigation, route}) => {
                 {/* Join Event */}
                 <EventJoinButtonComponent event={event} />
 
-
                 {
                     showCommentModal &&
                     (<CommentModal

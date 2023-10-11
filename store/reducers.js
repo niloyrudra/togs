@@ -7,6 +7,7 @@ export const initialState = {
     events: [],
     updatedEventList: [],
     posts: [],
+    updatedPosttList: [],
     comments: [],
     signInError: ''
 };
@@ -213,6 +214,13 @@ const storeReducer = ( state=initialState, action ) => {
                 events: [ ...state.events.filter(event => event.id != payload.id ), payload ]
             }
 
+        case ACTIONS.TOGGLE_POST_LIKES :
+            console.log( "TOGGLE POST LIKES" );
+            return {
+                ...state,
+                posts: [ ...state.posts.filter(post => post.id != payload.id ), payload ]
+            }
+
         case ACTIONS.JOIN_EVENT_ACTION :
             console.log( "JOIN EVENT ACTION" );
             return {
@@ -232,6 +240,13 @@ const storeReducer = ( state=initialState, action ) => {
             return {
                 ...state,
                 events: [ ...state.events.filter( event => event.id != payload.id ), payload ]
+            }
+
+        case ACTIONS.POST_SHARED :
+            console.log( "POST SHARED" );
+            return {
+                ...state,
+                posts: [ ...state.posts.filter( post => post.id != payload.id ), payload ]
             }
 
         case ACTIONS.GET_ALL_COMMENTS :

@@ -5,11 +5,12 @@ import fonts from '../constants/fonts'
 import colors from '../constants/colors'
 import { useNavigation } from '@react-navigation/native'
 
-const ViewAllComponent = ({dataType=null}) => {
+const ViewAllComponent = () => {
   const navigation = useNavigation()
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Quicks",{dataType})}
+      // onPress={() => navigation.navigate("Quicks",{dataType})}
+      onPress={() => navigation.navigate("AllEventsScreen")}
     >
       <Text style={styles.viewAllText}>View All</Text>
     </TouchableOpacity>

@@ -46,44 +46,38 @@ const PostRoute = ( {numCols=3} ) => {
     return (
     <View
       style={{
-        flex: 1,
-        paddingTop: 20,
-        position: "relative"
+        flex:1,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        paddingTop: 10,
+        paddingBottom: 30,
       }}
     >
         {
             ownedPosts.length > 0
-                ?
-                (
-                    <FlatList
-                        data={ownedPosts}
-                        keyExtractor={item => item.id}
-                        // key={Math.random().toString()}
-                        numColumns={numCols}
-                        renderItem={({item, index}) => {
-                        return (
-                        <TouchableOpacity
-                            style={{
-                                margin: 4,
-                                flex: 1,
-                            }}
-                            onPress={() => navigation.navigate( 'PostScreen', {post: item, prevScreen: 'Profile'} ) }
-                        >
-                            {
-                              (item.image && !item.image.includes('file:')) ?
-                                (<CardWithImageComponent image={item?.image} />)
-                                :
-                                (<CardWithoutImageComponent />)
-                            }
-                            
-                        </TouchableOpacity>
-                        )}}
-                        ListFooterComponent={(
-                          <View style={{marginTop: 100}}/>
-                        )}
-                    />
-                )
-                :
+              ?
+                ownedPosts.map((item, index) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={{
+                      margin: 4,
+                      flexGrow: 1,
+                      width: "100%",
+                      maxWidth: 120,
+                      maxHeight: 120
+                    }}
+                    onPress={() => navigation.navigate( 'PostScreen', {post: item, prevScreen: 'Profile'} ) }
+                  >
+                    {
+                      (item.image && item?.image.includes("firebasestorage")) ?
+                        (<CardWithImageComponent image={item?.image} />)
+                        :
+                        (<CardWithoutImageComponent />)
+                    }
+                  </TouchableOpacity>
+                ))
+                
+              :
                 (<NoDataNoticeComponent message="No posts available now. Please Try Later!" />)
         }
 

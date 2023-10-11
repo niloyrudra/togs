@@ -423,6 +423,33 @@ export const AppProvider = ({ children = null }) => {
     }
   }
 
+  const onToggleLikePost = async ( post, userId ) => {
+    try{
+      let newLikes = post.shares.includes( userId ) ? post.shares.filter( uId => uId != userId ) : [ ...post.shares, userId ]
+      const updatedPost = {
+        ...post,
+        likes: newLikes
+      }
+      await db
+        .collection("posts")
+        .doc(post.id)
+        .update(
+          {...updatedPost}
+        )
+        .then(() => {
+          console.log('TOGGLE LIKES of POST successfully!')
+          dispatch({
+            type: ACTIONS.TOGGLE_POST_LIKES,
+            payload: updatedPost
+          });
+        })
+          // Object.assign( {}, updatedUserModel )
+    }
+    catch(error) {
+      console.error( 'UPDATE USER INFO Error', error)
+    }
+  }
+
   const onToggleConnectUser = async ( user, connectedUserId ) => {
     try{
       let newConnections = user.connections.includes( connectedUserId ) ? user.connections.filter( uId => uId != connectedUserId ) : [ ...user.connections, connectedUserId ]
@@ -446,6 +473,33 @@ export const AppProvider = ({ children = null }) => {
     }
     catch(error) {
       console.error( 'UPDATE USER CONNECTIONS Error', error)
+    }
+  }
+
+  const onSharePost = async ( post ) => {
+    try{
+      const sharedAt = getCurrentDateLit()
+      const updatedPost = {
+        ...post,
+        shares: [ ...post.shares, sharedAt ]
+      }
+      await db
+        .collection("posts")
+        .doc(post.id)
+        .update(
+          {...updatedPost}
+        )
+        .then(() => {
+          console.log('POST SHARED successfully!')
+          dispatch({
+            type: ACTIONS.POST_SHARED,
+            payload: updatedPost
+          });
+          return updatedPost
+        })
+    }
+    catch(error) {
+      console.error( 'UPDATE USER INFO Error', error)
     }
   }
 
@@ -584,7 +638,9 @@ export const AppProvider = ({ children = null }) => {
     onRatingUser,
     getUserById,
     onJoinEvent,
-    onFilteredEventList
+    onFilteredEventList,
+    onToggleLikePost,
+    onSharePost
   }
 
   return (

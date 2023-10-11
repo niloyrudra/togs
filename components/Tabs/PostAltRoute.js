@@ -33,30 +33,27 @@ const PostAltRoute = ( {numCols=3, userId=null} ) => {
     return (
     <View
       style={{
-        flex: 1,
-        paddingTop: 20,
+        flex:1,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        paddingTop: 10,
+        paddingBottom: 30,
       }}
     >
       {
         ownedPosts.length > 0
           ?
           (
-              <FlatList
-                  data={ownedPosts}
-                  // getItemLayout={}
-                  // keyExtractor={item => item.id}
-                  // scrollEnabled={false}
-                  // listOptionProps={{nestedScrollEnabled: true}}
-                  nestedScrollEnabled={true}
-                  key={Math.random().toString()}
-                  numColumns={numCols}
-                  renderItem={({item, index}) => {
-                  return (
-                    <TouchableOpacity
-                      style={{
-                        margin: 4,
-                        flex: 1,
-                      }}
+            ownedPosts.map((item, index) => (
+              <TouchableOpacity
+                key={item.id}
+                style={{
+                  margin: 4,
+                  flexGrow: 1,
+                  width: "100%",
+                  maxWidth: 120,
+                  maxHeight: 120
+                }}
                       onPress={() => navigation.navigate( 'PostScreen', {post: item, prevScreen: 'ProfileAlt'} ) }
                     >
                       {
@@ -67,11 +64,7 @@ const PostAltRoute = ( {numCols=3, userId=null} ) => {
                       }
                       
                     </TouchableOpacity>
-                  )}}
-                  ListFooterComponent={(
-                    <View style={{marginTop: 100}}/>
-                  )}
-              />
+                  ))
           )
           :
           (<NoDataNoticeComponent message="No posts available now. Please Try Later!" />)

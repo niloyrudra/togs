@@ -1,6 +1,6 @@
 import { StyleSheet, FlatList, View, SafeAreaView } from 'react-native'
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 
 // Components
 // import SearchComponent from '../../components/SearchComponent'
@@ -8,51 +8,14 @@ import FeedCardComponent from '../../components/FeedCardComponent'
 import NoDataNoticeComponent from '../../components/NoDataNoticeComponent'
 import ActivityIndicatorComponent from '../../components/ActivityIndicatorComponent'
 
-// Constants
-// import colors from '../../constants/colors'
-// import sizes from '../../constants/sizes'
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider'
-import { StatusBar } from 'expo-status-bar'
 
 
 const QuicksTabScreen = ( {navigation} ) => {
-  // const { events, posts } = useTogsContext();
-  const { posts, onFetchAllPosts } = useTogsContext();
-
-  // const [feeds, setFeeds] = React.useState( events != "undefined" && posts != "undefined" ? [...events, ...posts] : [] );
-  const [feeds, setFeeds] = React.useState( posts != "undefined" ? posts : [] );
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  // React.useEffect(() => {
-  //   const unSubscriber = async () => {
-  //       try {
-  //         await onFetchAllPosts();
-  //       }
-  //       catch(e) {
-  //         console.log(e)
-  //       }
-  //     }
-  //     unSubscriber();
-  // }, [])
-
-  React.useEffect(() => {
-    setIsLoading(true);
-    // setFeeds( prevValue => prevValue =  (events != "undefined" && posts != "undefined") ? [...events, ...posts] : []  );
-    setFeeds( prevValue => prevValue =  ( posts != "undefined") ? posts : []  );
-    setIsLoading(false);
-  // }, [events?.length, posts?.length]);
-  }, [posts?.length]);
-
-  // React.useEffect(() => {
-  //   setIsLoading(true);
-  //   setFeeds( prevValue => prevValue = posts)
-  //   setIsLoading(false);
-  // }, [posts?.length])
-
-  if( isLoading ) return (<ActivityIndicatorComponent />);
-
+  const { posts } = useTogsContext();
+  console.log("Quicks Screen")
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 
@@ -63,15 +26,14 @@ const QuicksTabScreen = ( {navigation} ) => {
 
       <View style={styles.container}>
         {
-          feeds?.length > 0 ?
+          // feeds?.length > 0 ?
+          posts?.length > 0 ?
             (
               <FlatList
-                data={feeds}
-                key={Math.random().toString()}
+                // data={feeds}
+                data={posts}
+                keyExtractor={item => item?.id}
                 showsVerticalScrollIndicator={false}
-                // ListHeaderComponentStyle={(
-                //   <View style={{height: 20}} />
-                // )}
                 renderItem={({item}) => (
                   <FeedCardComponent
                     item={item}
@@ -101,9 +63,6 @@ const styles = StyleSheet.create({
   },
   container:{
     flex: 1,
-    // paddingVertical: 30,
-    // MarginVertical: 10,
-    paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center'
   },
