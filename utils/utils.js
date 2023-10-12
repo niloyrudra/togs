@@ -94,6 +94,10 @@ export const getActivityList = () => [
     {label:"Yoga", value: "yoga"},
 ];
 
+export const getCountryList = () => [
+    {label:"India", value: "india"},
+];
+
 export const getUserRating = ( ratingArr=[] ) => {
     if( ratingArr.length < 1 ) return 0;
     if( ratingArr.length == 1 ) return ratingArr[0].rating;

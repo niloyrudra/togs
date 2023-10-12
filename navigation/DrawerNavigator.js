@@ -7,11 +7,11 @@ import { DrawerActions } from '@react-navigation/native';
 import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 
 // Screens
-import CountryListScreen from '../screens/Drawer/CountryListScreen';
+// import CountryListScreen from '../screens/Drawer/CountryListScreen';
 import HelpScreen from '../screens/Drawer/HelpScreen';
 import NotificationsScreen from '../screens/Drawer/NotificationsScreen';
 // import PreferencesScreen from '../screens/Drawer/PreferencesScreen';
-import LanguagesScreen from '../screens/Drawer/LanguagesScreen';
+// import LanguagesScreen from '../screens/Drawer/LanguagesScreen';
 import PrivacyPolicyScreen from '../screens/Drawer/PrivacyPolicyScreen';
 import WelcomeScreen from '../screens/Welcome/WelcomeScreen';
 import TabNavigator from './TabNavigator';
@@ -178,7 +178,7 @@ const DrawerNavigator = () => {
                     fontWeight: '800',
                     color: colors.white
                 },
-                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate(prevScreen)} />)
+                headerLeft: () => (<DrawerBackButtonComponent color={colors.white} onPress={() => navigation.navigate(prevScreen, {userId : route?.params?.post?.creatorId})} />)
             }
         )}} />
 
@@ -210,7 +210,7 @@ const DrawerNavigator = () => {
             })}
         />
 
-        <Drawer.Screen name='Country' component={CountryListScreen} options={({navigation, route}) => ({
+        {/* <Drawer.Screen name='Country' component={CountryListScreen} options={({navigation, route}) => ({
                 headerTitle: "Countries",
                 headerStyle: {
                     backgroundColor: colors.dark
@@ -237,7 +237,7 @@ const DrawerNavigator = () => {
                 headerLeft: () => (<LogoXLComponent />),
                 headerRight: () => (<DrawerMenuButtonComponent onPress={() => navigation.dispatch( DrawerActions.toggleDrawer() )} />),
             })}
-        />
+        /> */}
         <Drawer.Screen name='Help' component={HelpScreen} options={({navigation, route}) => ({
                 headerTitle: "Help",
                 headerStyle: {
@@ -378,8 +378,8 @@ const DrawerContent = ( {navigation} ) => {
         
                 <SectionLabel label="Settings" />
                 <CustomDrawerItem label="Notifications" iconName={require( `../assets/drawer-icons/notification.png`)} onPress={() => navigation.navigate( "Notifications" )} />
-                <CustomDrawerItem label="Country" iconName={require( `../assets/drawer-icons/global.png`)} onPress={() => navigation.navigate( "Country" )} />
-                <CustomDrawerItem label="Language" iconName={require( `../assets/drawer-icons/flag.png`)} onPress={() => navigation.navigate( "Language" )} />
+                {/* <CustomDrawerItem label="Country" iconName={require( `../assets/drawer-icons/global.png`)} onPress={() => navigation.navigate( "Country" )} /> */}
+                {/* <CustomDrawerItem label="Language" iconName={require( `../assets/drawer-icons/flag.png`)} onPress={() => navigation.navigate( "Language" )} /> */}
                 {/* <CustomDrawerItem label="Preferences" iconName={require( `../assets/drawer-icons/candle-2.png`)} onPress={() => navigation.navigate( "Preferences" )} /> */}
                 <CustomDrawerItem label="Help" iconName={require( `../assets/drawer-icons/message-question.png`)} onPress={() => navigation.navigate( "Help" )} />
                 <CustomDrawerItem label="Privacy Policy" iconName={require( `../assets/drawer-icons/document-text.png`)} onPress={() => navigation.navigate( "PrivacyPolicy" )} />
@@ -389,36 +389,40 @@ const DrawerContent = ( {navigation} ) => {
                     labelStyle={styles.drawerLabel}
                     onPress={()=> navigation.navigate("Home")}
                 />*/}
-        
-                <TouchableOpacity
-                    style={{
-                        justifyContent:"center",
-                        alignItems:"center",
-                        flexDirection:"row",
-                        height: 52,
-                        borderRadius: 50,
-                        backgroundColor: '#EA433517',
-                        marginVertical: 35,
-                        marginHorizontal: 20
-                    }}
-                    onPress={ async () => {
-                        await onSignOut();
-                        navigation.dispatch( DrawerActions.closeDrawer() );
-                    }}
-                >
-                    <AntDesign name="logout" size={24} color="red" />
-                    <Text
-                        style={{
-                            color:"red",
-                            fontWeight:"bold",
-                            marginLeft: 20
-                        }}
-                    >
-                        Sign Out
-                    </Text>
-                </TouchableOpacity>
+
+                {/* <View style={{flex:1}} /> */}
+                
 
             </DrawerContentScrollView>
+
+            {/* SIGN OUT BUTTON */}
+            <TouchableOpacity
+                style={{
+                    justifyContent:"center",
+                    alignItems:"center",
+                    flexDirection:"row",
+                    height: 52,
+                    borderRadius: 50,
+                    backgroundColor: '#EA433517',
+                    marginVertical: 35,
+                    marginHorizontal: 20,
+                }}
+                onPress={ async () => {
+                    await onSignOut();
+                    navigation.dispatch( DrawerActions.closeDrawer() );
+                }}
+            >
+                <AntDesign name="logout" size={24} color="red" />
+                <Text
+                    style={{
+                        color:"red",
+                        fontWeight:"bold",
+                        marginLeft: 20
+                    }}
+                >
+                    Sign Out
+                </Text>
+            </TouchableOpacity>
         
         </View>
     )

@@ -1,7 +1,7 @@
 import { Text, View, Animated, TextInput, StyleSheet, TouchableWithoutFeedback, Modal, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import React from 'react'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-// import { SafeAreaProvider } from "react-native-safe-area-context";
+import DropDownPicker from "react-native-dropdown-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {useForm, Controller} from 'react-hook-form';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,12 +11,14 @@ import ImageUploadComponent from '../../components/ImageUploadComponent'
 import ButtonComponent from "../../components/ButtonComponent";
 
 // Utils
-import { getFormattedDate } from '../../utils/utils';
+import { getCountryList, getFormattedDate } from '../../utils/utils';
 
 // Constants
 import sizes from "../../constants/sizes";
 import fonts from "../../constants/fonts";
 import colors from "../../constants/colors";
+
+const countryList = getCountryList();
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
@@ -29,7 +31,9 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
 
     const [ showModal, setShowModal ] = React.useState( isVisible )
     const [ isLoading, setIsLoading ] = React.useState( false )
-    const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
+    const [ isDatePickerVisible, setDatePickerVisibility ] = React.useState( false );
+    const [ countryOpen, setCountryOpen ] = React.useState( false );
+    const [ countries, setCountries ] = React.useState( countryList );
 
     React.useEffect( () => {
 
@@ -57,6 +61,11 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
         outputRange: [700, -100]
     });
 
+    // Handlers
+    const onCountryOpen = () => {
+        hideDatePicker();
+    }
+
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -68,9 +77,12 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
     };
 
     const { handleSubmit, control, reset } = useForm();
-
     const onSubmit = async (data) => {
         setIsLoading(true)
+
+        console.log(data)
+        // return
+
         await onUpdateUserInfo( user, data )
         reset();
         onClose();
@@ -220,6 +232,60 @@ const ProfileEditModal = ({ navigation, refEle, isVisible, onClose }) => {
                         )}
                     />
 
+                    <Text style={styles.label}>Country</Text>
+                    <Controller
+                        name="country"
+                        defaultValue={user?.country}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                        <View style={styles.dropdownCountries}>
+                            <DropDownPicker
+                                listMode="SCROLLVIEW" // "MODAL" // "FLATLIST"
+                                scrollViewProps={{
+                                    nestedScrollEnabled: true,
+                                    scrollEnabled: true,
+                                    decelerationRate: "normal" // normal, fast
+                                }}
+                                // flatListProps={{
+                                //     initialNumToRender: countries.length
+                                // }}
+                                modalProps={{
+                                    animationType: "slide" // 'none', 'slide', 'fade'
+                                }}
+                                dropDownContainerStyle={{
+                                    minHeight: 380,
+                                    // height:"auto"
+                                }}
+                                // dropDownMaxHeight={240}
+                                mode="BADGE"
+                                theme="LIGHT"
+                                multiple={false}
+                                // multipleText=""
+                                style={styles.dropdown}
+                                open={countryOpen}
+                                value={value}
+                                items={countries}
+                                setOpen={setCountryOpen}
+                                setValue={onChange}
+                                setItems={setCountries}
+                                placeholder="Select an country"
+                                placeholderStyle={styles.placeholderStyles}
+                                // loading={loading}
+                                // countryIndicatorColor="#5188E3"
+                                // searchable={true}
+                                // searchPlaceholder="Search your company here..."
+                                onOpen={onCountryOpen}
+                                onChangeValue={onChange}
+                                zIndex={1000}
+                                zIndexInverse={3000}
+                                // schema={{
+                                //     label: 'name',
+                                //     value: 'id',
+                                // }}
+                            />
+                        </View>
+                        )}
+                    />
 
                     <Text style={styles.label}>Bio</Text>
                     <Controller
@@ -271,7 +337,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 20,
-        // zIndex:1111111
     },
     content: {
         height: 60,
@@ -309,10 +374,7 @@ const styles = StyleSheet.create({
     placeholderStyles: {
         color: "grey",
     },
-    dropdownServices: {
-        zIndex: 999999,
-    },
-    dropdownActivities: {
+    dropdownCountries: {
         zIndex: 999990,
     },
     dropdown: {

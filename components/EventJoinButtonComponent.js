@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Text, View } from 'react-native'
 import React from 'react'
 
 // Components
@@ -40,9 +40,7 @@ const EventJoinButtonComponent = ({event}) => {
 
     React.useEffect(() => {
         if(event?.joinedUsers.includes(user?.userId)) setIsJoined(prevValue => prevValue = true)
-        return () => {
-            setIsJoined(false)
-        }
+        return () => setIsJoined(false)
     }, [event?.id]);
     
     
@@ -51,27 +49,20 @@ const EventJoinButtonComponent = ({event}) => {
     return (
         <View
             style={{
-                flex:1,
                 justifyContent:"center",
                 alignItems: "flex-end"
             }}
         >
             <View
                 style={{
-                    width:"100%",
-                    height: 1,
-                    backgroundColor: '#ddd', // colors.placeholderColor,
-                    marginBottom: 15,
-                }}
-            />
-
-            <View
-                style={{
-                    width:"100%",
+                    width: Dimensions.get("screen").width - 40,
+                    
                     flexDirection:"row",
                     alignItems:"center",
                     justifyContent:"space-between",
-                    gap:20
+                    gap:20,
+                    borderTopWidth: 1,
+                    borderTopColor: '#ddd', // colors.placeholderColor,
                 }}
             >
                 <Text
@@ -82,7 +73,7 @@ const EventJoinButtonComponent = ({event}) => {
                         fontFamily: fonts.bold
                     }}
                 >
-                    Want to join this Event?
+                    Want to join this event?
                 </Text>
                 {
                     isLoading ?
@@ -93,9 +84,19 @@ const EventJoinButtonComponent = ({event}) => {
                                 disabled={ isJoined || disabled}
                                 label={( isJoined || disabled) ? "Joined" : "Click To Join"}
                                 onPress={onSubmit}
-                                style={{
-                                    paddingHorizontal: 30
-                                }}
+                                style={isJoined ? 
+                                    {
+                                        paddingHorizontal: 30,
+                                        borderRadius: 6
+                                    }
+                                    :
+                                    {
+                                        paddingHorizontal: 30,
+                                        borderRadius: 6,
+
+                                        elevation: 4
+                                    }
+                                }
                             />
                         )
                 }
@@ -105,5 +106,3 @@ const EventJoinButtonComponent = ({event}) => {
 }
 
 export default EventJoinButtonComponent
-
-const styles = StyleSheet.create({})

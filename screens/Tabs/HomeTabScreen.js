@@ -19,32 +19,23 @@ import { StatusBar } from 'expo-status-bar'
 
 const HomeTabScreen = () => {
   const { onFetchAllEvents, events, onFetchAllPosts, updatedEventList, user, onFetchAllUsers } = useTogsContext();
-  const filterRef = React.useRef(null);
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [feeds, setFeeds] = React.useState(events)
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     // StatusBar.setBarStyle('light-content'); // 'light-content' 'dark-content'
-  //     // StatusBar.setBackgroundColor('black'); //add color code
-  //     // StatusBar.setTranslucent(true);
-  //     console.log("StatusBar Action")
-  //   }, []),
-  // );
+  const filterRef = React.useRef( null );
+  const [ isLoading, setIsLoading ] = React.useState( false )
+  const [ feeds, setFeeds ] = React.useState( events )
 
   React.useEffect(() => {
     const unSubscriber = async () => {
         try {
-          setIsLoading( prevValue => prevValue = true);
           await Promise.all([
             onFetchAllEvents(),
             onFetchAllPosts(),
             onFetchAllUsers(user?.userId)
           ]);
-          setIsLoading( prevValue => prevValue = false);
+          
         }
         catch(e) {
           console.log(e)
-          setIsLoading( prevValue => prevValue = false);
+          setIsLoading(false);
         }
       }
       unSubscriber();
@@ -63,7 +54,9 @@ const HomeTabScreen = () => {
   }, [filterRef?.current])
     
   React.useEffect(() => {
+    setIsLoading(true);
     setFeeds( prevValue => prevValue = events)
+    setIsLoading(false);
   }, [events?.length])
 
   return (

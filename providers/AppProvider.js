@@ -37,6 +37,7 @@ export const AppProvider = ({ children = null }) => {
         lastName: ( name && name.split(' ') ) ? name.split(' ').at(1) : '',
         age: '',
         bio: '',
+        country: '',
         role: role ? role : 'individual',
         phoneNumber: user?.phoneNumber ? user.phoneNumber : '',
         photoURL: user?.photoURL ? user.photoURL : '',
@@ -156,7 +157,7 @@ export const AppProvider = ({ children = null }) => {
 
   const onUpdateUserInfo = async ( oldUserData, userData ) => {
     try{
-      const { firstName, lastName, age, bio, birthDate, address, phoneNumber, interest, photoURL, chosenSports  } = userData
+      const { firstName, lastName, age, bio, country, birthDate, address, phoneNumber, interest, photoURL, chosenSports  } = userData
 
       let displayName = oldUserData?.displayName ?? '';
       if(  firstName && lastName  ) displayName = `${firstName.trim()} ${lastName.trim()}`
@@ -178,6 +179,7 @@ export const AppProvider = ({ children = null }) => {
         interest: interest ? interest.trim() : oldUserData?.interest ?? '',
         chosenSports: chosenSports ? chosenSports : oldUserData?.chosenSports ?? [],
         connections: oldUserData?.connections ?? [],
+        country: country ? country : oldUserData?.country ?? '',
         peopleYouMet: oldUserData?.peopleYouMet ?? [],
         visitedEvents: oldUserData?.visitedEvents ?? [],
         createdAt: oldUserData?.createdAt ?? '',

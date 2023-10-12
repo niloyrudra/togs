@@ -15,6 +15,9 @@ import colors from '../../constants/colors'
 import CardWithoutImageComponent from './partials/CardWithoutImageComponent'
 import CardWithImageComponent from './partials/CardWithImageComponent'
 
+// Number of events or users to show on the section's left part
+const num = 5;
+
 const EventInfoSectionComponent = ({title, sectionData=[], noDataMsg, isPeopleMet=null}) => {
     const navigation = useNavigation()
   return (
@@ -67,7 +70,7 @@ const EventInfoSectionComponent = ({title, sectionData=[], noDataMsg, isPeopleMe
                             ))
 
                         :
-                            sectionData?.map( (item, index) => {
+                            sectionData.slice(0, num)?.map( (item, index) => {
                                 return item.image != "" ?
                                     (<CardWithImageComponent key={item.id} image={item.image} style={styles.eventThumb} />)
                                     :

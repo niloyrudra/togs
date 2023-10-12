@@ -107,7 +107,6 @@ const SinglePostScreen = ({navigation, route}) => {
 
         const update = async () => {
             try {
-                // await onGetPostComments( route?.params?.post?.id )
                 const postCreator = await getUserById( route?.params?.post?.creatorId );
                 setCreator(prevValue => prevValue = postCreator);
             }

@@ -192,7 +192,6 @@ const SingleEventScreen = ({ navigation, route}) => {
                             onPress={toggleLikesEventHandler}
                         />
                         <StatWidgetComponent
-                            // count={ comments.filter(item => { if( item.eventId == event.id ) return item } )[0]?.data?.length }
                             count={ event?.commentCount ?? 0 }
                             counterBelow={true}
                             iconName="message"
@@ -244,22 +243,24 @@ const SingleEventScreen = ({ navigation, route}) => {
                     </Text>
                 </View>
 
-                {/* Join Event */}
-                <EventJoinButtonComponent event={event} />
-
-                {
-                    showCommentModal &&
-                    (<CommentModal
-                        refEle={commentRef}
-                        navigation={navigation}
-                        isVisible={showCommentModal}
-                        onClose={() => setShowCommentModal(false)}
-                        event={event}
-                    />)
-                }
-
             </View>
+
         </ScrollView>
+
+        {/* Join Event */}
+        <EventJoinButtonComponent event={event} />
+
+        {
+            showCommentModal &&
+            (<CommentModal
+                refEle={commentRef}
+                navigation={navigation}
+                isVisible={showCommentModal}
+                onClose={() => setShowCommentModal(false)}
+                event={event}
+            />)
+        }
+
     </SafeAreaView>
   );
 }
@@ -271,9 +272,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent:"flex-start",
         alignItems:"flex-start",
-        // paddingVertical: 30,
-        paddingTop: 0,
-        paddingBottom: 20,
         paddingHorizontal: 20
     },
     banner: {

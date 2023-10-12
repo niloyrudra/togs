@@ -6,10 +6,10 @@ export default {
     "slug": "togs-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo/TOGS-Logo.png",
+    "icon": "./assets/logo/app-logo-2.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo/splash.png",
+      "image": "./assets/logo/splash-screen-3.png",
       "resizeMode": "cover",
       "backgroundColor": "#28282B"
     },
@@ -21,7 +21,7 @@ export default {
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/TOGS-Logo.png",
+        "foregroundImage": "./assets/logo/app-logo-2.png",
         "backgroundColor": "#28282B"
       },
       "permissions": [
@@ -30,7 +30,7 @@ export default {
       "package": "com.ashwinsuvarna043.togs"
     },
     "web": {
-      "favicon": "./assets/logo/TOGS-Logo.png",
+      "favicon": "./assets/logo/app-logo-2.png",
       "bundler": "metro"
     },
     "plugins": [

@@ -3,7 +3,7 @@ import React from 'react'
 
 const TabLogoXLComponent = ({style=null}) => (
     <Image
-        source={require( '../assets/logo/TOGS-logo-xl.png' )} // logo-xl.png
+        source={require( '../assets/logo/logoXL.png' )} // logo-xl.png
         style={ style ? {...style} : {
             width: 95,
             // height: 36
