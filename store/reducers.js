@@ -9,6 +9,7 @@ export const initialState = {
     posts: [],
     updatedPosttList: [],
     comments: [],
+    postComments: [],
     signInError: ''
 };
 
@@ -24,6 +25,10 @@ function updateOne(array, objId) {
 }
 function getUpdatedEventList(eventArray, catId) {
     return eventArray.filter((item) => item.activities == `${catId}`)
+}
+
+function getUpdatedPostList(eventArray, date) {
+    return eventArray.filter((item) => item.createdAt == `${date}`)
 }
 
 function updateEventOnJoining(array, objId, userId) {
@@ -91,7 +96,7 @@ const storeReducer = ( state=initialState, action ) => {
                 ...state,
                 user: {
                     ...state.user,
-                    visitedEvents: [ ...state.user.visitedEvents, payload ]
+                    visitedEvents: [ ...state.user.visitedEvents, payload ].sort((e1, e2) => (e1.createdAt > e2.createdAt) ? 1 : (e1.createdAt < e2.createdAt) ? -1 : 0)
                 }
             }
 
@@ -100,7 +105,7 @@ const storeReducer = ( state=initialState, action ) => {
             console.log( "ADD EVENT" );
             return {
                 ...state,
-                events: [ ...state.events, payload ]
+                events: [ ...state.events, payload ].sort((e1, e2) => (e1.createdAt > e2.createdAt) ? 1 : (e1.createdAt < e2.createdAt) ? -1 : 0)
             }
 
         case ACTIONS.DELETE_EVENT :
@@ -163,7 +168,13 @@ const storeReducer = ( state=initialState, action ) => {
             console.log( "GET ALL POSTS" );
             return {
                 ...state,
-                posts: payload
+                posts: payload,
+                postComments: payload.map( post => {
+                    return {
+                        postId: post.id,
+                        data: []
+                    };
+                }),
             }
 
         // Connection actions
@@ -188,7 +199,7 @@ const storeReducer = ( state=initialState, action ) => {
             console.log( "DO RATING USER" );
             return {
                 ...state,
-                users: [...state.users.filter( (user) => user?.userId != payload?.userId ), payload]
+                users: [...state.users.filter( (user) => user?.userId != payload?.userId ), payload].sort((u1, u2) => (u1.createdAt > u2.createdAt) ? 1 : (u1.createdAt < u2.createdAt) ? -1 : 0)
             
             }
         
@@ -207,20 +218,36 @@ const storeReducer = ( state=initialState, action ) => {
                 events: updateOne(state.events, payload)
             }
 
+        case ACTIONS.ADD_NEW_POST_COMMENT :
+            console.log( "ADD NEW POST COMMENT" );
+            return {
+                ...state,
+                postComments: [...state.postComments, payload]
+            }
+
+        case ACTIONS.INCREASE_POST_COMMENT_COUNT :
+            console.log( "INCREASE POST COMMENT COUNT" );
+            return {
+                ...state,
+                posts: updateOne(state.posts, payload)
+            }
+
+        // Like Context
         case ACTIONS.TOGGLE_EVENT_LIKES :
             console.log( "TOGGLE EVENT LIKES" );
             return {
                 ...state,
-                events: [ ...state.events.filter(event => event.id != payload.id ), payload ]
+                events: [ ...state.events.filter(event => event.id != payload.id ), payload ].sort((e1, e2) => (e1.createdAt > e2.createdAt) ? 1 : (e1.createdAt < e2.createdAt) ? -1 : 0)
             }
 
         case ACTIONS.TOGGLE_POST_LIKES :
             console.log( "TOGGLE POST LIKES" );
             return {
                 ...state,
-                posts: [ ...state.posts.filter(post => post.id != payload.id ), payload ]
+                posts: [ ...state.posts.filter(post => post.id != payload.id ), payload ].sort((p1, p2) => (p1.createdAt > p2.createdAt) ? 1 : (p1.createdAt < p2.createdAt) ? -1 : 0)
             }
 
+        // Join Events
         case ACTIONS.JOIN_EVENT_ACTION :
             console.log( "JOIN EVENT ACTION" );
             return {
@@ -235,40 +262,56 @@ const storeReducer = ( state=initialState, action ) => {
                 user: payload
             }
 
+        // Share Event
         case ACTIONS.EVENT_SHARED :
             console.log( "EVENT SHARED" );
             return {
                 ...state,
-                events: [ ...state.events.filter( event => event.id != payload.id ), payload ]
+                events: [ ...state.events.filter( event => event.id != payload.id ), payload ].sort((e1, e2) => (e1.createdAt > e2.createdAt) ? 1 : (e1.createdAt < e2.createdAt) ? -1 : 0)
+                
             }
 
         case ACTIONS.POST_SHARED :
             console.log( "POST SHARED" );
             return {
                 ...state,
-                posts: [ ...state.posts.filter( post => post.id != payload.id ), payload ]
+                posts: [ ...state.posts.filter( post => post.id != payload.id ), payload ].sort((p1, p2) => (p1.createdAt > p2.createdAt) ? 1 : (p1.createdAt < p2.createdAt) ? -1 : 0)
             }
 
         case ACTIONS.GET_ALL_COMMENTS :
             console.log( "GET ALL COMMENTS" );
-            // const { id, data } = payload
             return {
                 ...state,
                 comments: [ ...state.comments.filter( item => item.eventId != payload.eventId ), { ...payload } ]
             }
 
+        case ACTIONS.GET_ALL_POST_COMMENTS :
+            console.log( "GET ALL POST COMMENTS" );
+            return {
+                ...state,
+                // postComments: [ ...state.postComments.filter( item => item.postId != payload.postId ), { ...payload } ],
+                postComments: [ ...state.postComments.filter( item => item.postId != payload.postId ), {...payload} ]
+            }
+
         case ACTIONS.UPDATE_HOME_EVENT_LIST :
             console.log( "UPDATE HOME EVENT LIST" );
-            // const { id, data } = payload
             return {
                 ...state,
                 updatedEventList: getUpdatedEventList(state.events, payload) ?? []
+            }
+
+        case ACTIONS.UPDATE_POST_LIST :
+            console.log( "UPDATE POST LIST" );
+            return {
+                ...state,
+                updatedPosttList: getUpdatedPostList(state.posts, payload) ?? []
             }
         
 
 
         default :
-            throw new Error(`No data available!`);
+            // throw new Error(`No data available!`);
+            console.log(`No data available!`);
     }
 }
 

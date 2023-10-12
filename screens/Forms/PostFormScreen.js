@@ -44,6 +44,8 @@ const PostFormScreen = ({navigation}) => {
             data.createdAt = getCurrentDate() // June 10th 2023, 2:48:48 am
             data.creatorId = user?.userId
             data.commentCount = 0
+            data.likes = []
+            data.shares = []
             await onAddPost( data )
             resetField();
             reset();

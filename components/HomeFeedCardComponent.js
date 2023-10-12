@@ -15,7 +15,7 @@ import fonts from '../constants/fonts';
 // Context
 import { useTogsContext } from '../providers/AppProvider';
 
-const HomeFeedCardComponent = ({item, style=null}) => {
+const HomeFeedCardComponent = ({item, style=null, bannerStyle=null, onPress=null}) => {
     const navigation = useNavigation()
     const {getUserById} = useTogsContext();
 
@@ -53,13 +53,13 @@ const HomeFeedCardComponent = ({item, style=null}) => {
             ...style
         }}
 
-        onPress={() => navigation.navigate('EventScreen', {event: item,  prevScreen: 'Home'})}
+        onPress={onPress ? onPress : () => navigation.navigate('EventScreen', {event: item,  prevScreen: 'Home'})}
     >
         {
             item.image ?
-                (<BannerPlaceholderComponent source={item.image} style={{width:'100%', height:128}} />)
+                (<BannerPlaceholderComponent source={item.image} style={bannerStyle ? {...bannerStyle} : {width:'100%', height:128}} />)
                 :
-                (<DefaultBannerPlaceholderComponent style={{width:'100%', height:128}} />)
+                (<DefaultBannerPlaceholderComponent style={bannerStyle ? {...bannerStyle} : {width:'100%', height:128}} />)
         }
 
 

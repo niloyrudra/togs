@@ -15,7 +15,6 @@ import { useTogsContext } from '../../providers/AppProvider'
 
 const QuicksTabScreen = ( {navigation} ) => {
   const { posts } = useTogsContext();
-  console.log("Quicks Screen")
   return (
     <SafeAreaView style={styles.mainContainer} mode="margin" edges={['right', 'bottom', 'left']} >
 

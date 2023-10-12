@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Share, Dimensions } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { BackHandler } from 'react-native'
@@ -8,22 +8,34 @@ import StatWidgetComponent from '../../components/StatWidgetComponent'
 import BannerPlaceholderComponent from '../../components/BannerPlaceholderComponent'
 import DefaultBannerPlaceholderComponent from '../../components/DefaultBannerPlaceholderComponent'
 
+// Modal
+import CommentModal from './CommentModal'
+
 // Constants
 import colors from '../../constants/colors'
 import fonts from '../../constants/fonts'
 import sizes from '../../constants/sizes'
-
 const WIDTH = Dimensions.get('screen').width - 40;
 
-const SinglePostScreen = ({navigation, route}) => {
-    const [post, setPost] = React.useState( route?.params?.post ?? {} )
+// Context
+import { useTogsContext } from '../../providers/AppProvider'
+import AuthorComponent from '../../components/AuthorComponent'
 
-    const handleBackButtonClick = () => {
+const SinglePostScreen = ({navigation, route}) => {
+    
+    const commentRef = React.useRef()
+    const {user, onToggleLikePost, onSharePost, getUserById } = useTogsContext();
+    
+    const [post, setPost] = React.useState( route?.params?.post ?? {} )
+    const [ creator, setCreator ] = React.useState(null);
+    const [ isLiked, setIsLiked ] = React.useState( route?.params?.post?.likes?.includes( user?.userId ))
+    const [ shared, setShared ] = React.useState( route?.params?.post?.shares?.length )
+    const [ showCommentModal, setShowCommentModal ] = React.useState(false)
+    
+    function handleBackButtonClick() {
         navigation.jumpTo("HomeTab");
         return true;
     }
-
-    React.useEffect(() => setPost( prevVal => prevVal = route?.params?.post ), [ route?.params?.post?.id ])
       
     React.useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -31,6 +43,80 @@ const SinglePostScreen = ({navigation, route}) => {
           BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
         };
     }, []);
+
+    // Like Action Handler
+    const toggleLikesPostHandler = async () => {
+        try {
+            setIsLiked(prevVal => prevVal = !prevVal)
+            await onToggleLikePost( post, user?.userId )
+            if( post?.likes?.includes( user?.userId ) ) {
+                setPost( prevValue => prevValue = {
+                    ...prevValue,
+                    likes: [
+                        ...prevValue?.likes?.filter( uId => uId != user?.userId )
+                    ]
+                } )
+            }
+            else {
+
+                setPost( prevValue => prevValue = {
+                    ...prevValue,
+                    likes: [
+                        ...prevValue.likes,
+                        user?.userId
+                    ]
+                } )
+            }
+        }
+        catch( err ) {
+            console.error( err )
+        }
+    }
+
+    // Share Action Handler
+    const onShare = async () => {
+        try {
+          const result = await Share.share({
+            message: `${post?.title}\r\n\r\n"${post?.content}"\r\n\r\nCreated at ${post?.createdDate}.`, // 'React Native | A framework for building native apps using React',
+          });
+
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+              console.log( "Action Activity Type", result.activityType )
+            } else {
+              // shared
+              await onSharePost(post)
+              setShared(prevVal => prevVal = route?.params?.post?.shares?.length)
+              console.log( "Shared" )
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+            console.log("Dismissed!")
+          }
+        } catch (error) {
+          Alert.alert(error.message);
+        }
+    };
+
+    React.useEffect(() => {
+
+        setPost( prevVal => prevVal = route?.params?.post )
+        setIsLiked( prevVal => prevVal =  route?.params?.post?.likes?.includes( user?.userId ))
+        setShared( prevVal => prevVal =  route?.params?.post?.shares?.length )
+
+        const update = async () => {
+            try {
+                // await onGetPostComments( route?.params?.post?.id )
+                const postCreator = await getUserById( route?.params?.post?.creatorId );
+                setCreator(prevValue => prevValue = postCreator);
+            }
+            catch (err) {
+                console.log( err )
+            }
+        }
+        update()
+    }, [ route?.params?.post?.id ])
 
   return (
     <View style={styles.container}>
@@ -67,47 +153,50 @@ const SinglePostScreen = ({navigation, route}) => {
                 <Text style={styles.postTitle}>{ post?.title}</Text>
             </View>
 
-            {/* Footer */}
+            {/* Widgets */}
             <View style={{
                 flexDirection: "row",
                 justifyContent:"space-between",
                 gap: 20
             }}>
                 <StatWidgetComponent
-                    // count={0} // {item.likes}
+                    count={post?.likes?.length ?? 0}
+                    counterBelow={true}
                     iconName="heart"
                     style={{
                         width: 25,
                         height: 25,
+                        tintColor: isLiked ? colors.accentColor : colors.infoColor
                     }}
-                    onPress={() => console.log( 'Like/Dislike the current post' )}
+                    onPress={toggleLikesPostHandler}
                 />
                 <StatWidgetComponent
-                    // count={0} // {item.comments}
+                    count={post?.commentCount ?? 0}
+                    counterBelow={true}
                     iconName="message"
                     style={{
                         width: 25,
                         height: 25,
                     }}
-                    onPress={() => console.log( 'Show Messages' )}
+                    onPress={() => setShowCommentModal(true)}
                 />
                 <StatWidgetComponent
-                    // count={0} // {item.share}
+                    count={post?.shares?.length ?? 0}
+                    counterBelow={true}
                     iconName="export"
                     style={{
                         width: 25,
                         height: 25,
                     }}
-                    onPress={() => console.log( 'Share Messages' )}
+                    onPress={onShare}
                 />
             </View>
 
         </View>
 
 
-        <Text style={styles.postMeta}>
-            <Text>Created by: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{post?.creator?.name}</Text></Text>
-        </Text>
+        <AuthorComponent creator={creator} pathName="ProfileAlt" />
+
         <Text style={styles.postMeta}>
             <Text>Created at: <Text style={{ textTransform:'uppercase', fontStyle:'italic' }}>{post?.createdAt}</Text></Text>
         </Text>
@@ -115,6 +204,18 @@ const SinglePostScreen = ({navigation, route}) => {
         <Text style={styles.postDescription}>
             {post?.content}
         </Text>
+
+        {
+            showCommentModal &&
+            (<CommentModal
+                refEle={commentRef}
+                navigation={navigation}
+                isVisible={showCommentModal}
+                onClose={() => setShowCommentModal(false)}
+                post={post}
+            />)
+        }
+
     </View>
   );
 }
@@ -164,6 +265,7 @@ const styles = StyleSheet.create({
     },
     postDescription: {
         fontSize: sizes.fontText,
+        marginTop: 20,
         marginBottom: 30,
         letterSpacing: 0.5,
         color: colors.textColor,

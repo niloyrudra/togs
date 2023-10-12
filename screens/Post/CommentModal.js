@@ -19,10 +19,11 @@ import colors from "../../constants/colors";
 // Context
 import { useTogsContext } from '../../providers/AppProvider';
 
-const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
+const CommentModal = ({ navigation, refEle, isVisible, onClose, post }) => {
+
     const modelAnimatedValue = React.useRef( new Animated.Value(0) ).current
 
-    const { user, comments, onAddComments, onGetComments } = useTogsContext();
+    const { user, postComments, onAddPostComments, onGetPostComments } = useTogsContext();
 
     const [ showModal, setShowModal ] = React.useState( isVisible )
     const [ commentData, setCommentData ] = React.useState( [] )
@@ -38,7 +39,7 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
             })
             .start();
 
-            setCommentData( comments.filter(item => { if( item.eventId == event.id ) return item } )[0].data )
+            setCommentData( postComments?.filter(item => { if( item?.postId == post?.id ) return item } )[0]?.data ?? [] )
         }
         else {
             Animated.timing( modelAnimatedValue, {
@@ -60,15 +61,15 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
     const onSubmit = async (data) => {
         setIsSubmitted(true)
         data.creator = {
-            name: user.displayName,
-            photoURL: user.photoURL
+            name: user?.displayName,
+            photoURL: user?.photoURL
         }
         data.createdAt = getCurrentDateLit(); // getFormattedDate();
 
-        await onAddComments( event, data )
-        await onGetComments( event.id )
+        await onAddPostComments( post, data )
+        await onGetPostComments( post?.id )
        
-        event.commentCount = parseInt(event.commentCount)+1
+        post.commentCount = parseInt(post.commentCount)+1
 
         resetField();
         reset();
@@ -77,12 +78,12 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
         // onClose();
 
     };
-
+    
     React.useEffect( () => {
         const getComments = async () => {
             try{
                 setIsLoading(true)
-                await onGetComments( event?.id )
+                await onGetPostComments( post?.id )
                 setIsLoading(false)
             }
             catch(e) {
@@ -93,8 +94,8 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
     }, [] );
 
     React.useEffect(() => {
-        setCommentData( comments.filter(item => { if( item.eventId == event.id ) return item } )[0].data )
-    }, [onGetComments])
+        setCommentData( postComments?.filter(item => { if( item?.postId == post?.id ) return item } )[0]?.data )
+    }, [onGetPostComments])
     
     return (
         <Modal>
@@ -134,7 +135,6 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
                         :
                         commentData?.length > 0 ?
                             (
-
                                 <View
                                     style={{
                                         flex: 1,
@@ -153,7 +153,11 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
                                 </View>
                             )
                             :
-                            (<View><Text>No Comments</Text></View>)
+                            (
+                                <View>
+                                    <Text>No Comments</Text>
+                                </View>
+                            )
                 }
             </View>
 
@@ -196,12 +200,12 @@ const CommentModal = ({ navigation, refEle, isVisible, onClose, event }) => {
                         marginTop: 10
                     }}
                 >
-                    {
-                        isSubmitted ?
-                        (<ActivityIndicator size={sizes.xlLoader} color={colors.primaryColor} />)
-                        :
-                        (<ButtonComponent label="Submit" onPress={handleSubmit(onSubmit)} />)
-                    }
+                {
+                    isSubmitted ?
+                    (<ActivityIndicator size={sizes.xlLoader} color={colors.primaryColor} />)
+                    :
+                    (<ButtonComponent label="Submit" onPress={handleSubmit(onSubmit)} />)
+                }
                 </View>
                 
                 <View style={{height: 10}} />

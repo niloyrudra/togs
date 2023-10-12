@@ -201,7 +201,7 @@ export const AppProvider = ({ children = null }) => {
           // Object.assign( {}, updatedUserModel )
     }
     catch(error) {
-      console.error( 'UPDATE USER INFO Error', error)
+      console.error( 'onUpdateUserInfo Error', error)
     }
   }
 
@@ -350,7 +350,7 @@ export const AppProvider = ({ children = null }) => {
         .collection("events")
         .doc(eventId)
         .update(
-          {...event, commentCount: parseInt(event.commentCount)+1}
+          {...event, commentCount: parseInt(event?.commentCount)+1}
         )
         .then(() => {
           console.log('Event\'s Comment Count Increased!')
@@ -362,6 +362,45 @@ export const AppProvider = ({ children = null }) => {
     }
     catch(error) {
       console.error( 'ADD COMMENTS Error', error)
+    }
+  }
+
+  const onAddPostComments = async ( post, commentData ) => {
+    try{
+      const  newCommentModel = commentData;
+      const postId = post?.id;
+      await db
+        .collection("allPostComments")
+        .doc( postId )
+        .collection('postComments')
+        .doc()
+        .set(
+          Object.assign( {}, newCommentModel )
+        )
+        .then(() => {
+          console.log('Add Post Comment successfully!')
+          dispatch({
+            type: ACTIONS.ADD_NEW_POST_COMMENT,
+            payload: {postId, newCommentModel}
+          });
+        });
+
+      await db
+        .collection("posts")
+        .doc(postId)
+        .update(
+          {...post, commentCount: parseInt(post.commentCount)+1}
+        )
+        .then(() => {
+          console.log('Post\'s Comment Count Increased!')
+          dispatch({
+            type: ACTIONS.INCREASE_POST_COMMENT_COUNT,
+            payload: postId
+          });
+        })
+    }
+    catch(error) {
+      console.error( 'ADD POST COMMENTS Error', error)
     }
   }
 
@@ -396,9 +435,41 @@ export const AppProvider = ({ children = null }) => {
     }
   }
 
+  const onGetPostComments = async (postId) => {
+    try{
+      await db
+        .collection("allPostComments")
+        .doc(postId)
+        .collection("postComments")
+        .orderBy('createdAt', "desc")
+        .get()
+        .then( snapshot => {
+          const docSet = []
+          snapshot.forEach(doc => {
+            if ( doc && doc.exists ) docSet.push(doc.data())
+          })
+        return docSet
+      })
+      .then( data => {
+          console.log("AppProvider Get Post Comments Data >> ",data)
+          dispatch({
+            type: ACTIONS.GET_ALL_POST_COMMENTS,
+            payload: {postId, data}
+          });
+        });
+    }
+    catch(error) {
+      console.error( 'GET ALL POST COMMENTS Error', error)
+      dispatch({
+        type: ACTIONS.GET_ALL_POST_COMMENTS,
+        payload: {postId, data:[]}
+      });
+    }
+  }
+
   const onToggleLikeEvent = async ( event, userId ) => {
     try{
-      let newLikes = event.shares.includes( userId ) ? event.shares.filter( uId => uId != userId ) : [ ...event.shares, userId ]
+      let newLikes = event.likes.includes( userId ) ? event.likes.filter( uId => uId != userId ) : [ ...event.likes, userId ]
       const updatedEvent = {
         ...event,
         likes: newLikes
@@ -419,13 +490,13 @@ export const AppProvider = ({ children = null }) => {
           // Object.assign( {}, updatedUserModel )
     }
     catch(error) {
-      console.error( 'UPDATE USER INFO Error', error)
+      console.error( 'onToggleLikeEvent Error', error)
     }
   }
 
   const onToggleLikePost = async ( post, userId ) => {
     try{
-      let newLikes = post.shares.includes( userId ) ? post.shares.filter( uId => uId != userId ) : [ ...post.shares, userId ]
+      let newLikes = post.likes.includes( userId ) ? post.likes.filter( uId => uId != userId ) : [ ...post.likes, userId ]
       const updatedPost = {
         ...post,
         likes: newLikes
@@ -446,7 +517,7 @@ export const AppProvider = ({ children = null }) => {
           // Object.assign( {}, updatedUserModel )
     }
     catch(error) {
-      console.error( 'UPDATE USER INFO Error', error)
+      console.error( 'onToggleLikePost Error', error)
     }
   }
 
@@ -499,7 +570,7 @@ export const AppProvider = ({ children = null }) => {
         })
     }
     catch(error) {
-      console.error( 'UPDATE USER INFO Error', error)
+      console.error( 'onSharePost Error', error)
     }
   }
 
@@ -525,7 +596,7 @@ export const AppProvider = ({ children = null }) => {
         })
     }
     catch(error) {
-      console.error( 'UPDATE USER INFO Error', error)
+      console.error( 'onShareEvent Error', error)
     }
   }
 
@@ -565,7 +636,6 @@ export const AppProvider = ({ children = null }) => {
       console.error( 'RATING USER Error', error)
     }
   }
-
 
   const getUserById = async (userId) => {
     if(!userId) return null;
@@ -618,6 +688,7 @@ export const AppProvider = ({ children = null }) => {
     comments: state.comments,
     signInError: state.signInError,
     updatedEventList: state.updatedEventList,
+    postComments: state.postComments,
     onSignUp,
     onSignIn,
     onSignOut,
@@ -640,7 +711,9 @@ export const AppProvider = ({ children = null }) => {
     onJoinEvent,
     onFilteredEventList,
     onToggleLikePost,
-    onSharePost
+    onSharePost,
+    onAddPostComments,
+    onGetPostComments
   }
 
   return (

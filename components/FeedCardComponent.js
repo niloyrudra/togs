@@ -1,21 +1,28 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Share, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, Share, Alert, Dimensions } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native'
 
 // Components
 import FeedImageTitleComponent from './FeedImageTitleComponent'
 
+// Modal
+import CommentModal from "../screens/Post/CommentModal"
+
+// Widgets
+import StatWidgetComponent from './StatWidgetComponent'
+
 // Constants
 import colors from '../constants/colors'
 import fonts from '../constants/fonts'
-import StatWidgetComponent from './StatWidgetComponent'
 
 // Context
 import { useTogsContext } from '../providers/AppProvider'
-import { Dimensions } from 'react-native'
 
 const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
+    const navigation = useNavigation()
 
-    const { user, getUserById, onToggleLikePost, onSharePost } = useTogsContext();
+    const commentRef = React.useRef()
+    const {user, onGetPostComments, onToggleLikePost, onSharePost, getUserById } = useTogsContext();
 
     const [likesCount, setLikesCount] = React.useState(item?.likes?.length ?? 0)
 
@@ -24,7 +31,7 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
     const [ shared, setShared ] = React.useState(0)
 
     const [ showCommentModal, setShowCommentModal ] = React.useState(false)
-    const [postCommentsCount, setPostCommentsCount] = React.useState( commentCount != null ? commentCount : 0)
+    const [ postCommentsCount, setPostCommentsCount ] = React.useState( commentCount != null ? commentCount : 0)
 
     // Handlers
     // Like Action Handler
@@ -32,7 +39,7 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
         try {
             setIsLiked(prevVal => prevVal = !prevVal)
             await onToggleLikePost( item, user?.userId )
-            if( item.likes.includes( user?.userId ) ) setLikesCount( prevValue => prevValue -= 1 )
+            if( item?.likes?.length && item?.likes?.includes( user?.userId ) ) setLikesCount( prevValue => prevValue -= 1 )
             else setLikesCount( prevValue => prevValue += 1 )
         }
         catch( err ) {
@@ -44,7 +51,7 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
     const onShare = async () => {
         try {
           const result = await Share.share({
-            message: `"${item?.content}" - created at ${item?.createdAt}.`, // 'React Native | A framework for building native apps using React',
+            message: `${post?.title}\r\n\r\n"${post?.content}"\r\n\r\nCreated at ${post?.createdDate}.`, // 'React Native | A framework for building native apps using React',
           });
 
           if (result.action === Share.sharedAction) {
@@ -154,10 +161,10 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
                 onPress={toggleLikesPostHandler}
             />
             <StatWidgetComponent
-                count={postCommentsCount}
+                count={item?.commentCount ?? 0}
                 iconName="message"
                 // disabled={true}
-                onPress={() => console.log("MESSAGES")}
+                onPress={() => setShowCommentModal(true)}
             />
             <StatWidgetComponent
                 count={item?.shares?.length ?? 0}
@@ -166,6 +173,17 @@ const FeedCardComponent = ({ item, onPress, commentCount=null }) => {
                 onPress={onShare}
             />
         </View>
+
+        {
+            showCommentModal &&
+            (<CommentModal
+                refEle={commentRef}
+                navigation={navigation}
+                isVisible={showCommentModal}
+                onClose={() => setShowCommentModal(false)}
+                post={item}
+            />)
+        }
 
     </View>
 

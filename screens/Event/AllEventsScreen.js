@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native'
 import React from 'react'
 import { BackHandler } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
@@ -10,10 +10,15 @@ import fonts from '../../constants/fonts'
 import sizes from '../../constants/sizes'
 
 // Components
-import FeedEventCardComponent from '../../components/FeedEventCardComponent'
+import HomeFeedCardComponent from '../../components/HomeFeedCardComponent'
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider'
+
+
+// Constants
+const WIDTH = Dimensions.get('screen').width - 40;
+// const BANNER_WIDTH = Dimensions.get('screen').width - 40;
 
 const AllEventsScreen = ({ navigation, route}) => {
 
@@ -48,11 +53,16 @@ const AllEventsScreen = ({ navigation, route}) => {
             <FlatList
                 data={events}
                 keyExtractor={item => item.id}
-                ListHeaderComponent={(<View style={{marginBottom:10}}>
+                ListHeaderComponent={(<View style={{marginBottom:10, marginLeft: 10}}>
                     <Text style={{fontFamily: fonts.bold, fontSize: sizes.label, color: colors.infoColor}}>Number of Event(s): {events?.length}</Text>
                 </View>)}
                 renderItem={({item, index}) => (
-                    <FeedEventCardComponent item={item}  commentCount={item?.commentCount ?? 0} onPress={() => navigation.navigate("EventScreen", {event: item, prevScreen: "AllEventsScreen"})} />
+                    <HomeFeedCardComponent
+                        item={item}
+                        bannerStyle={{height: (WIDTH) * 0.6}}
+                        style={{width: WIDTH}}
+                        onPress={() => navigation.navigate('EventScreen', {event: item,  prevScreen: 'AllEventsScreen'})}
+                    />
                 )}
                 ListFooterComponent={(<View style={{height:50}} />)}
             />
@@ -69,9 +79,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent:"flex-start",
-        alignItems:"flex-start",
+        alignItems:"center",
         paddingTop: 0,
         paddingBottom: 20,
-        paddingHorizontal: 20
     }
 })

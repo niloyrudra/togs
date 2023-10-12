@@ -2,34 +2,33 @@ import { StyleSheet, Text, View, Dimensions, Image, Share, Alert, ScrollView } f
 import React from 'react'
 import { BackHandler } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import moment from 'moment'
 
 // Constants
 import colors from '../../constants/colors'
 import fonts from '../../constants/fonts'
 import sizes from '../../constants/sizes'
-
 const WIDTH = Dimensions.get('screen').width - 40;
 
 // Components
 import StatWidgetComponent from '../../components/StatWidgetComponent'
 import BannerPlaceholderComponent from '../../components/BannerPlaceholderComponent'
 import DefaultBannerPlaceholderComponent from '../../components/DefaultBannerPlaceholderComponent'
+import EventJoinButtonComponent from '../../components/EventJoinButtonComponent'
+import AuthorComponent from '../../components/AuthorComponent'
 
 // Context
 import { useTogsContext } from '../../providers/AppProvider'
+
+// Modal
 import CommentModal from './CommentModal'
-// import CommentListItemComponent from '../../components/CommentListItemComponent'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import moment from 'moment'
-// import ButtonComponent from '../../components/ButtonComponent'
-import { TouchableOpacity } from 'react-native'
-import EventJoinButtonComponent from '../../components/EventJoinButtonComponent'
 
 const SingleEventScreen = ({ navigation, route}) => {
 
     const commentRef = React.useRef()
 
-    const {user, onUpdateListOfUserVisitedEvents, onGetComments, onToggleLikeEvent, onShareEvent, getUserById } = useTogsContext();
+    const {user, onUpdateListOfUserVisitedEvents, onToggleLikeEvent, onShareEvent, getUserById } = useTogsContext();
 
     const [ creator, setCreator ] = React.useState(null);
     const [ event, setEvent ] = React.useState( route?.params?.event ?? {} )
@@ -82,7 +81,7 @@ const SingleEventScreen = ({ navigation, route}) => {
     const onShare = async () => {
         try {
           const result = await Share.share({
-            message: `"${event?.content}" - Event starts at ${event?.startDate} and ends at ${event?.endDate}.`, // 'React Native | A framework for building native apps using React',
+            message: `"${event?.title}"\r\n\r\n"${event?.content}"\r\n\r\nEvent starts at ${event?.startDate} and ends at ${event?.endDate}.`, // 'React Native | A framework for building native apps using React',
           });
 
           if (result.action === Share.sharedAction) {
@@ -112,7 +111,7 @@ const SingleEventScreen = ({ navigation, route}) => {
             try {
                 
                 await onUpdateListOfUserVisitedEvents( user, route.params.event.id )
-                await onGetComments( route.params.event.id )
+                // await onGetComments( route.params.event.id )
 
                 const eventCreator = await getUserById( route?.params?.event?.creatorId );
                 setCreator(prevValue => prevValue = eventCreator);
@@ -164,15 +163,14 @@ const SingleEventScreen = ({ navigation, route}) => {
 
                 <View
                     style={{
-                        // width:"100%",
                         flexDirection:'row',
                         justifyContent:"space-between",
                         alignItems:"center"
                     }}
                 >
                     <View>
-                        <Text style={styles.eventTitle}>{ event?.services}</Text>
-                        <Text style={styles.eventSubTitle}>{event?.activities}</Text>
+                        <Text style={styles.eventTitle}>{ event?.title}</Text>
+                        <Text style={styles.eventSubTitle}>{event?.services} | {event?.activities}</Text>
                     </View>
 
                     {/* Widgets */}
@@ -218,26 +216,8 @@ const SingleEventScreen = ({ navigation, route}) => {
 
                 </View>
 
-                <TouchableOpacity
-                    style={{
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        marginBottom:10
-                    }}
-                    onPress={() => navigation.navigate("Profile", {userId:creator?.userId})}
-                >
-                    <Image
-                        source={creator?.photoURL ? {uri:creator?.photoURL} : require('../../assets/user/user-icon-3.png')}
-                        style={{
-                            width:35,
-                            height:35,
-                            borderRadius: 18,
-                            marginRight: 10,
-                        }}
-                    />
-                    <Text style={styles.meta}>{creator?.displayName ?? "Anonymous"}</Text>
-                </TouchableOpacity>
+                {/* Creator Detail */}
+                <AuthorComponent creator={creator} />
 
                 <Text style={styles.eventMeta}>
                     <Text>Created at: <Text style={styles.meta}>{event?.createdAt}</Text></Text>
